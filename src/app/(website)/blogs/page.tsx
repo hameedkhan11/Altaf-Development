@@ -7,21 +7,23 @@ import { generateBlogJsonLd } from '@/components/sections/blogs/BlogJsonLd'
 import { BlogHero } from '@/components/sections/blogs/BlogHero'
 import { BlogContent } from '@/components/sections/blogs/BlogContent'
 
+// Define the proper types for Next.js 13+ App Router
+type PageProps = {
+  params: { [key: string]: string | string[] }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
 // Generate comprehensive metadata for SEO
 export async function generateMetadata({
   searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   return generateBlogMetadata(searchParams)
 }
 
 // Main blog page component
 export default async function BlogPage({
   searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}) {
+}: PageProps) {
   const page = parseInt(searchParams?.page as string) || 1
   const limit = 12
   const offset = (page - 1) * limit
