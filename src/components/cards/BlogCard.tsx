@@ -25,10 +25,10 @@ export function BlogCard({ post, index }: BlogCardProps) {
       <div
         className={`flex flex-col lg:flex-row ${
           isEven ? "lg:flex-row" : "lg:flex-row-reverse"
-        } min-h-[300px] sm:min-h-[350px] md:min-h-[400px] lg:min-h-[460px] w-full`}
+        } min-h-[320px] sm:min-h-[360px] md:min-h-[400px] lg:min-h-[460px] w-full`}
       >
         {/* Image Section */}
-        <div className="w-full lg:w-1/2 h-48 sm:h-56 md:h-64 lg:h-auto relative overflow-hidden">
+        <div className="w-full lg:w-1/2 h-56 sm:h-56 md:h-64 lg:h-auto relative overflow-hidden">
           {imageUrl ? (
             <Image
               fill
@@ -61,12 +61,12 @@ export function BlogCard({ post, index }: BlogCardProps) {
           <AnimatedH1 
             wordByWord={true} 
             duration={0.2}  
-            className="text-xl sm:text-2xl lg:text-3xl mb-3 sm:mb-4 line-clamp-2 transition-colors"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 sm:mb-4 line-clamp-2 transition-colors"
           >
             {post?.title || "Untitled Post"}
           </AnimatedH1>
 
-          <AnimatedP className="mb-4 sm:mb-6 line-clamp-3 text-sm sm:text-base leading-relaxed">
+          <AnimatedP className="mb-4 sm:mb-6 line-clamp-3 text-xs sm:text-sm leading-relaxed">
             {post?.excerpt || "No excerpt available."}
           </AnimatedP>
 

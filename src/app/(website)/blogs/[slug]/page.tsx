@@ -14,11 +14,10 @@ export async function generateStaticParams() {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const params = await props.params;
   const post = await sanityService.getPostBySlug(params.slug);
   console.log(post);
 
@@ -89,11 +88,11 @@ export async function generateMetadata({
 }
 
 // Main blog post page component
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
+export default async function BlogPostPage(props: {
+  params: Promise<{ slug: string }>;
 }) {
+  const params = await props.params;
+  
   // Fetch data in parallel
   const [post, heroImages] = await Promise.all([
     sanityService.getPostBySlug(params.slug),

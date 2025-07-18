@@ -69,7 +69,7 @@ const CEOMessage = () => {
           >
             {/* Title */}
             <motion.div {...titleAnimation} viewport={viewportOnce} className="text-left">
-              <AnimatedH2 className="text-2xl sm:text-3xl md:text-4xl  mb-0">About Altaf Development</AnimatedH2>
+              <AnimatedH2 className="text-lg sm:text-3xl md:text-4xl  mb-0">About Altaf Development</AnimatedH2>
             </motion.div>
 
             {/* Content Paragraphs */}
