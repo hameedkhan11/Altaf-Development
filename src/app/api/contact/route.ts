@@ -447,3 +447,95 @@
 //     { status: 405 }
 //   );
 // }
+// src/app/api/contact/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+// Define the shape of the contact form data
+interface ContactFormData {
+  name: string
+  email: string
+  phone?: string
+  message: string
+  subject?: string
+}
+
+// POST handler for contact form submissions
+export async function POST(request: NextRequest) {
+  try {
+    const body: ContactFormData = await request.json()
+    
+    // Validate required fields
+    if (!body.name || !body.email || !body.message) {
+      return NextResponse.json(
+        { error: 'Missing required fields: name, email, and message are required' },
+        { status: 400 }
+      )
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(body.email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
+
+    // Here you would typically:
+    // 1. Send email using a service like SendGrid, Nodemailer, etc.
+    // 2. Save to database
+    // 3. Send to CRM
+    
+    // For now, we'll just log and return success
+    console.log('Contact form submission:', body)
+    
+    // You can implement your email sending logic here
+    // Example with email service:
+    // await sendEmail({
+    //   to: 'your-email@example.com',
+    //   subject: `Contact Form: ${body.subject || 'New Message'}`,
+    //   html: `
+    //     <h3>New Contact Form Submission</h3>
+    //     <p><strong>Name:</strong> ${body.name}</p>
+    //     <p><strong>Email:</strong> ${body.email}</p>
+    //     <p><strong>Phone:</strong> ${body.phone || 'Not provided'}</p>
+    //     <p><strong>Message:</strong> ${body.message}</p>
+    //   `
+    // })
+
+    return NextResponse.json(
+      { 
+        message: 'Contact form submitted successfully',
+        success: true 
+      },
+      { status: 200 }
+    )
+
+  } catch (error) {
+    console.error('Contact form error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
+// GET handler (optional - for testing)
+export async function GET() {
+  return NextResponse.json(
+    { message: 'Contact API endpoint is working' },
+    { status: 200 }
+  )
+}
+
+// OPTIONS handler for CORS (if needed)
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  })
+}
