@@ -1,13 +1,14 @@
-// components/sections/blogs/BlogPostContent.tsx - Updated to accept PopulatedPost
-/* @eslint-disable @typescript-eslint/no-explicit-any */
+// components/sections/blogs/BlogPostContent.tsx 
+
 import { PortableText } from "@portabletext/react";
-// import { BlogPostHeader } from "./BlogPostHeader";
+import { BlogPostHeader } from "./BlogPostHeader";
 import { portableTextComponents } from "./PortableTextComponents";
-// import { BlogPostSidebar } from "./BlogPostSidebar";
-import { PopulatedPost } from "@/lib/sanity/sanity"; // Import PopulatedPost instead of Post
+import { BlogPostSidebar } from "./BlogPostSidebar";
+import { PopulatedPost } from "@/lib/sanity/sanity";
+// import { PopulatedPost } from "@/lib/sanity/sanity"; // Import PopulatedPost instead of Post
 
 interface BlogPostContentProps {
-  post: PopulatedPost; // Change from Post to PopulatedPost
+  post: PopulatedPost; 
 }
 
 export function BlogPostContent({ post }: BlogPostContentProps) {
@@ -17,7 +18,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           {/* Main Content */}
           <div className="lg:col-span-3 max-w-5xl">
-            {/* <BlogPostHeader post={post} /> */}
+            <BlogPostHeader post={post} />
             
             <div className="prose prose-lg prose-blue max-w-none">
               {post.body && (
@@ -31,7 +32,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
           
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            {/* <BlogPostSidebar post={post} /> */}
+            <BlogPostSidebar post={post} />
           </div>
         </div>
       </div>

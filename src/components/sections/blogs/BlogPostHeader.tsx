@@ -1,9 +1,9 @@
 // components/sections/blogs/blogs/BlogPostHeader.tsx
-import { Post } from "@/lib/sanity/sanity";
+import { PopulatedPost } from "@/lib/sanity/sanity";
 import { Calendar, Clock } from "lucide-react";
 
 interface BlogPostHeaderProps {
-  post: Post; 
+  post: PopulatedPost; 
 }
 
 export function BlogPostHeader({ post }: BlogPostHeaderProps) {

@@ -1,14 +1,12 @@
-/*
-@eslint-disable @typescript-eslint/no-explicit-any
-*/
+
 import {
   SocialSharing,
   TableOfContents,
 } from "@/components/sections/blogs/blogs/BlogDetailSidebar";
-import { Post } from "@/lib/sanity/sanity";
+import { PopulatedPost } from "@/lib/sanity/sanity";
 
 interface BlogPostSidebarProps {
-  post: Post; // Replace with your actual post type
+  post: PopulatedPost; // Replace with your actual post type
 }
 
 export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
@@ -25,4 +23,4 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
       />
     </div>
   );
-}// components/sections/blogs/blogs/BlogPostSidebar.tsx
+}

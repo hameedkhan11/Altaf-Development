@@ -151,10 +151,10 @@ export interface Post extends SanityDocument {
   slug: SanitySlug;
   excerpt: string;
   featuredImage: SanityImage;
-  author: SanityReference;
+  author?: SanityReference;
   publishedAt: string;
   updatedAt?: string;
-  categories: SanityReference[];
+  categories?: SanityReference[];
   locations?: SanityReference[];
   propertyTypes?: SanityReference[];
   targetKeywords: string[];
@@ -171,8 +171,8 @@ export interface Post extends SanityDocument {
 
 // Populated/Expanded Types (for when references are resolved)
 export interface PopulatedPost extends Omit<Post, 'author' | 'categories' | 'locations' | 'propertyTypes' | 'relatedPosts'> {
-  author: Author;
-  categories: Category[];
+  author?: Author;
+  categories?: Category[];
   locations?: Location[];
   propertyTypes?: PropertyType[];
   relatedPosts?: Post[];
