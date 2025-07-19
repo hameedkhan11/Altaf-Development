@@ -173,7 +173,7 @@ export const ProjectCard = ({
               <span className="text-gray-300">|</span>
               <div className="flex items-center space-x-1">
                 <TbRulerMeasure className="w-3 h-3 xs:w-4 xs:h-4 sm:w-5 sm:h-5" />
-                <span className="font-medium">850 SQFt</span>
+                <span className="font-medium">{propertyType === "1bed" ? "850 SQFt" : "1,600 SQFt"}</span>
               </div>
             </div>
           </div>
