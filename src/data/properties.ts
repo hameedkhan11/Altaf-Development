@@ -21,13 +21,13 @@ export const propertySections: PropertySection[] = [
   {
     id: 'properties',
     title: 'Our Properties',
-    image: 'imgi_4_FRONT_EXTERIOR_VIEW_1_yivycn',
+    image: 'jason-briscoe-UV81E0oXXWQ-unsplash_hamzba',
     alt: 'Luxury living room with modern furniture'
   },
   {
     id: 'transactions',
     title: 'Past Transactions',
-    image: 'imgi_3_5_Bed_Villa_Revised_Front_Closeup_pkdtfq',
+    image: 'vangel-dimo-Rx7TgJ8LiX0-unsplash_nugirl',
     alt: 'Modern room with fireplace and large windows'
   },
   {

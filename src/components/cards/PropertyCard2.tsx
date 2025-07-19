@@ -29,7 +29,7 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={index === 0}
         />
-        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
         <motion.div
           className="absolute bottom-0 left-0 right-0 flex justify-center p-4 sm:p-6 lg:p-8"
           initial={{ opacity: 0, y: 20 }}

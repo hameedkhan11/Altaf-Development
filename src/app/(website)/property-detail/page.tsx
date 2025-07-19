@@ -30,7 +30,8 @@ const PropertyDetailContent: React.FC = () => {
   }, [propertyParam]);
 
   // Now this will work correctly with PropertyDetail type
-const currentProperty = properties[selectedProperty as keyof typeof properties];
+  const currentProperty = properties[selectedProperty as keyof typeof properties];
+  
   // Add error handling in case property doesn't exist
   if (!currentProperty) {
     return (
@@ -57,15 +58,24 @@ const currentProperty = properties[selectedProperty as keyof typeof properties];
           { label: "Properties", href: "/properties" },
         ]}
       />
+      
       <div className="mx-auto mt-24 px-2 md:px-12 lg:px-16">
         <PropertySelector
           selectedProperty={selectedProperty}
           onPropertyChange={setSelectedProperty}
         />
                 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
-          <ImageGallery propertyType={selectedProperty} />
-          <PropertyDetailInfo property={currentProperty} />
+        {/* Main Layout: Image Gallery Left, Property Stats Right */}
+        <div className="flex flex-col lg:flex-row mt-8 gap-8">
+          {/* Left Side - Image Gallery */}
+          <div className="flex-1">
+            <ImageGallery propertyType={selectedProperty} />
+          </div>
+          
+          {/* Right Side - Property Stats */}
+          <div className="flex-1">
+            <PropertyDetailInfo property={currentProperty} />
+          </div>
         </div>
 
         <PropertyDetailAmenities />
@@ -75,7 +85,7 @@ const currentProperty = properties[selectedProperty as keyof typeof properties];
   );
 };
 
-// Loading component (unchanged)
+// Loading component
 const PropertyDetailLoading: React.FC = () => (
   <div className="min-h-screen">
     <Hero
@@ -96,9 +106,9 @@ const PropertyDetailLoading: React.FC = () => (
     <div className="mx-auto mt-24 px-8 md:px-12 lg:px-16">
       <div className="animate-pulse">
         <div className="h-12 bg-gray-200 rounded mb-8"></div>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-3 h-96 bg-gray-200 rounded"></div>
-          <div className="lg:col-span-2 space-y-4">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex-1 h-96 bg-gray-200 rounded"></div>
+          <div className="w-full lg:w-96 space-y-4">
             <div className="h-8 bg-gray-200 rounded"></div>
             <div className="h-4 bg-gray-200 rounded"></div>
             <div className="h-4 bg-gray-200 rounded"></div>
@@ -109,7 +119,7 @@ const PropertyDetailLoading: React.FC = () => (
   </div>
 );
 
-// Main component wrapped with Suspense (unchanged)
+// Main component wrapped with Suspense
 const PropertyDetailSection: React.FC = () => {
   return (
     <div className="min-h-screen">

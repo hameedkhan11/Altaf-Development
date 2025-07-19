@@ -94,7 +94,7 @@ export const ProjectCard = ({
       {/* Card Container */}
       <div className="bg-white rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group w-full">
         {/* Image Container */}
-        <div className="relative w-full h-64 xs:h-72 sm:h-80 md:h-96 lg:h-[400px] xl:h-[440px] 2xl:h-[480px] overflow-hidden">
+        <div className="relative w-full h-64 xs:h-72 sm:h-80 md:h-96 lg:h-[400px] xl:h-[440px] overflow-hidden">
           <Link
             href={`/property-detail?property=${propertyType}`}
             className="block w-full h-full cursor-pointer"
