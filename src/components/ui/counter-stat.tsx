@@ -45,8 +45,8 @@ const CounterStat = ({ value, label, index }: CounterStatProps) => {
       <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-2 sm:mb-4 font-bold">
         {canAnimate ? (
           <>
-            <span ref={counterRef} className="text-4xl sm:text-5xl">0</span>
-            <span className="text-4xl sm:text-5xl">+</span>
+            <span ref={counterRef} className="text-4xl sm:text-5xl font-bold">0</span>
+            <span className="text-4xl sm:text-5xl font-bold">+</span>
           </>
         ) : (
           value

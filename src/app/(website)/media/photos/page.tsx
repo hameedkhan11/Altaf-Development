@@ -96,7 +96,7 @@ import React from "react";
 
 const PhotoGalleryPage = () => {
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen relative bg-gradient-to-br from-slate-50 via-white to-slate-100">
       {/* Hero Section */}
       <Hero
         title="Visual Journey"

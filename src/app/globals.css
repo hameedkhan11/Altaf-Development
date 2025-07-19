@@ -38,6 +38,71 @@ html.lenis, html.lenis body {
 html, body {
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+}
+/* Add to your globals.css for parallax fixes */
+
+/* Ensure hero containers don't show overflow */
+.hero-container {
+  overflow: hidden !important;
+  background-color: #1f2937; /* Fallback background */
+}
+
+/* Better transform handling for high parallax speeds */
+.parallax-element {
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Prevent gaps during parallax */
+.parallax-background {
+  min-width: 120% !important;
+  min-height: 120% !important;
+  transform-origin: center center;
+}
+
+/* High parallax speed specific fixes */
+[data-parallax-speed="high"] {
+  top: -30% !important;
+  left: -15% !important;
+  width: 130% !important;
+  height: 160% !important;
+}
+
+/* Smooth transforms */
+.smooth-transform {
+  transition: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+}
+
+/* Fix for safari and webkit browsers */
+@supports (-webkit-backdrop-filter: blur(1px)) {
+  .parallax-element {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Prevent scroll issues on mobile */
+@media (max-width: 768px) {
+  .parallax-element {
+    transform: none !important;
+  }
+  
+  .parallax-background {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
 }
 
 /* Smooth transforms for better performance */

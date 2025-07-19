@@ -10,7 +10,7 @@ export const RegisterHero = () => {
       backgroundSrc="Booking3_uieo5a"
       overlay="dark"
       enableParallax={true}
-      parallaxSpeed={0.3}
+      parallaxSpeed={0.7}
       contentAlignment="center"
       enableAnimations={true}
     >

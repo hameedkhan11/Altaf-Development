@@ -16,17 +16,17 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
 
   return (
     <div className={className}>
-      <nav className="flex items-center space-x-2 text-white/80 text-sm">
+      <nav className="flex items-center space-x-2 text-white/80 text-base">
         {items.map((item, index) => (
           <React.Fragment key={index}>
-            {index > 0 && <span className="mx-2">/</span>}
+            {index > 0 && <span className="mx-2 -mt-2 -ml-2">/</span>}
             {index === items.length - 1 ? (
-              <h3 className="text-white max-w-md truncate">
+              <h3 className="text-white max-w-md truncate text-md">
                 {item.label}
               </h3>
             ) : (
               <h3 
-                className="text-white hover:text-white/80 transition-colors"
+                className="text-white hover:text-white/80 transition-colors text-md"
               >
                 {item.label}
               </h3>

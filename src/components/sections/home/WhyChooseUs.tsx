@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import {
   // viewportOnce,
   shouldAnimate,
-  getPerformanceMode,
   animationMetrics,
   // quickFade,
   // easingPresets,
@@ -17,7 +16,6 @@ import StatsSection from "@/components/ui/stats-section";
 import AnimatedBackground from "@/components/ui/animated-background";
 
 const WhyChoose = () => {
-  const performanceMode = getPerformanceMode();
   const canAnimate = shouldAnimate();
 
   // Custom viewport configuration for 70-80vh trigger
@@ -47,7 +45,7 @@ const WhyChoose = () => {
   return (
     <div className="relative">
       {/* Background Image Section */}
-      <div className="relative h-[90vh] overflow-hidden">
+      <div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
           <CldImage
             src="imgi_20_istur_Neo-futuristic_house_with_pool_architecture_by_david_rock_997de75f-5df4-4851-89b3-9ab751d93bbf-min_ubf7zz"
@@ -67,8 +65,8 @@ const WhyChoose = () => {
           whileInView={{ clipPath: "inset(0 100% 0 0)" }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{
-            duration: 1.4,
-            delay: 0.8,
+            duration: 1.7,
+            delay: 0.6,
             ease: [0.25, 0.1, 0.25, 1],
           }}
         />
@@ -80,8 +78,8 @@ const WhyChoose = () => {
           whileInView={{ clipPath: "inset(0 0 0 100%)" }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{
-            duration: 1.4,
-            delay: 0.8,
+            duration: 1.7,
+            delay: 0.6,
             ease: [0.25, 0.1, 0.25, 1],
           }}
         />
@@ -93,8 +91,8 @@ const WhyChoose = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{
-            duration: performanceMode === "fast" ? 1.2 : 1.4,
-            delay: 0.8,
+            duration: 0.8,
+            delay: 1.7,
             ease: [0.25, 0.1, 0.25, 1],
           }}
         >

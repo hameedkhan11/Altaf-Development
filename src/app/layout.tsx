@@ -1,6 +1,8 @@
 import { SmoothScrollProvider } from "@/hooks/lenis";
+import AnimationProvider from "@/components/ui/animation-provider";
 import "./globals.css";
 import { Poppins } from "next/font/google";
+import { Metadata } from "next";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -9,12 +11,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-// Add this to your app/layout.tsx or create a new one if it doesn't exist
-import { Metadata } from "next";
-import AnimationProvider from "@/components/ui/animation-provider";
-
 export const metadata: Metadata = {
-  // Set the metadataBase to your production URL or localhost for development
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ),
@@ -22,32 +19,27 @@ export const metadata: Metadata = {
     default: "Altaf Development",
     template: "%s | Altaf Development",
   },
-  description: "Premium property listings and real estate services",
+  description: "Premium property listings and real estate services in Pakistan",
+  keywords: ["real estate", "property", "development", "Pakistan", "premium properties"],
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_SITE_URL || "http://localhost:3000",
-    siteName: "Estate Properties",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    siteName: "Altaf Development",
+    title: "Altaf Development - Premium Real Estate",
+    description: "Premium property listings and real estate services in Pakistan",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@your-twitter-handle",
-    creator: "@your-twitter-handle",
+    site: "@altaf_development", // Update with actual Twitter handle
+    creator: "@altaf_development",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
-// Alternative: Add this to your next.config.js if you prefer
-// const nextConfig = {
-//   experimental: {
-//     mdxRs: true,
-//   },
-//   images: {
-//     domains: ['your-image-domain.com'],
-//   },
-//   // This is one way to set metadata base but the above method is preferred
-// };
-
-// export default nextConfig;
 export default function RootLayout({
   children,
 }: {
@@ -55,9 +47,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} antialiased font-light`}>
+      <body className={`${poppins.variable} antialiased font-light`}
+      >
         <AnimationProvider>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+          <SmoothScrollProvider>
+            {children}
+          </SmoothScrollProvider>
         </AnimationProvider>
       </body>
     </html>

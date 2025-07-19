@@ -9,6 +9,7 @@ import { ImageGallery } from "@/components/property-detail/ImageDetailGallery";
 import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailInfo";
 import { PropertyDetailAmenities } from "@/components/property-detail/PropertyDetailAmenities";
 import { PropertyKey } from "@/lib/types";
+import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
 
 // Separate component that uses useSearchParams
 const PropertyDetailContent: React.FC = () => {
@@ -78,6 +79,12 @@ const PropertyDetailContent: React.FC = () => {
           </div>
         </div>
 
+        {/* New Pricing and 3D Layout Section */}
+        <PricingAndLayoutSection 
+          property={currentProperty} 
+          selectedProperty={selectedProperty}
+        />
+
         <PropertyDetailAmenities />
       </div>
       <RegisterHero />
@@ -112,6 +119,13 @@ const PropertyDetailLoading: React.FC = () => (
             <div className="h-8 bg-gray-200 rounded"></div>
             <div className="h-4 bg-gray-200 rounded"></div>
             <div className="h-4 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+        {/* Loading for new pricing section */}
+        <div className="mt-16 mb-16">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex-1 h-96 bg-gray-200 rounded"></div>
+            <div className="flex-1 h-96 bg-gray-200 rounded"></div>
           </div>
         </div>
       </div>

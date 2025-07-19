@@ -57,7 +57,7 @@
              
 //         <CardContent className="p-3 sm:p-4 md:p-5 lg:p-6">
 //           <motion.h3 
-//             className="text-lg sm:text-xl font-bold mb-2 dark:text-white line-clamp-2"
+//             className="text-lg sm:text-xl font-bold mb-2 line-clamp-2"
 //             initial={{ opacity: 0, x: -20 }}
 //             whileInView={{ opacity: 1, x: 0 }}
 //             viewport={{ once: true }}
@@ -94,7 +94,7 @@
 //             viewport={{ once: true }}
 //             transition={{ delay: index * 0.1 + 0.7 }}
 //           >
-//             <div className="text-base sm:text-lg font-bold text-[#8B2131] dark:text-red-400">
+//             <div className="text-base sm:text-lg font-bold text-[#8B2131]">
 //               {property.price}
 //             </div>
 //             <motion.div

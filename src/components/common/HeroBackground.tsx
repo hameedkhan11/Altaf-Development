@@ -1,4 +1,4 @@
-// common/components/HeroBackground.tsx
+// Fixed HeroBackground.tsx
 "use client";
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
@@ -26,7 +26,7 @@ interface HeroBackgroundProps {
 }
 
 export const HeroBackground: React.FC<HeroBackgroundProps> = ({
-  heroImage, // New prop from Sanity
+  heroImage,
   type = 'image',
   src,
   fallbackImage,
@@ -38,39 +38,37 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Smooth scroll-based parallax
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
   });
 
-  // Ultra-smooth spring animation for parallax
   const smoothY = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
-  // Transform scroll into parallax movement
-  const y = useTransform(smoothY, [0, 1], [0, -100 * parallaxSpeed]);
-  const scale = useTransform(smoothY, [0, 1], [1, 1.1]);
+  // FIXED: Better parallax calculations with proper bounds
+  const parallaxDistance = 100 * parallaxSpeed;
+  const y = useTransform(smoothY, [0, 1], [0, -parallaxDistance]);
+  
+  // FIXED: Dynamic scale based on parallax speed to prevent gaps
+  const minScale = 1 + (parallaxSpeed * 0.2); // Scale increases with speed
+  const maxScale = 1 + (parallaxSpeed * 0.3);
+  const scale = useTransform(smoothY, [0, 1], [minScale, maxScale]);
 
-  // Determine the image source - prioritize Sanity data
   const imageSource = heroImage?.cloudinaryUrl || src;
   const altText = heroImage?.altText || "Hero Background";
   
-  // Extract Cloudinary public ID from full URL if using Sanity data
   const getCloudinaryPublicId = (url: string) => {
     try {
       const urlObj = new URL(url);
-      console.log(urlObj)
       const pathSegments = urlObj.pathname.split('/');
       const uploadIndex = pathSegments.findIndex(segment => segment === 'upload');
-      console.log(uploadIndex)
       
       if (uploadIndex !== -1 && uploadIndex < pathSegments.length - 1) {
         const publicIdParts = pathSegments.slice(uploadIndex + 1);
-        console.log(publicIdParts)
         return publicIdParts.join('/').replace(/\.[^/.]+$/, '');
       }
       
@@ -82,7 +80,6 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   };
 
   const getOverlayClass = () => {
-    // If using Sanity data, use its overlay settings
     if (heroImage?.overlaySettings?.hasOverlay) {
       const { overlayColor, overlayOpacity = 0.5 } = heroImage.overlaySettings;
       const opacityValue = Math.round(overlayOpacity * 100);
@@ -95,13 +92,12 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
         case 'darkblue':
           return `bg-blue-900/${opacityValue}`;
         case 'custom':
-          return ''; // Handle with inline styles
+          return '';
         default:
           return `bg-black/${opacityValue}`;
       }
     }
     
-    // Fallback to original overlay logic
     switch (overlay) {
       case 'light':
         return 'bg-black/20';
@@ -173,17 +169,29 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
     ];
   };
 
-  // Don't render if no image source is available
   if (!imageSource) {
     return null;
   }
 
   return (
-    <div ref={containerRef} className={className}>
+    // FIXED: Better container with proper overflow handling
+    <div 
+      ref={containerRef} 
+      className={`${className} overflow-hidden bg-gray-900`}
+      style={{ backgroundColor: '#1f2937' }} // Fallback background
+    >
       {enableParallax ? (
         <motion.div
-          style={{ y, scale }}
-          className="absolute inset-0 w-full h-full will-change-transform"
+          className="absolute w-full h-full will-change-transform"
+          // FIXED: Better positioning for high parallax speeds
+          style={{
+            y,
+            scale,
+            top: `-${parallaxSpeed * 20}%`, // Dynamic top offset
+            left: '-10%',
+            width: '120%',
+            height: `${120 + (parallaxSpeed * 40)}%`, // Dynamic height
+          }}
         >
           <ParallaxContent
             type={type}
@@ -211,7 +219,6 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
         </div>
       )}
       
-      {/* Overlay with Sanity support */}
       {(heroImage?.overlaySettings?.hasOverlay || overlay !== 'none') && (
         <div 
           className={`absolute inset-0 z-10 ${getOverlayClass()}`}
@@ -222,7 +229,7 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   );
 };
 
-// Separated content component for cleaner code
+// FIXED: Enhanced ParallaxContent component
 const ParallaxContent: React.FC<{
   type: 'video' | 'image';
   src: string;
@@ -239,7 +246,6 @@ const ParallaxContent: React.FC<{
   fallbackImage, 
   buildVideoUrl, 
   buildResponsiveVideoSources, 
-  // getCloudinaryPublicId,
   heroImage 
 }) => {
   return (
@@ -253,6 +259,10 @@ const ParallaxContent: React.FC<{
             playsInline
             preload="metadata"
             className="absolute inset-0 w-full h-full object-cover z-0"
+            style={{
+              minWidth: '100%',
+              minHeight: '100%',
+            }}
             onError={(e) => console.error('Video error:', e)}
             poster={fallbackImage ? 
               `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1920,h_1080,f_auto,q_auto/${fallbackImage}` 
@@ -278,7 +288,9 @@ const ParallaxContent: React.FC<{
             <div
               className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
               style={{
-                backgroundImage: `url(https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1920,h_1080,f_auto,q_auto/${fallbackImage})`
+                backgroundImage: `url(https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1920,h_1080,f_auto,q_auto/${fallbackImage})`,
+                minWidth: '100%',
+                minHeight: '100%',
               }}
             />
           )}
@@ -291,6 +303,10 @@ const ParallaxContent: React.FC<{
           sizes="100vw"
           priority
           className="absolute inset-0 object-cover z-0"
+          style={{
+            minWidth: '100%',
+            minHeight: '100%',
+          }}
         />
       )}
     </>

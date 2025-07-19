@@ -133,7 +133,7 @@ const Header = () => {
                 <Button
                   className={`group relative transition-all duration-500 px-5 bg-transparent cursor-pointer rounded-full font-bold mr-8 overflow-hidden py-6 ${
                     scrolled
-                      ? "bg-[rgb(140,46,71)] text-white hover:bg-[rgb(120,40,61)] "
+                      ? "bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border-[rgb(140,46,71)] border-2"
                       : "bg-white text-[rgb(140,46,71)] hover:bg-gray-100"
                   }`}
                 >

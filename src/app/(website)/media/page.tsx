@@ -238,10 +238,10 @@ const MediaCenterPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-4xl mb-4">
               Additional Resources
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg max-w-2xl mx-auto">
               Download brochures, floor plans, and access press materials
             </p>
           </motion.div>
@@ -274,7 +274,7 @@ const MediaCenterPage = () => {
               return (
                 <motion.div
                   key={resource.title}
-                  className="group bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                  className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -285,15 +285,15 @@ const MediaCenterPage = () => {
                   >
                     <Icon className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                  <h3 className="text-xl font-semibold mb-3">
                     {resource.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  <p className="mb-6">
                     {resource.description}
                   </p>
                   <Button
                     variant="ghost"
-                    className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 p-0 font-medium"
+                    className="text-blue-600 hover:text-blue-700  p-0 "
                   >
                     Access Resources →
                   </Button>
