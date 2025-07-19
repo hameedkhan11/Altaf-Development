@@ -1,3 +1,4 @@
+// ProjectsSection.jsx
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -32,6 +33,7 @@ const ProjectsSection = () => {
     const fetchProperties = async () => {
       try {
         const data = await sanityService.getFeaturedProperties();
+        console.log(data)
         setProperties(data);
       } catch (error) {
         console.error('Error fetching properties:', error);
@@ -45,14 +47,14 @@ const ProjectsSection = () => {
 
   if (loading) {
     return (
-      <section className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+      <section className="py-4 xs:py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 2xl:py-24 px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 2xl:gap-24">
           {[1, 2].map((i) => (
             <div key={i} className="animate-pulse">
-              <div className="bg-gray-200 h-[400px] rounded-lg mb-4"></div>
+              <div className="bg-gray-200 h-64 xs:h-72 sm:h-80 md:h-96 lg:h-[400px] xl:h-[440px] 2xl:h-[480px] rounded-lg mb-4"></div>
               <div className="space-y-2">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                {/* <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div> */}
               </div>
             </div>
           ))}
@@ -62,34 +64,28 @@ const ProjectsSection = () => {
   }
 
   return (
-    <section className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 overflow-hidden">
+    <section className="py-4 xs:py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 2xl:py-24 px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 overflow-hidden">
       <motion.div
         variants={fadeInUp}
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-8 mb-8"
+        className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 xs:gap-5 sm:gap-6 lg:gap-8 mb-6 xs:mb-7 sm:mb-8"
       >
-        <AnimatedH1 className="text-2xl sm:text-3xl md:text-4xl w-full lg:w-[40%] mb-0 leading-tight">
+        <AnimatedH1 className="text-lg xs:text-2xl sm:text-3xl md:text-4xl w-full lg:w-[60%] xl:w-[50%] 2xl:w-[40%] mb-0 leading-tight">
           Preview Modern Elegance
         </AnimatedH1>
 
-        <div className="flex flex-col gap-3 sm:gap-4 w-full lg:w-[20%]">
-          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-3 sm:py-4 md:py-5 lg:py-6 px-4 sm:px-6 w-full text-sm sm:text-base md:text-lg transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)]">
+        <div className="flex flex-col gap-3 sm:gap-4 w-full sm:w-auto lg:w-[30%] xl:w-[25%] 2xl:w-[20%]">
+          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-2 xs:py-3 sm:py-4 md:py-5 lg:py-6 px-3 xs:px-4 sm:px-6 w-full text-xs xs:text-sm sm:text-base md:text-lg transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)]">
             View All Apartments
           </Button>
         </div>
       </motion.div>
 
-      {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-5">
-        <div className="absolute left-5 sm:left-10 w-48 sm:w-72 h-48 sm:h-72 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 sm:bottom-20 right-5 sm:right-10 w-64 sm:w-96 h-64 sm:h-96 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="mx-auto relative z-10">
+      <div className="mx-auto relative z-10 max-w-full">
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-10"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 2xl:gap-24"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
@@ -106,6 +102,7 @@ const ProjectsSection = () => {
                 scale: 1.005,
                 transition: { duration: 0.15, ease: "easeOut" },
               }}
+              className="w-full max-w-full"
             >
               <ProjectCard
                 image={property.featuredImage}

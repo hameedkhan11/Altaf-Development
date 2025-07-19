@@ -14,7 +14,7 @@ import { FaSnapchatGhost } from "react-icons/fa";
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   { name: "ABOUT", href: "/about" },
-  { name: "PROPERTIES", href: "/properties" },
+  { name: "PROPERTIES", href: "/property-detail" },
   // { name: "CAREERS", href: "/careers" },
   { name: "BLOGS", href: "/blogs" },
   { name: "MEDIA CENTER", href: "/media" },
