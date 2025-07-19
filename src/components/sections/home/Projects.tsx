@@ -77,7 +77,7 @@ const ProjectsSection = () => {
         </AnimatedH1>
 
         <div className="flex flex-col gap-3 sm:gap-4 w-full sm:w-auto lg:w-[30%] xl:w-[25%] 2xl:w-[20%]">
-          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-2 xs:py-3 sm:py-4 md:py-5 lg:py-6 px-3 xs:px-4 sm:px-6 w-full text-xs xs:text-sm sm:text-base md:text-lg transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)]">
+          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-2 xs:py-3 sm:py-4 md:py-5 lg:py-6 px-3 xs:px-4 sm:px-6 w-full text-xs xs:text-sm sm:text-base md:text-lg transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)] rounded-full">
             View All Apartments
           </Button>
         </div>
