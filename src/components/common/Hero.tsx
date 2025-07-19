@@ -207,8 +207,6 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
         <div className={`w-full flex flex-col items-center justify-center mx-auto mt-8 ${isHomePage ? 'max-w-2xl' : ''}`}>
           {displayTitle && (
             <AnimatedH1
-            wordByWord={true}
-            duration={0.05}
               className={`text-4xl sm:text-5xl ${isHomePage ? 'lg:text-6xl' : ''} text-white leading-tight`}
             >
               {displayTitle}
