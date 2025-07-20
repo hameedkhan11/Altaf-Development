@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Maximize2, Minimize2 } from "lucide-react";
 import { CldImage } from "next-cloudinary";
@@ -15,9 +15,16 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+  const minSwipeDistance = 50;
 
   useEffect(() => {
     const fetchImages = async () => {
+      setLoading(true); // Set loading to true when starting new fetch
+      setImages([]); // Clear images array to prevent using stale data
+      setCurrentImageIndex(0); // Reset index when switching properties
+      
       try {
         const imageUrls = await sanityService.getPropertyImagesByType(propertyType);
         if (imageUrls.length === 0) {
@@ -40,17 +47,50 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
   }, [propertyType]);
 
   const nextImage = (): void => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    if (images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }
   };
 
   const prevImage = (): void => {
-    setCurrentImageIndex(
-      (prev) => (prev - 1 + images.length) % images.length
-    );
+    if (images.length > 0) {
+      setCurrentImageIndex(
+        (prev) => (prev - 1 + images.length) % images.length
+      );
+    }
   };
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
+  };
+
+  // Handle touch events for swipe functionality
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    
+    if (Math.abs(distance) > minSwipeDistance) {
+      if (distance > 0) {
+        // Swipe left - next image
+        nextImage();
+      } else {
+        // Swipe right - previous image
+        prevImage();
+      }
+    }
+    
+    // Reset touch values
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   // Handle escape key to exit fullscreen
@@ -74,8 +114,8 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
     };
   }, [isFullscreen]);
 
-  // Loading state
-  if (loading) {
+  // Loading state or no images available
+  if (loading || images.length === 0) {
     return (
       <div className="w-full">
         <div className="animate-pulse">
@@ -97,8 +137,12 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
     );
   }
 
-  // No images available
-  if (images.length === 0) {
+  // Ensure currentImageIndex is within bounds
+  const safeCurrentIndex = Math.min(currentImageIndex, images.length - 1);
+  const currentImageSrc = images[safeCurrentIndex];
+
+  // Additional safety check for the current image
+  if (!currentImageSrc) {
     return (
       <div className="w-full">
         <div className="flex items-center justify-center w-full aspect-[4/3] bg-gray-100 rounded-lg">
@@ -116,60 +160,65 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
         <Button
           variant="secondary"
           size="sm"
-          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[10000] bg-white/20 hover:bg-white/30 text-white border-0 p-2 sm:p-3"
+          className="absolute top-2 right-2 sm:top-6 sm:right-6 z-[10000] bg-white/20 hover:bg-white/30 text-white border-0 p-2 sm:p-3"
           onClick={toggleFullscreen}
         >
-          <X className="w-5 h-5 sm:w-6 sm:h-6" />
+          <X className="w-6 h-6 sm:w-6 sm:h-6" />
         </Button>
 
         {/* Minimize Button */}
         <Button
           variant="secondary"
           size="sm"
-          className="absolute top-4 right-16 sm:top-6 sm:right-20 z-[10000] bg-white/20 hover:bg-white/30 text-white border-0 p-2 sm:p-3"
+          className="absolute top-2 right-14 sm:top-6 sm:right-20 z-[10000] bg-white/20 hover:bg-white/30 text-white border-0 p-2 sm:p-3"
           onClick={toggleFullscreen}
         >
-          <Minimize2 className="w-5 h-5 sm:w-6 sm:h-6" />
+          <Minimize2 className="w-6 h-6 sm:w-6 sm:h-6" />
         </Button>
 
         {/* Main Fullscreen Image Container */}
-        <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-8">
+        <div 
+          className="relative w-full h-full flex items-center justify-center p-2 sm:p-8"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <CldImage
             width={1920}
             height={1080}
-            src={images[currentImageIndex]}
-            alt={`Property view ${currentImageIndex + 1}`}
+            src={currentImageSrc}
+            alt={`Property view ${safeCurrentIndex + 1}`}
             className="max-w-full max-h-full object-contain"
             sizes="100vw"
             priority
           />
 
-          {/* Navigation Arrows for Fullscreen */}
+          {/* Navigation Arrows for Fullscreen - Hidden on mobile, visible on larger screens */}
           {images.length > 1 && (
             <>
               <Button
                 variant="secondary"
                 size="sm"
-                className="absolute left-2 sm:left-6 top-1/2 hidden sm:block -translate-y-1/2 border-2 border-white bg-white/20 hover:bg-white/30 text-white p-2 sm:p-4 rounded-full"
+                className="absolute left-2 sm:left-6 top-1/2 transform -translate-y-1/2 hidden sm:flex border-2 border-white text-white hover:text-white/80 p-3 sm:p-4 rounded-full items-center justify-center bg-transparent hover:bg-transparent"
                 onClick={prevImage}
               >
-                <FaArrowLeft className="w-4 h-4 sm:w-8 sm:h-8" />
+                <FaArrowLeft className="w-4 h-4 sm:w-6 sm:h-6" />
               </Button>
               <Button
                 variant="secondary"
                 size="sm"
-                className="absolute right-2 sm:right-6 top-1/2 hidden sm:block -translate-y-1/2 border-2 border-white bg-white/20 hover:bg-white/30 text-white p-2 sm:p-4 rounded-full"
+                className="absolute right-2 sm:right-6 top-1/2 transform -translate-y-1/2 hidden sm:flex border-2 border-white text-white hover:text-white/80 p-3 sm:p-4 rounded-full items-center justify-center bg-transparent hover:bg-transparent"
                 onClick={nextImage}
               >
-                <FaArrowRight className="w-4 h-4 sm:w-8 sm:h-8" />
+                <FaArrowRight className="w-4 h-4 sm:w-6 sm:h-6" />
               </Button>
             </>
           )}
 
           {/* Image Counter for Fullscreen */}
           {images.length > 1 && (
-            <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 bg-white/20 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-lg font-medium">
-              {currentImageIndex + 1} / {images.length}
+            <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 bg-white/20 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full text-base sm:text-lg font-medium">
+              {safeCurrentIndex + 1} / {images.length}
             </div>
           )}
         </div>
@@ -185,12 +234,15 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
         <div 
           className="relative overflow-hidden rounded-lg bg-white shadow-lg cursor-pointer w-full aspect-[4/3]"
           onClick={toggleFullscreen}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <CldImage
             width={800}
             height={600}
-            src={images[currentImageIndex]}
-            alt={`Property view ${currentImageIndex + 1}`}
+            src={currentImageSrc}
+            alt={`Property view ${safeCurrentIndex + 1}`}
             className="w-full h-full object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
           />
@@ -208,37 +260,37 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
             <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4" />
           </Button>
 
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Hidden on mobile */}
           {images.length > 1 && (
             <>
               <Button
                 variant="secondary"
                 size="sm"
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 border-2 border-white/50 text-white hover:bg-white/20 hover:text-white opacity-70 group-hover:opacity-100 transition-all duration-200 p-2 sm:p-3 md:py-4"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 rounded-full border-2 border-white/50 text-white hover:text-white/80 transition-all duration-200 p-3 sm:p-4 hidden sm:flex items-center justify-center bg-transparent hover:bg-transparent"
                 onClick={(e) => {
                   e.stopPropagation();
                   prevImage();
                 }}
               >
-                <FaArrowLeft className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8" />
+                <FaArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 bg-transparent" />
               </Button>
               <Button
                 variant="secondary"
                 size="sm"
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 border-2 border-white/50 text-white hover:bg-white/20 hover:text-white opacity-70 group-hover:opacity-100 transition-all duration-200 p-2 sm:p-3 md:py-4"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 rounded-full border-2 border-white/50 text-white hover:text-white/80 transition-all duration-200 p-3 sm:p-4 hidden sm:flex items-center justify-center bg-transparent hover:bg-transparent"
                 onClick={(e) => {
                   e.stopPropagation();
                   nextImage();
                 }}
               >
-                <FaArrowRight className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8" />
+                <FaArrowRight className="w-4 h-4 sm:w-5 sm:h-5 bg-transparent" />
               </Button>
             </>
           )}
 
-          {/* Thumbnails overlaid at bottom of main image */}
+          {/* Thumbnails overlaid at bottom of main image - Hidden on mobile */}
           {images.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 sm:bottom-4">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 sm:bottom-4 hidden sm:block">
               <div className="rounded-lg p-2 sm:p-3">
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-xs sm:max-w-sm md:max-w-md">
                   {images.slice(0, 6).map((image, index) => (
@@ -248,11 +300,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                         e.stopPropagation();
                         setCurrentImageIndex(index);
                       }}
-                      className={`relative overflow-hidden rounded-md transition-all duration-200 flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 ${
-                        index === currentImageIndex
-                          ? ""
-                          : ""
-                      }`}
+                      className={`relative overflow-hidden rounded-md transition-all duration-200 flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16`}
                     >
                       <CldImage
                         width={80}
@@ -262,7 +310,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                         className="w-full h-full object-cover"
                         sizes="(max-width: 768px) 48px, (max-width: 1024px) 56px, 64px"
                       />
-                      {index === currentImageIndex && (
+                      {index === safeCurrentIndex && (
                         <div className="absolute inset-0 bg-blue-500/20"></div>
                       )}
                     </button>
@@ -281,7 +329,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                 key={index}
                 onClick={() => setCurrentImageIndex(index)}
                 className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-200 ${
-                  index === currentImageIndex
+                  index === safeCurrentIndex
                     ? "bg-black"
                     : "bg-transparent border border-gray-400"
                 }`}

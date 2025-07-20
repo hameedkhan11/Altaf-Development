@@ -49,7 +49,7 @@ const PropertyDetailContent: React.FC = () => {
         backgroundSrc="Booking1_rg1bhs"
         fallbackImage="luxury-apartment-hero-gallery"
         height="screen"
-        overlay="gradient"
+        overlay="medium"
         contentAlignment="center"
         enableParallax={true}
         parallaxSpeed={0.3}

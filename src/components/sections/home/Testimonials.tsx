@@ -203,15 +203,15 @@ const Testimonials = () => {
                       <CldImage
                         src={currentTestimonial.image || "default-avatar"}
                         alt={currentTestimonial.name}
-                        width={88}
-                        height={88}
+                        width={40}
+                        height={40}
                         className="object-cover w-full h-full"
                         quality="auto"
                         format="auto"
                       />
                     </div>
-                    <div className="text-left">
-                      <h4 className="text-white text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl font-semibold">
+                    <div className="text-left mt-8">
+                      <h4 className="text-white text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl font-semibold -mb-2">
                         {currentTestimonial.name}
                       </h4>
                       <p className="text-white/80 text-xs xs:text-sm sm:text-base md:text-base lg:text-lg font-optima mb-1">

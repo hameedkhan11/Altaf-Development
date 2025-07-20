@@ -9,6 +9,7 @@ interface FormData {
   countryCode: string;
   message: string;
   preferredContact: string;
+  emailSubscription: boolean;
 }
 
 interface Country {
@@ -34,6 +35,7 @@ export const useContactForm = () => {
     countryCode: "+92", // Default to Pakistan
     message: "",
     preferredContact: "whatsapp", // Default to WhatsApp
+    emailSubscription: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,8 +69,14 @@ export const useContactForm = () => {
       | React.ChangeEvent<HTMLSelectElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    
+    if (type === 'checkbox') {
+      const { checked } = e.target as HTMLInputElement;
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
     
     // Clear status when user starts typing
     if (submitStatus.type) {
@@ -152,6 +160,7 @@ export const useContactForm = () => {
           countryCode: "+92",
           message: "",
           preferredContact: "whatsapp",
+          emailSubscription: false,
         });
       } else {
         // Handle different error codes

@@ -10,6 +10,7 @@
 //   countryCode: string;
 //   message: string;
 //   preferredContact: string;
+//   emailSubscription: boolean;
 // }
 
 // interface EmailConfig {
@@ -131,6 +132,20 @@
 //           border-radius: 4px;
 //           font-weight: 600;
 //         }
+//         .subscription-badge {
+//           display: inline-flex;
+//           align-items: center;
+//           background-color: #28a745;
+//           color: white;
+//           padding: 5px 12px;
+//           border-radius: 15px;
+//           font-size: 14px;
+//           font-weight: 500;
+//           margin-top: 5px;
+//         }
+//         .subscription-badge.declined {
+//           background-color: #6c757d;
+//         }
 //         .footer {
 //           margin-top: 30px;
 //           padding: 20px;
@@ -144,6 +159,15 @@
 //           color: #888;
 //           font-size: 11px;
 //           margin-top: 10px;
+//         }
+//         .marketing-note {
+//           background-color: #fff3cd;
+//           border: 1px solid #ffeaa7;
+//           border-radius: 8px;
+//           padding: 15px;
+//           margin-top: 20px;
+//           font-size: 13px;
+//           color: #856404;
 //         }
 //       </style>
 //     </head>
@@ -190,6 +214,15 @@
 //         </div>
 
 //         <div class="field-group">
+//           <div class="field-label">📬 Email Marketing Subscription</div>
+//           <div class="field-value">
+//             <span class="subscription-badge ${!data.emailSubscription ? 'declined' : ''}">
+//               ${data.emailSubscription ? '✅ Subscribed to offers and blog posts' : '❌ Declined email marketing'}
+//             </span>
+//           </div>
+//         </div>
+
+//         <div class="field-group">
 //           <div class="field-label">💭 Message</div>
 //           <div class="field-value">
 //             <div class="message-box">
@@ -197,6 +230,13 @@
 //             </div>
 //           </div>
 //         </div>
+
+//         ${data.emailSubscription ? `
+//         <div class="marketing-note">
+//           <strong>📧 Marketing Note:</strong> This client has opted in to receive marketing emails. 
+//           Add them to your newsletter/offers mailing list.
+//         </div>
+//         ` : ''}
 
 //         <div class="footer">
 //           <p><strong>Action Required:</strong> Please respond to this inquiry within 24 hours for optimal client experience.</p>
@@ -246,6 +286,11 @@
 //     return false;
 //   }
 
+//   // Email subscription validation (should be boolean)
+//   if (typeof data.emailSubscription !== 'boolean') {
+//     return false;
+//   }
+
 //   return true;
 // };
 
@@ -270,6 +315,29 @@
 
 //   record.count++;
 //   return true;
+// };
+
+// // Function to handle email subscription (you can integrate with your email service)
+// const handleEmailSubscription = async (email: string, name: string): Promise<void> => {
+//   if (!email || !name) return;
+  
+//   // TODO: Integrate with your email marketing service
+//   // Examples:
+//   // - Mailchimp API
+//   // - SendGrid Marketing Campaigns
+//   // - ConvertKit
+//   // - Campaign Monitor
+  
+//   console.log(`Adding ${name} (${email}) to email marketing list`);
+  
+//   // Example implementation:
+//   // await addToMailingList({
+//   //   email,
+//   //   firstName: name.split(' ')[0],
+//   //   lastName: name.split(' ').slice(1).join(' '),
+//   //   source: 'contact_form',
+//   //   timestamp: new Date().toISOString()
+//   // });
 // };
 
 // // Main API handler
@@ -322,6 +390,16 @@
 //       );
 //     }
 
+//     // Handle email subscription if opted in
+//     if (formData.emailSubscription) {
+//       try {
+//         await handleEmailSubscription(formData.email, formData.name);
+//       } catch (error) {
+//         console.error('Email subscription error:', error);
+//         // Don't fail the entire request if subscription fails
+//       }
+//     }
+
 //     // Create email transporter
 //     const emailConfig = createEmailConfig();
 //     const transporter = nodemailer.createTransport(emailConfig);
@@ -334,7 +412,7 @@
 //       from: `"${formData.name}" <${process.env.EMAIL_USER}>`,
 //       to: businessEmail,
 //       replyTo: formData.email,
-//       subject: `🏠 New Property Inquiry from ${formData.name}`,
+//       subject: `🏠 New Property Inquiry from ${formData.name}${formData.emailSubscription ? ' (Marketing Opt-in)' : ''}`,
 //       html: createEmailTemplate(formData),
 //       text: `
 //         New Property Inquiry
@@ -343,6 +421,7 @@
 //         Email: ${formData.email}
 //         Phone: ${formData.countryCode} ${formData.phone}
 //         Preferred Contact: ${formData.preferredContact}
+//         Email Marketing: ${formData.emailSubscription ? 'Yes - Add to mailing list' : 'No'}
         
 //         Message:
 //         ${formData.message}
@@ -356,9 +435,15 @@
     
 //     console.log('Email sent successfully:', info.messageId);
 
+//     // Prepare success message based on subscription status
+//     let successMessage = 'Your inquiry has been sent successfully! We\'ll contact you within 24 hours.';
+//     if (formData.emailSubscription) {
+//       successMessage += ' You\'ve also been subscribed to our latest offers and blog posts.';
+//     }
+
 //     return NextResponse.json({
 //       success: true,
-//       message: 'Your inquiry has been sent successfully! We\'ll contact you within 24 hours.',
+//       message: successMessage,
 //       messageId: info.messageId,
 //     });
 
@@ -447,95 +532,15 @@
 //     { status: 405 }
 //   );
 // }
-// src/app/api/contact/route.ts
-import { NextRequest, NextResponse } from 'next/server'
 
-// Define the shape of the contact form data
-interface ContactFormData {
-  name: string
-  email: string
-  phone?: string
-  message: string
-  subject?: string
-}
-
-// POST handler for contact form submissions
-export async function POST(request: NextRequest) {
-  try {
-    const body: ContactFormData = await request.json()
-    
-    // Validate required fields
-    if (!body.name || !body.email || !body.message) {
-      return NextResponse.json(
-        { error: 'Missing required fields: name, email, and message are required' },
-        { status: 400 }
-      )
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(body.email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      )
-    }
-
-    // Here you would typically:
-    // 1. Send email using a service like SendGrid, Nodemailer, etc.
-    // 2. Save to database
-    // 3. Send to CRM
-    
-    // For now, we'll just log and return success
-    console.log('Contact form submission:', body)
-    
-    // You can implement your email sending logic here
-    // Example with email service:
-    // await sendEmail({
-    //   to: 'your-email@example.com',
-    //   subject: `Contact Form: ${body.subject || 'New Message'}`,
-    //   html: `
-    //     <h3>New Contact Form Submission</h3>
-    //     <p><strong>Name:</strong> ${body.name}</p>
-    //     <p><strong>Email:</strong> ${body.email}</p>
-    //     <p><strong>Phone:</strong> ${body.phone || 'Not provided'}</p>
-    //     <p><strong>Message:</strong> ${body.message}</p>
-    //   `
-    // })
-
-    return NextResponse.json(
-      { 
-        message: 'Contact form submitted successfully',
-        success: true 
-      },
-      { status: 200 }
-    )
-
-  } catch (error) {
-    console.error('Contact form error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
-  }
-}
-
-// GET handler (optional - for testing)
-export async function GET() {
-  return NextResponse.json(
-    { message: 'Contact API endpoint is working' },
-    { status: 200 }
-  )
-}
-
-// OPTIONS handler for CORS (if needed)
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  })
-}
+// // OPTIONS handler for CORS (if needed)
+// export async function OPTIONS() {
+//   return new NextResponse(null, {
+//     status: 200,
+//     headers: {
+//       'Access-Control-Allow-Origin': '*',
+//       'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+//       'Access-Control-Allow-Headers': 'Content-Type',
+//     },
+//   });
+// }

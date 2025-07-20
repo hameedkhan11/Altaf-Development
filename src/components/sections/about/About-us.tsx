@@ -104,9 +104,9 @@ export default function AboutPage() {
         <Hero
           title="Home/About Us"
           backgroundType="image"
-          backgroundSrc="Booking1_rg1bhs"
+          backgroundSrc="imgi_12_newimages_g66xoj"
           breadcrumbs={breadcrumbs}
-          overlay="gradient"
+          overlay="dark"
           contentAlignment="center"
           ariaLabel="About us hero section"
           enableParallax={true}

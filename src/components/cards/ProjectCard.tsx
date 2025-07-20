@@ -2,7 +2,7 @@
 import React from "react";
 import { CldImage } from "next-cloudinary";
 import Link from "next/link";
-import { motion, useInView, Variants } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { IoBedOutline } from "react-icons/io5";
 import { LuBath } from "react-icons/lu";
 import { TbRulerMeasure } from "react-icons/tb";
@@ -17,69 +17,57 @@ export const ProjectCard = ({
   propertyType = "1bed",
 }: ProjectCardProps) => {
   const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  // Sample second image for hover effect - you can pass this as a prop later
-  const hoverImage = image; // Replace with actual hover image prop when available
+  const isInView = useInView(ref, { 
+    once: true, 
+    margin: "-50px",
+    amount: 0.3
+  });
 
   const cardVariants = {
     hidden: { 
       opacity: 0, 
-      y: 50,
-      scale: 0.95,
-      filter: "blur(10px)"
+      y: 30,
+      scale: 0.98
     },
     visible: { 
       opacity: 1, 
       y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      transition: {
-        duration: 0.8,
-        ease: "easeInOut",
-        staggerChildren: 0.1
-      }
+      scale: 1
     }
   };
 
   const imageVariants = {
-    hidden: { scale: 1.1, opacity: 0.8 },
+    hidden: { 
+      scale: 1.05, 
+      opacity: 0.7
+    },
     visible: { 
       scale: 1, 
-      opacity: 1,
-      transition: {
-        duration: 1.2,
-        ease: "easeInOut"
-      }
+      opacity: 1
     }
   };
 
-  const hoverImageVariants = {
+  const contentVariants = {
     hidden: { 
-      opacity: 0,
-      scale: 1.1,
-      filter: "blur(8px)"
+      opacity: 0, 
+      y: 20 
     },
     visible: { 
-      opacity: 1,
-      scale: 1.05,
-      filter: "blur(0px)",
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut"
-      }
+      opacity: 1, 
+      y: 0
     }
   };
 
   const priceTagVariants = {
-    hidden: { opacity: 0, y: -20 },
+    hidden: { 
+      opacity: 0, 
+      y: 10,
+      scale: 0.95
+    },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut"
-      }
+      scale: 1
     }
   };
 
@@ -87,9 +75,15 @@ export const ProjectCard = ({
     <motion.div 
       ref={ref}
       className="w-full max-w-full"
-      variants={cardVariants as Variants}
+      variants={cardVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
+      transition={{
+        duration: 0.6,
+        ease: "easeInOut",
+        staggerChildren: 0.1
+      }}
+      style={{ willChange: 'transform, opacity' }}
     >
       {/* Card Container */}
       <div className="bg-white rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group w-full">
@@ -99,10 +93,15 @@ export const ProjectCard = ({
             href={`/property-detail?property=${propertyType}`}
             className="block w-full h-full cursor-pointer"
           >
-            {/* Main Image */}
+            {/* Single Image - No hover effect */}
             <motion.div
-              variants={imageVariants as Variants}
+              variants={imageVariants}
+              transition={{
+                duration: 0.8,
+                ease: "easeInOut"
+              }}
               className="absolute inset-0 w-full h-full"
+              style={{ willChange: 'transform, opacity' }}
             >
               <CldImage
                 loading="lazy"
@@ -110,26 +109,7 @@ export const ProjectCard = ({
                 alt={title}
                 width={800}
                 height={600}
-                className="w-full h-full object-cover"
-                sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 50vw, 40vw"
-                priority={false}
-              />
-            </motion.div>
-
-            {/* Hover Image */}
-            <motion.div
-              className="absolute inset-0 w-full h-full"
-              variants={hoverImageVariants as Variants}
-              initial="hidden"
-              whileHover="visible"
-            >
-              <CldImage
-                loading="lazy"
-                src={hoverImage}
-                alt={`${title} - Interior`}
-                width={800}
-                height={600}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 50vw, 40vw"
                 priority={false}
               />
@@ -141,7 +121,13 @@ export const ProjectCard = ({
             {/* Price Tag */}
             <motion.div
               className="absolute bottom-2 left-2 xs:bottom-3 xs:left-3 sm:bottom-4 sm:left-4 text-white px-2 py-1 xs:px-3 xs:py-2 sm:px-4 sm:py-3 text-lg xs:text-xl sm:text-2xl md:text-3xl font-semibold ml-4"
-              variants={priceTagVariants as Variants}
+              variants={priceTagVariants}
+              transition={{
+                duration: 0.4,
+                delay: 0.3,
+                ease: "easeOut"
+              }}
+              style={{ willChange: 'transform, opacity' }}
             >
               {price}
             </motion.div>
@@ -149,7 +135,16 @@ export const ProjectCard = ({
         </div>
 
         {/* Content Container */}
-        <div className="p-3 xs:p-4 sm:p-6 md:p-8 space-y-2 xs:space-y-3 sm:space-y-4 md:space-y-6">
+        <motion.div 
+          className="p-3 xs:p-4 sm:p-6 md:p-8 space-y-2 xs:space-y-3 sm:space-y-4 md:space-y-6"
+          variants={contentVariants}
+          transition={{
+            duration: 0.5,
+            delay: 0.2,
+            ease: "easeOut"
+          }}
+          style={{ willChange: 'transform, opacity' }}
+        >
           {/* Property Title and Location */}
           <div className="space-y-1 sm:space-y-2">
             <h3 className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold leading-tight">
@@ -177,7 +172,7 @@ export const ProjectCard = ({
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );
