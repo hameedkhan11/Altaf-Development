@@ -1,35 +1,35 @@
 // components/register/RegisterHero.tsx
 import { Hero } from "../common/Hero";
-import { ContactForm} from "./register-interest-form";
+import { ContactForm } from "./register-interest-form";
 
 export const RegisterHero = () => {
   return (
     <>
-    <Hero
-      backgroundType="image"
-      backgroundSrc="Booking3_uieo5a"
-      overlay="dark"
-      enableParallax={true}
-      parallaxSpeed={0.3}
-      contentAlignment="center"
-      enableAnimations={true}
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-center text-start w-full px-4 sm:px-6 md:px-8">
-        <div className="text-white space-y-4 sm:space-y-6 flex flex-col items-start order-2 lg:order-1 max-w-xl">
-          <h1 className="text-xl hidden sm:block sm:text-3xl md:text-4xl lg:text-5xl leading-tight text-white">
-            Luxury Living Redefined
-          </h1>
-          <p className="hidden sm:block text-sm sm:text-md w-full sm:w-[25rem] md:w-[28rem] lg:w-[30rem]">
-            Experience unparalleled luxury in our meticulously crafted
-            apartments. From one-bedroom sanctuaries to expansive two-bedroom
-            residences, each space is designed to exceed your expectations.
-          </p>
+      <Hero
+        backgroundType="image"
+        backgroundSrc="Booking3_uieo5a"
+        overlay="dark"
+        enableParallax={true}
+        parallaxSpeed={0.3}
+        contentAlignment="center"
+        enableAnimations={true}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xs:gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 items-center text-start w-full px-3 xs:px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16">
+          <div className="text-white space-y-3 xs:space-y-4 sm:space-y-6 flex flex-col items-start order-2 lg:order-1 max-w-full lg:max-w-xl xl:max-w-2xl">
+            <h1 className="text-xl hidden md:block sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl leading-tight text-white w-full">
+              Luxury Living Redefined
+            </h1>
+            <p className="hidden md:block text-xs sm:text-sm md:text-base leading-relaxed w-full sm:w-[20rem] md:w-[25rem] lg:w-[28rem] xl:w-[30rem] 2xl:w-[35rem]">
+              Experience unparalleled luxury in our meticulously crafted
+              apartments. From one-bedroom sanctuaries to expansive two-bedroom
+              residences, each space is designed to exceed your expectations.
+            </p>
+          </div>
+          <div className="flex justify-center lg:justify-end order-1 lg:order-2 w-full">
+            <ContactForm />
+          </div>
         </div>
-        <div className="flex justify-center lg:justify-end order-1 lg:order-2 w-full">
-          <ContactForm />
-        </div>
-      </div>
-    </Hero>
-      </>
+      </Hero>
+    </>
   );
 };

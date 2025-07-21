@@ -71,7 +71,7 @@ const Header = () => {
         className={`fixed w-full h-20 transition-all duration-500 ease-in-out font-avenir ${
           scrolled
             ? "z-30 backdrop-blur-lg bg-white shadow-lg"
-            : "z-30"
+            : "z-30 mt-5"
         } ${showBackgroundOverlay ? "opacity-0" : "opacity-100"}`}
       >
         {/* Background image overlay for initial state */}
@@ -79,10 +79,10 @@ const Header = () => {
           <div className="absolute inset-0 bg-cover bg-center opacity-0" />
         )}
 
-        <div className="container mx-auto px-6 h-full relative z-10">
-          <div className="flex items-center justify-between h-full">
-            {/* Left Navigation */}
-            <nav className={`hidden lg:flex items-center space-x-12 ml-12 transition-opacity duration-500 ${
+        <div className="container mx-auto px-4 xl:px-6 h-full relative z-10">
+          <div className="flex items-center justify-between h-full relative">
+            {/* Left Navigation - Adjusted positioning and spacing */}
+            <nav className={`hidden lg:flex items-center space-x-6 xl:space-x-8 2xl:space-x-12 absolute left-0 xl:left-12 top-1/2 transform -translate-y-1/2 transition-opacity duration-500 ${
               showBackgroundOverlay ? "opacity-0" : "opacity-100"
             }`}>
               {NAVIGATION_ITEMS.map((item) => (
@@ -92,7 +92,7 @@ const Header = () => {
                   ) : (
                     <Link
                       href={item.href}
-                      className={`transition-all duration-500 text-sm relative group ${
+                      className={`transition-all duration-500 text-sm relative group whitespace-nowrap ${
                         scrolled
                           ? "text-foreground hover:text-[rgb(140,46,71)] hover:font-bold"
                           : "text-white  hover:text-[rgb(255,167,186)] hover:font-bold space-x-4"
@@ -108,16 +108,18 @@ const Header = () => {
               ))}
             </nav>
 
-            {/* Center Logo - Simplified without animation */}
-            <div className="flex items-center absolute left-1/2 transform -translate-x-1/2">
+            {/* Center Logo - Better responsive positioning */}
+            <div className="flex items-center absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 z-20">
               <Link
                 href={"/"}
-                className="cursor-pointer pt-6 flex items-center relative"
+                className="cursor-pointer flex items-center relative"
               >
                 {/* Logo using SVGR */}
                 <AltafLogo 
                   className={`cursor-pointer transition-all duration-500 ${
-                    isClient && isMobile ? 'w-[120px] h-[88px]' : 'lg:w-[150px] lg:h-[100px] mb-4'
+                    isClient && isMobile 
+                      ? 'w-[120px] h-[88px]' 
+                      : 'lg:w-[130px] lg:h-[88px] xl:w-[150px] xl:h-[100px]'
                   } ${
                     !scrolled 
                       ? "text-white" // White when not scrolled
@@ -127,18 +129,18 @@ const Header = () => {
               </Link>
             </div>
 
-            {/* Right Side - Contact Button */}
-            <div className="hidden lg:flex items-center space-x-4">
+            {/* Right Side - Contact Button - Adjusted positioning */}
+            <div className="hidden lg:flex items-center space-x-4 absolute right-0 xl:right-8 top-1/2 transform -translate-y-1/2">
               <Link href="/contact">
                 <Button
-                  className={`group relative transition-all duration-500 px-5 bg-transparent cursor-pointer rounded-full font-bold mr-8 overflow-hidden py-6 ${
+                  className={`group relative transition-all duration-500 px-4 xl:px-5 bg-transparent cursor-pointer rounded-full font-bold overflow-hidden py-4 xl:py-6 ${
                     scrolled
                       ? "bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border-[rgb(140,46,71)] border-2"
                       : "bg-white text-[rgb(140,46,71)] hover:bg-gray-100"
                   }`}
                 >
-                  <div className="flex items-center space-x-2 relative z-10 py-8">
-                    <span className="transition-all duration-300 group-hover:tracking-wider">
+                  <div className="flex items-center space-x-2 relative z-10 py-4 xl:py-8">
+                    <span className="transition-all duration-300 group-hover:tracking-wider whitespace-nowrap text-sm xl:text-base">
                       Contact Now
                     </span>
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -147,11 +149,11 @@ const Header = () => {
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Left side with larger size */}
             <Button
               variant="ghost"
               size="lg"
-              className={`lg:hidden mt-4 transition-all duration-500 ${
+              className={`lg:hidden absolute left-4 top-1/2 transform -translate-y-1/2 transition-all duration-500 ${
                 scrolled
                   ? "text-foreground hover:bg-gray-100"
                   : "text-white hover:bg-white/20"
@@ -159,9 +161,9 @@ const Header = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
+                <X className="h-8 w-8" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Menu className="h-8 w-8" />
               )}
             </Button>
           </div>

@@ -88,7 +88,13 @@ export const ProjectCard = ({
       {/* Card Container */}
       <div className="bg-white rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group w-full">
         {/* Image Container */}
-        <div className="relative w-full h-64 xs:h-72 sm:h-80 md:h-96 lg:h-[400px] xl:h-[440px] overflow-hidden">
+        {/* 
+          UPDATED: Replaced the chain of fixed height classes 
+          (h-64 xs:h-72 sm:h-80 md:h-96 lg:h-[400px] xl:h-[440px])
+          with a single aspect-ratio class 'aspect-[4/3]'.
+          This makes the image container fully responsive.
+        */}
+        <div className="relative w-full aspect-[4/3] overflow-hidden">
           <Link
             href={`/property-detail?property=${propertyType}`}
             className="block w-full h-full cursor-pointer"
@@ -110,7 +116,7 @@ export const ProjectCard = ({
                 width={800}
                 height={600}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 320px) 100vw, (max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 50vw, 40vw"
+                sizes="(max-width: 767px) 100vw, 50vw" // Simplified sizes prop for clarity
                 priority={false}
               />
             </motion.div>

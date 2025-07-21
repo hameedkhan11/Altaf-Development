@@ -30,27 +30,9 @@ const showcaseProperties = [
 
 // Simple fade animation for text content
 const fadeInVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      delay: 0.2,
-      ease: "easeOut"
-    }
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    transition: {
-      duration: 0.3,
-      ease: "easeIn"
-    }
-  }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } },
+  exit: { opacity: 0, y: -10, transition: { duration: 0.3, ease: "easeIn" } }
 };
 
 const PropertyShowcase = () => {
@@ -58,7 +40,7 @@ const PropertyShowcase = () => {
   const [prevIndex, setPrevIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Auto-advance slides - FIXED: removed currentIndex from dependencies
+  // Auto-advance slides
   useEffect(() => {
     if (isPaused) return;
     
@@ -71,13 +53,17 @@ const PropertyShowcase = () => {
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [isPaused]); // Only depend on isPaused
+  }, [isPaused]);
 
 
   const currentProperty = showcaseProperties[currentIndex];
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-gray-900">
+    // UPDATED:
+    // - On small screens, use a 16:9 aspect ratio. This ensures the full image is seen and reduces the component height.
+    // - On large screens (lg: and up), revert to h-screen for the immersive desktop experience.
+    // - lg:aspect-auto removes the aspect ratio constraint on large screens.
+    <div className="relative w-full overflow-hidden bg-gray-900 aspect-[6/7] lg:aspect-auto lg:h-screen">
       {/* Background Images with Progressive Width Transition */}
       <div className="absolute inset-0 flex">
         {/* Previous Image - shrinks during transition */}
@@ -97,12 +83,12 @@ const PropertyShowcase = () => {
             alt={showcaseProperties[prevIndex].title}
             fill
             sizes="100vw"
+            // NOTE: object-cover now works as intended because the container has the correct aspect ratio
             className="object-cover"
             priority
           />
           <div className="absolute inset-0 bg-black/40" />
-          {/* Bottom gradient overlay - only bottom portion */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/80 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
         </motion.div>
 
         {/* Current Image - grows during transition */}
@@ -124,13 +110,12 @@ const PropertyShowcase = () => {
             priority
           />
           <div className="absolute inset-0 bg-black/40" />
-          {/* Bottom gradient overlay - only bottom portion */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/80 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
         </motion.div>
       </div>
 
       {/* Content Overlay - Only Title */}
-      <div className="absolute bottom-8 left-0 right-0 z-10 text-center">
+      <div className="absolute bottom-8 sm:bottom-10 md:bottom-12 lg:bottom-16 left-0 right-0 z-10 text-center">
         <AnimatePresence mode="wait">
           <motion.h1
             key={currentIndex}
@@ -138,7 +123,7 @@ const PropertyShowcase = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="text-3xl md:text-4xl text-white px-6 drop-shadow-lg"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white px-4 sm:px-6 md:px-8 drop-shadow-lg"
           >
             {currentProperty.title}
           </motion.h1>

@@ -1,5 +1,6 @@
 // components/layout/Footer.tsx
 "use client";
+
 import { useState, FormEvent } from "react";
 import { NewsletterSection } from "../footer/Newsletter";
 import { CompanyInfo } from "../footer/CompanyInfo";
@@ -19,26 +20,26 @@ const Footer = () => {
 
   return (
     <footer className="text-white py-8 sm:py-12 lg:py-16 border-t border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6 xl:gap-8 2xl:gap-12">
           {/* Company Info Section */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-4">
+          <div className="w-full sm:col-span-2 lg:col-span-1">
             <CompanyInfo />
           </div>
 
           {/* Quick Links Section */}
-          <div className="col-span-1 lg:col-span-2">
+          <div className="w-full">
             <QuickLinks />
           </div>
 
           {/* Contact Information Section */}
-          <div className="col-span-1 lg:col-span-3">
+          <div className="w-full">
             <ContactInfo />
           </div>
 
           {/* Newsletter Section */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+          <div className="w-full sm:col-span-2 lg:col-span-1">
             <NewsletterSection
               email={email}
               setEmail={setEmail}

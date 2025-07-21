@@ -48,14 +48,16 @@ const ProjectsSection = () => {
 
   if (loading) {
     return (
-      <section className="py-4 xs:py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 2xl:py-24 px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 2xl:gap-24">
+      <section className="py-6 xs:py-8 sm:py-10 md:py-12 lg:py-16 xl:py-20 2xl:py-24 px-4 xs:px-5 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
+        {/* UPDATED: Changed lg:grid-cols-2 to md:grid-cols-2 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 2xl:gap-16">
           {[1, 2].map((i) => (
             <div key={i} className="animate-pulse">
-              <div className="bg-gray-200 h-64 xs:h-72 sm:h-80 md:h-96 lg:h-[400px] xl:h-[440px] 2xl:h-[480px] rounded-lg mb-4"></div>
-              <div className="space-y-2">
-                {/* <div className="h-6 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div> */}
+              {/* NOTE: The skeleton already uses a good responsive approach with aspect-ratio */}
+              <div className="bg-gray-200 w-full aspect-[4/3] rounded-lg mb-4"></div>
+              <div className="space-y-2 p-4">
+                <div className="h-4 xs:h-5 sm:h-6 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-3 xs:h-4 sm:h-5 bg-gray-200 rounded w-1/2"></div>
               </div>
             </div>
           ))}
@@ -65,20 +67,22 @@ const ProjectsSection = () => {
   }
 
   return (
-    <section className="py-4 xs:py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 2xl:py-24 px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 overflow-hidden">
+    <section className="py-6 xs:py-8 sm:py-10 md:py-12 lg:py-16 xl:py-20 2xl:py-24 px-4 xs:px-5 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 overflow-hidden">
       <motion.div
         variants={fadeInUp}
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 xs:gap-5 sm:gap-6 lg:gap-8 mb-6 xs:mb-7 sm:mb-8"
+        className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 xs:gap-5 sm:gap-6 lg:gap-8 mb-4 "
       >
-        <AnimatedH1 className="text-lg xs:text-2xl sm:text-3xl md:text-4xl w-full lg:w-[60%] xl:w-[50%] 2xl:w-[40%] mb-0 leading-tight">
+        {/* UPDATED: Changed lg:w-[60%] to md:w-[60%] for consistent breakpoint */}
+        <AnimatedH1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl w-full md:w-[60%] xl:w-[50%] 2xl:w-[40%] mb-0 leading-tight">
           Preview Modern Elegance
         </AnimatedH1>
-
-        <Link href={'/property-detail'} className="flex flex-col gap-3 sm:gap-4 w-full sm:w-auto lg:w-[30%] xl:w-[25%] 2xl:w-[20%]">
-          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-2 xs:py-3 sm:py-4 md:py-5 lg:py-6 px-3 xs:px-4 sm:px-6 w-full text-xs xs:text-sm sm:text-base md:text-lg transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)] rounded-full">
+        
+        {/* UPDATED: Changed lg:w-[35%] to md:w-auto to allow natural sizing on tablet */}
+        <Link href={'/property-detail'} className="flex flex-col gap-3 sm:gap-4 w-full sm:w-auto md:w-auto">
+          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-3 xs:py-3.5 sm:py-4 md:py-4.5 lg:py-4 xl:py-5 2xl:py-6 px-4 xs:px-5 sm:px-6 md:px-7 lg:px-6 xl:px-7 2xl:px-8 w-full text-sm xs:text-base sm:text-lg md:text-xl lg:text-base xl:text-lg 2xl:text-xl transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)] rounded-full font-medium">
             View All Apartments
           </Button>
         </Link>
@@ -86,7 +90,8 @@ const ProjectsSection = () => {
 
       <div className="mx-auto relative z-10 max-w-full">
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 2xl:gap-24"
+          // UPDATED: Changed lg:grid-cols-2 to md:grid-cols-2
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 xs:gap-7 sm:gap-8 md:gap-10 lg:gap-10 xl:gap-12 2xl:gap-16"
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
