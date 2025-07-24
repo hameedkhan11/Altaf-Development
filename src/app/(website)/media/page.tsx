@@ -1,138 +1,26 @@
-// app/media/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-// import PhotoGallery from "@/components/media/PhotoGallery";
-// import VideoGallery from "@/components/media/VideoGallery";
-// import VirtualTours from "@/components/media/VirtualTour";
 import {
   Camera,
   Video,
   Play,
-  FileText,
-  Image as ImageIcon,
-  BookOpen,
+  // FileText,
+  // Image as ImageIcon,
+  // BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Hero } from "@/components/common/Hero";
-
-// Sample data - replace with your actual data
-// const sampleImages = [
-//   {
-//     id: "1",
-//     src: "/images/Booking1.jpg",
-//     alt: "Luxury Living Room",
-//     category: "living-room",
-//     title: "Spacious Living Area",
-//   },
-//   {
-//     id: "2",
-//     src: "/images/Booking2.jpg",
-//     alt: "Master Bedroom",
-//     category: "bedroom",
-//     title: "Master Bedroom Suite",
-//   },
-//   {
-//     id: "3",
-//     src: "/images/Booking3.jpg",
-//     alt: "Modern Kitchen",
-//     category: "kitchen",
-//     title: "Designer Kitchen",
-//   },
-//   {
-//     id: "4",
-//     src: "/images/Apartment1.jpg",
-//     alt: "Luxury Bathroom",
-//     category: "bathroom",
-//     title: "Premium Bathroom",
-//   },
-//   {
-//     id: "5",
-//     src: "/images/Apartment2.jpg",
-//     alt: "Private Balcony",
-//     category: "outdoor",
-//     title: "Private Balcony View",
-//   },
-//   {
-//     id: "6",
-//     src: "/images/Apartment3.jpg",
-//     alt: "Building Lobby",
-//     category: "amenities",
-//     title: "Grand Lobby",
-//   },
-// ];
-
-// const sampleVideos = [
-//   {
-//     id: "1",
-//     title: "One Bedroom Apartment Tour",
-//     thumbnail: "/images/video-thumb-1.jpg",
-//     videoUrl: "/videos/1bed-tour.mp4",
-//     duration: "3:45",
-//     category: "apartment-tours",
-//     description: "Complete walkthrough of our luxury one-bedroom apartment",
-//   },
-//   {
-//     id: "2",
-//     title: "Two Bedroom Apartment Tour",
-//     thumbnail: "/images/video-thumb-2.jpg",
-//     videoUrl: "/videos/2bed-tour.mp4",
-//     duration: "5:20",
-//     category: "apartment-tours",
-//     description: "Detailed tour of our spacious two-bedroom unit",
-//   },
-//   {
-//     id: "3",
-//     title: "Building Amenities Overview",
-//     thumbnail: "/images/video-thumb-3.jpg",
-//     videoUrl: "/videos/amenities.mp4",
-//     duration: "4:15",
-//     category: "amenities",
-//     description: "Explore our world-class amenities and facilities",
-//   },
-// ];
-
-// const sampleTours = [
-//   {
-//     id: "1",
-//     title: "One Bedroom Luxury Suite",
-//     thumbnail: "/images/tour-thumb-1.jpg",
-//     tourUrl: "https://my.matterport.com/show/?m=example1",
-//     type: "3D" as const,
-//     propertyType: "Apartment",
-//     rooms: 1,
-//     area: "750 sq ft",
-//     description: "Experience our premium one-bedroom apartment in immersive 3D",
-//     featured: true,
-//   },
-//   {
-//     id: "2",
-//     title: "Two Bedroom Premium Unit",
-//     thumbnail: "/images/tour-thumb-2.jpg",
-//     tourUrl: "https://my.matterport.com/show/?m=example2",
-//     type: "360" as const,
-//     propertyType: "Apartment",
-//     rooms: 2,
-//     area: "1200 sq ft",
-//     description: "360° tour of our spacious two-bedroom luxury apartment",
-//     featured: true,
-//   },
-//   {
-//     id: "3",
-//     title: "Rooftop Amenities",
-//     thumbnail: "/images/Booking3.jpg",
-//     tourUrl: "https://my.matterport.com/show/?m=example3",
-//     type: "360" as const,
-//     propertyType: "Amenities",
-//     rooms: 0,
-//     area: "Various",
-//     description: "Explore our stunning rooftop facilities and amenities",
-//   },
-// ];
+import PropertyImageGalleryComponent from "@/components/property-detail/PropertyImageGallery"; 
+import { getAllPropertyGalleries, PropertyImageGallery } from "@/lib/image-queries";
+import { Loader2 } from "lucide-react";
 
 const MediaCenterPage = () => {
   const [activeSection, setActiveSection] = useState<string>("photos");
+  const [galleries, setGalleries] = useState<PropertyImageGallery[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const sections = [
     {
@@ -155,23 +43,25 @@ const MediaCenterPage = () => {
     },
   ];
 
-  // const renderActiveSection = () => {
-  //   switch (activeSection) {
-  //     case "photos":
-  //       return (
-  //         <PhotoGallery
-  //           images={sampleImages}
-  //           standalone={false} // This ensures consistent behavior with header detection
-  //         />
-  //       );
-  //     case "videos":
-  //       return <VideoGallery videos={sampleVideos} />;
-  //     // case "virtual":
-  //     //   return <VirtualTours tours={sampleTours} />;
-  //     default:
-  //       return <PhotoGallery images={sampleImages} standalone={false} />;
-  //   }
-  // };
+  useEffect(() => {
+    const fetchGalleries = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const allGalleries = await getAllPropertyGalleries();
+        console.log("Fetched galleries:", allGalleries);
+        setGalleries(allGalleries);
+      } catch (err) {
+        console.error("Error fetching galleries:", err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch galleries');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGalleries();
+  }, []);
 
   const breadcrumbs = [
     { label: "Home", href: "/" },
@@ -185,7 +75,6 @@ const MediaCenterPage = () => {
         title="Media Center"
         backgroundType="image"
         backgroundSrc="Booking1_rg1bhs"
-        fallbackImage="/images/Booking1.jpg"
         height="screen"
         overlay="dark"
         contentAlignment="center"
@@ -224,13 +113,40 @@ const MediaCenterPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {/* {renderActiveSection()} */}
+            {loading && (
+              <div className="w-full flex items-center justify-center py-20">
+                <div className="text-center">
+                  <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
+                  <p className="text-gray-600 dark:text-gray-400">Loading gallery...</p>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="w-full text-center py-20">
+                <div className="text-red-500">
+                  <p className="text-xl mb-2">Error loading gallery</p>
+                  <p className="text-sm">{error}</p>
+                </div>
+              </div>
+            )}
+
+            {galleries.length > 0 && activeSection === "photos" && (
+              <div className="space-y-16">
+                {galleries.map((galleryItem) => (
+                  <PropertyImageGalleryComponent
+                    key={galleryItem._id}
+                    gallery={galleryItem}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
 
       {/* Additional Resources */}
-      <section className="py-20 ">
+      <section className="py-20">
         <div className="container mx-auto px-6">
           <motion.div
             className="text-center mb-12"
@@ -238,16 +154,14 @@ const MediaCenterPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl mb-4">
-              Additional Resources
-            </h2>
+            <h2 className="text-4xl mb-4">Additional Resources</h2>
             <p className="text-lg max-w-2xl mx-auto">
               Download brochures, floor plans, and access press materials
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            [
               {
                 icon: FileText,
                 title: "Property Brochures",
@@ -288,19 +202,14 @@ const MediaCenterPage = () => {
                   <h3 className="text-xl font-semibold mb-3">
                     {resource.title}
                   </h3>
-                  <p className="mb-6">
-                    {resource.description}
-                  </p>
-                  <Button
-                    variant="ghost"
-                    className="text-blue-600 hover:text-blue-700  p-0 "
-                  >
+                  <p className="mb-6">{resource.description}</p>
+                  <Button variant="ghost" className="text-blue-600 hover:text-blue-700 p-0">
                     Access Resources →
                   </Button>
                 </motion.div>
               );
             })}
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

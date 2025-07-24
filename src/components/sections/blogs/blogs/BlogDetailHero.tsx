@@ -39,8 +39,8 @@ const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post, heroImage }) => {
       overlay="gradient"
       contentAlignment="left"
       enableAnimations={true}
-      enableParallax={true}
-      parallaxSpeed={0.3}
+      // enableParallax={true}
+      // parallaxSpeed={0.3}
       ariaLabel={`Blog post: ${post.title}`}
     />
   );

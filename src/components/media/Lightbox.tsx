@@ -1,25 +1,26 @@
-// components/media/Lightbox.tsx
+// components/property/Lightbox.tsx
 "use client";
 
 import React, { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Download, Share2, Heart } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { CldImage } from "next-cloudinary";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+
+interface LightboxImage {
+  id: string;
+  src: string;
+  alt: string;
+  title?: string;
+  description?: string;
+  category?: string;
+  tags?: string[];
+}
 
 interface LightboxProps {
   selectedImage: number | null;
-  filteredImages: Array<{
-    id: string;
-    src: string;
-    alt: string;
-    category: string;
-    title?: string;
-    description?: string;
-    photographer?: string;
-    date?: string;
-    tags?: string[];
-  }>;
+  filteredImages: LightboxImage[];
   onClose: () => void;
   onNext: () => void;
   onPrev: () => void;
@@ -32,247 +33,179 @@ const Lightbox: React.FC<LightboxProps> = ({
   onNext,
   onPrev,
 }) => {
-  // Handle keyboard navigation
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (selectedImage === null) return;
-    
-    switch (e.key) {
-      case 'Escape':
-        onClose();
-        break;
-      case 'ArrowLeft':
-        onPrev();
-        break;
-      case 'ArrowRight':
-        onNext();
-        break;
-    }
-  }, [selectedImage, onClose, onNext, onPrev]);
+  const currentImage = selectedImage !== null ? filteredImages[selectedImage] : null;
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (selectedImage === null) return;
+      
+      switch (e.key) {
+        case "Escape":
+          onClose();
+          break;
+        case "ArrowRight":
+          onNext();
+          break;
+        case "ArrowLeft":
+          onPrev();
+          break;
+        default:
+          break;
+      }
+    },
+    [selectedImage, onClose, onNext, onPrev]
+  );
 
   useEffect(() => {
     if (selectedImage !== null) {
-      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
       // Prevent body scroll when lightbox is open
-      document.body.style.overflow = 'hidden';
-      
-      // Hide header when lightbox is open
-      const header = document.querySelector('header');
-      const navbar = document.querySelector('nav');
-      const headerElements = document.querySelectorAll('[data-header], .header, .navbar, .navigation');
-      
-      if (header) header.style.display = 'none';
-      if (navbar) navbar.style.display = 'none';
-      headerElements.forEach(el => {
-        (el as HTMLElement).style.display = 'none';
-      });
-      
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-        document.body.style.overflow = 'unset';
-        
-        // Restore header when lightbox is closed
-        if (header) header.style.display = '';
-        if (navbar) navbar.style.display = '';
-        headerElements.forEach(el => {
-          (el as HTMLElement).style.display = '';
-        });
-      };
+      document.body.style.overflow = "hidden";
     }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
   }, [selectedImage, handleKeyDown]);
 
-  // Helper function to get high-resolution Cloudinary URL
-  const getHighResImageUrl = (src: string) => {
-    if (!src.includes('cloudinary.com')) {
-      return src; // Return original if not a Cloudinary URL
-    }
-    
-    // Extract the base URL and image path
-    const parts = src.split('/upload/');
-    if (parts.length !== 2) return src;
-    
-    const [baseUrl, imagePath] = parts;
-    
-    // Add transformation parameters for high-resolution lightbox display
-    const transformations = [
-      'w_1920',
-      'h_1080',
-      'c_limit',
-      'f_auto',
-      'q_auto:best',
-      'dpr_auto'
-    ].join(',');
-    
-    return `${baseUrl}/upload/${transformations}/${imagePath}`;
+  if (selectedImage === null || !currentImage) return null;
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${currentImage.src}`;
+    link.download = `${currentImage.alt || "image"}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
-
-  if (selectedImage === null || !filteredImages[selectedImage]) return null;
-
-  const currentImage = filteredImages[selectedImage];
-  const isFirst = selectedImage === 0;
-  const isLast = selectedImage === filteredImages.length - 1;
 
   return (
     <AnimatePresence>
-      {selectedImage !== null && (
-        <>
-          {/* Backdrop - Full screen overlay */}
-          <motion.div
-            className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[9999]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            onClick={onClose}
-          />
+      <motion.div
+        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        {/* Close button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-4 right-4 z-10 text-white hover:bg-white/10"
+          onClick={onClose}
+        >
+          <X className="w-6 h-6" />
+        </Button>
 
-          {/* Lightbox Container - Full screen */}
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            {/* Close Button */}
+        {/* Navigation buttons */}
+        {filteredImages.length > 1 && (
+          <>
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-4 right-4 z-[10000] text-white hover:bg-white/10 hover:text-white"
-              onClick={onClose}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10"
+              onClick={(e) => {
+                e.stopPropagation();
+                onPrev();
+              }}
             >
-              <X className="h-6 w-6" />
+              <ChevronLeft className="w-8 h-8" />
             </Button>
-
-            {/* Navigation Buttons */}
-            {!isFirst && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-[10000] text-white hover:bg-white/10 hover:text-white"
-                onClick={onPrev}
-              >
-                <ChevronLeft className="h-8 w-8" />
-              </Button>
-            )}
-
-            {!isLast && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-[10000] text-white hover:bg-white/10 hover:text-white"
-                onClick={onNext}
-              >
-                <ChevronRight className="h-8 w-8" />
-              </Button>
-            )}
-
-            {/* Main Content */}
-            <motion.div
-              className="relative max-w-7xl max-h-full w-full h-full flex items-center justify-center"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10"
+              onClick={(e) => {
+                e.stopPropagation();
+                onNext();
+              }}
             >
-              {/* Image Container */}
-              <div className="relative w-full h-full flex items-center justify-center">
-                <div className="relative max-w-full max-h-full">
-                  <Image
-                    src={getHighResImageUrl(currentImage.src)}
-                    alt={currentImage.alt}
-                    width={1920}
-                    height={1080}
-                    className="max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
-                    priority
-                    onError={(e) => {
-                      // Fallback to original URL if optimized URL fails
-                      const target = e.target as HTMLImageElement;
-                      target.src = currentImage.src;
-                    }}
-                  />
+              <ChevronRight className="w-8 h-8" />
+            </Button>
+          </>
+        )}
+
+        {/* Image counter */}
+        <div className="absolute top-4 left-4 z-40 text-white text-sm">
+          {selectedImage + 1} / {filteredImages.length}
+        </div>
+
+        {/* Main image display */}
+        <div 
+          className="flex items-center justify-center h-full w-full"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <motion.div
+            key={currentImage.id}
+            className="relative max-w-[90vw] max-h-[90vh]"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          >
+            <CldImage
+              src={currentImage.src}
+              alt={currentImage.alt}
+              width={1920}
+              height={1080}
+              className="max-h-[80vh] max-w-full object-contain rounded-lg"
+              crop="fill"
+              gravity="auto"
+              quality="auto"
+              format="auto"
+            />
+          </motion.div>
+        </div>
+
+        {/* Image info panel */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="max-w-4xl mx-auto">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-white mb-1">
+                  {currentImage.title || currentImage.alt}
+                </h2>
+                {currentImage.description && (
+                  <p className="text-gray-300 mb-2">
+                    {currentImage.description}
+                  </p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {currentImage.category && (
+                    <Badge variant="secondary" className="bg-white/10 text-white">
+                      {currentImage.category.split('-').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                      ).join(' ')}
+                    </Badge>
+                  )}
+                  {currentImage.tags?.map((tag, index) => (
+                    <Badge key={index} variant="outline" className="text-gray-300 border-white/20">
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
               </div>
-
-              {/* Image Info Panel */}
-              <motion.div
-                className="absolute bottom-4 left-4 right-4 bg-black/50 backdrop-blur-md rounded-lg p-4 text-white"
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleDownload}
+                className="flex items-center gap-2"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold mb-1">
-                      {currentImage.title || currentImage.alt}
-                    </h3>
-                    {currentImage.description && (
-                      <p className="text-sm text-gray-300 mb-2">
-                        {currentImage.description}
-                      </p>
-                    )}
-                    <div className="flex items-center gap-4 text-sm text-gray-400">
-                      {currentImage.photographer && (
-                        <span>By {currentImage.photographer}</span>
-                      )}
-                      {currentImage.date && (
-                        <span>{new Date(currentImage.date).toLocaleDateString()}</span>
-                      )}
-                      <span className="capitalize">{currentImage.category.replace('-', ' ')}</span>
-                      <span>{selectedImage + 1} of {filteredImages.length}</span>
-                    </div>
-                  </div>
-                  
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-2 ml-4">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-white/10 hover:text-white"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-white/10 hover:text-white"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-white/10 hover:text-white"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // Create a download link
-                        const link = document.createElement('a');
-                        link.href = currentImage.src;
-                        link.download = currentImage.title || currentImage.alt;
-                        link.target = '_blank';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                      }}
-                    >
-                      <Download className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Tags */}
-                {currentImage.tags && currentImage.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {currentImage.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-white/10 rounded-full text-xs text-gray-300"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            </motion.div>
+                <Download className="w-4 h-4" />
+                Download
+              </Button>
+            </div>
           </div>
-        </>
-      )}
+        </motion.div>
+      </motion.div>
     </AnimatePresence>
   );
 };

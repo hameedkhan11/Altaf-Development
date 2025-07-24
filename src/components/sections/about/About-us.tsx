@@ -1,14 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Hero } from "@/components/common/Hero";
 import MissionVisionSection  from './MissionVisionSection';
 import  TeamSection  from './TeamSection';
 import { aboutPageData, breadcrumbs } from "@/data/about-us/data";
 import { CompanyValuesSection } from "./CompanyValue";
+import { HeroImage } from "@/lib/hero/types";
 // import FeaturesGrid from "./FeaturesGrid";
 
 
-export default function AboutPage() {
+export default function AboutPage({ heroImage }: { heroImage: HeroImage | null }) {
   const [, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -103,16 +104,12 @@ export default function AboutPage() {
         {/* Hero Section */}
         <Hero
           title="Home/About Us"
+          heroImage={heroImage}
           backgroundType="image"
           backgroundSrc="imgi_12_newimages_g66xoj"
           breadcrumbs={breadcrumbs}
           overlay="dark"
-          contentAlignment="center"
           ariaLabel="About us hero section"
-          enableParallax={true}
-          parallaxSpeed={0.3}
-          enableAnimations={true}
-          height="half"
         />
 
         <TeamSection />

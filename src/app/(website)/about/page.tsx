@@ -1,10 +1,12 @@
 import AboutPage from '@/components/sections/about/About-us'
-import React from 'react'
+import sanityService from '@/lib/sanityService';
 
-const page = () => {
+const page = async() => {
+  const heroImage = await sanityService.getHeroImageBySlug('about');
+
   return (
     <>
-        <AboutPage />
+        <AboutPage heroImage = {heroImage}/>
     </>
   )
 }

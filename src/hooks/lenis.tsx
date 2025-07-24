@@ -1,85 +1,41 @@
-// Separate client component for ultra-smooth Lenis
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+'use client';
 
-import { useEffect, useRef, useCallback } from "react";
-import Lenis from "@studio-freight/lenis";
+import { ReactLenis } from 'lenis/react';
+import { ReactNode, useEffect } from 'react';
 
-export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
-  const rafRef = useRef<number | null>(null);
+interface LenisProviderProps {
+  children: ReactNode;
+}
 
-  // Optimized RAF callback
-  const raf = useCallback((time: number) => {
-    if (lenisRef.current) {
-      lenisRef.current.raf(time);
-    }
-    rafRef.current = requestAnimationFrame(raf);
-  }, []);
-
+export default function LenisProvider({ children }: LenisProviderProps) {
   useEffect(() => {
-    // Initialize Lenis with butter-smooth settings
-    const lenis = new Lenis({
-      // Ultra-smooth duration
-      duration: 1.8,
-      // Butter-smooth easing curve
-      easing: (t) => {
-        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-      },
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      // Fine-tuned multipliers for smoothness
-      touchInertiaMultiplier: 0.8,
-      touchMultiplier: 1.5,
-      wheelMultiplier: 0.8,
-      // Prevent infinite scroll
-      infinite: false,
-      // Enhanced performance
-      autoResize: true,
-      // Smooth wrapper behavior
-      wrapper: window,
-      content: document.documentElement,
-      // lerp: 0.1,
-    });
-
-    lenisRef.current = lenis;
-
-    // Start the animation loop
-    rafRef.current = requestAnimationFrame(raf);
-
-    // Handle resize for responsive smoothness
-    const handleResize = () => {
-      if (lenisRef.current) {
-        lenisRef.current.resize();
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    // Prevent scroll restoration on page load
-    if (typeof window !== "undefined") {
-      window.history.scrollRestoration = "manual";
-    }
-
-    // Cleanup
-    return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-      window.removeEventListener("resize", handleResize);
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-      }
-    };
-  }, [raf]);
-
-  // Expose lenis instance globally for programmatic control
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      (window as any).lenis = lenisRef.current;
+    // Prevent default scroll restoration
+    if (typeof window !== 'undefined') {
+      window.history.scrollRestoration = 'manual';
     }
   }, []);
 
-  return <>{children}</>;
+  return (
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.01, // Much slower lerp for ultra-smooth feel (0.05-0.08 is ideal)
+        duration: 2.0, // Longer duration for more cinematic feel
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.8, // Reduced for more controlled scrolling
+        touchMultiplier: 1.5,
+        infinite: false,
+        autoResize: true,
+        prevent: (node) => 
+          node.classList.contains('lenis-prevent') ||
+          node.getAttribute('data-lenis-prevent') === 'true',
+        // Advanced easing for premium feel
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      }}
+    >
+      {children}
+    </ReactLenis>
+  );
 }

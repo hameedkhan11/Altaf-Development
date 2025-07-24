@@ -1,215 +1,154 @@
-// components/media/VideoGallery.tsx
-"use client";
+// app/videos/page.tsx
+'use client'
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Play, X,Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { Play } from 'lucide-react'
+import { PropertyVideo, PropertyVideoGallery, PropertyVideoService } from '@/lib/video-queries'
 
-interface Video {
-  id: string;
-  title: string;
-  thumbnail: string;
-  videoUrl: string;
-  duration: string;
-  category: string;
-  description?: string;
-}
+// Video Card Component
+const VideoCard = ({ video }: { video: PropertyVideo }) => {
+  const [isPlaying, setIsPlaying] = useState(false)
+  
+  // Generate Cloudinary video URL
+  const getVideoUrl = (publicId: string) => {
+    const baseUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload`
+    return `${baseUrl}/${publicId}.mp4`
+  }
 
-interface VideoGalleryProps {
-  videos: Video[];
-  title?: string;
-  description?: string;
-}
-
-const VideoGallery: React.FC<VideoGalleryProps> = ({
-  videos,
-  title = "Video Tours",
-  description = "Take immersive tours of our luxury apartments"
-}) => {
-  const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
-  const [filter, setFilter] = useState<string>("all");
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const categories = ["all", ...Array.from(new Set(videos.map(video => video.category)))];
-  const filteredVideos = filter === "all" ? videos : videos.filter(video => video.category === filter);
-
-  const handleVideoSelect = (index: number) => {
-    setSelectedVideo(index);
-    setIsPlaying(true);
-  };
-
-  const closeVideo = () => {
-    setSelectedVideo(null);
-    setIsPlaying(false);
-  };
+  // Generate thumbnail URL
+  const getThumbnailUrl = (publicId: string, thumbnailId?: string) => {
+    const baseUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`
+    if (thumbnailId) {
+      return `${baseUrl}/w_400,h_225,c_fill/${thumbnailId}`
+    }
+    return `${baseUrl}/w_400,h_225,c_fill,so_auto/${publicId}.jpg`
+  }
 
   return (
-    <div className="w-full">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <motion.h2 
-          className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          {title}
-        </motion.h2>
-        <motion.p 
-          className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {description}
-        </motion.p>
-      </div>
-
-      {/* Category Filter */}
-      <motion.div 
-        className="flex flex-wrap justify-center gap-4 mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={filter === category ? "default" : "outline"}
-            onClick={() => setFilter(category)}
-            className={`capitalize px-6 py-2 rounded-full transition-all duration-300 ${
-              filter === category
-                ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg scale-105"
-                : "hover:scale-105 hover:shadow-md"
-            }`}
-          >
-            {category.replace("-", " ")}
-          </Button>
-        ))}
-      </motion.div>
-
-      {/* Video Grid */}
-      <motion.div 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        layout
-      >
-        <AnimatePresence>
-          {filteredVideos.map((video, index) => (
-            <motion.div
-              key={video.id}
-              layout
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.4 }}
-              className="group cursor-pointer"
-              onClick={() => handleVideoSelect(index)}
-            >
-              <div className="relative aspect-video overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300">
-                <Image
-                  src={video.thumbnail}
-                  alt={video.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-300" />
-                
-                {/* Play Button */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div
-                    className="bg-white/20 backdrop-blur-sm rounded-full p-4 group-hover:bg-white/30 transition-all duration-300"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Play className="h-8 w-8 text-white fill-white" />
-                  </motion.div>
-                </div>
-
-                {/* Duration */}
-                <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1">
-                  <Clock className="h-3 w-3 text-white" />
-                  <span className="text-white text-xs font-medium">{video.duration}</span>
-                </div>
-
-                {/* Category Badge */}
-                <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-medium px-3 py-1 rounded-full">
-                  {video.category}
-                </div>
-              </div>
-
-              {/* Video Info */}
-              <div className="mt-4 space-y-2">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                  {video.title}
-                </h3>
-                {video.description && (
-                  <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
-                    {video.description}
-                  </p>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Video Modal */}
-      <AnimatePresence>
-        {selectedVideo !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-            onClick={closeVideo}
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className="relative w-full max-w-6xl aspect-video bg-black rounded-2xl overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Video Player */}
-              <video
-                src={filteredVideos[selectedVideo].videoUrl}
-                controls
-                autoPlay={isPlaying}
-                className="w-full h-full object-contain"
-                onLoadStart={() => setIsPlaying(true)}
-              />
-
-              {/* Close Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-4 right-4 text-white hover:bg-white/20 bg-black/30 backdrop-blur-sm z-10"
-                onClick={closeVideo}
+    <div className="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow w-full max-w-sm">
+      <div className="relative aspect-video w-full h-96">
+        {!isPlaying ? (
+          <>
+            <Image
+              src={getThumbnailUrl(video.cloudinaryPublicId, video.thumbnailPublicId)}
+              alt={video.title || 'Video thumbnail'}
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+              <button
+                onClick={() => setIsPlaying(true)}
+                className="bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-4 transition-all"
               >
-                <X className="h-6 w-6" />
-              </Button>
-
-              {/* Video Info Overlay */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                <h3 className="text-white text-xl font-semibold mb-2">
-                  {filteredVideos[selectedVideo].title}
-                </h3>
-                {filteredVideos[selectedVideo].description && (
-                  <p className="text-white/80 text-sm">
-                    {filteredVideos[selectedVideo].description}
-                  </p>
-                )}
+                <Play className="w-6 h-6 text-gray-800 ml-1" />
+              </button>
+            </div>
+            {video.isPrimary && (
+              <div className="absolute top-2 left-2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium">
+                FEATURED
               </div>
-            </motion.div>
-          </motion.div>
+            )}
+          </>
+        ) : (
+          <video
+            src={getVideoUrl(video.cloudinaryPublicId)}
+            controls
+            autoPlay
+            className="w-full h-full object-cover"
+            onEnded={() => setIsPlaying(false)}
+          />
         )}
-      </AnimatePresence>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default VideoGallery;
+// Main Page Component
+export default function VideosPage() {
+  const [galleries, setGalleries] = useState<PropertyVideoGallery[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        setLoading(true)
+        const data = await PropertyVideoService.getAllVideos()
+        setGalleries(data)
+      } catch (err) {
+        setError('Failed to load videos')
+        console.error('Error fetching videos:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchVideos()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading videos...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-16 py-24">
+        {galleries.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-xl text-gray-600">No videos available at this time.</p>
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {galleries.map(gallery => (
+              <div key={gallery._id} className="bg-white rounded-lg overflow-hidden shadow">
+                <div className="p-6 border-b border-gray-100">
+                  <h2 className="text-2xl md:text-3xl lg:text-5xl text-center">
+                    Property Video Collection
+                  </h2>
+                  {gallery.description && (
+                    <p className="text-gray-600 mt-2 text-center">{gallery.description}</p>
+                  )}
+                </div>
+
+                <div className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {(gallery.videos || []).map((video, index) => (
+                      <VideoCard
+                        key={`${gallery._id}-${index}`}
+                        video={video}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

@@ -47,8 +47,8 @@ export function BlogHero({
       breadcrumbs={breadcrumbs}
       showScrollIndicator={false}
       enableAnimations={true}
-      enableParallax={true}
-      parallaxSpeed={0.5}
+      // enableParallax={true}
+      // parallaxSpeed={0.5}
       ariaLabel="Blog hero section"
     >
     </Hero>

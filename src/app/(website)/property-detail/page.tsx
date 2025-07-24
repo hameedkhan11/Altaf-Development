@@ -9,7 +9,7 @@ import { ImageGallery } from "@/components/property-detail/ImageDetailGallery";
 import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailInfo";
 import { PropertyDetailAmenities } from "@/components/property-detail/PropertyDetailAmenities";
 import { PropertyKey } from "@/lib/types";
-import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
+// import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
 
 // Separate component that uses useSearchParams
 const PropertyDetailContent: React.FC = () => {
@@ -51,8 +51,6 @@ const PropertyDetailContent: React.FC = () => {
         height="screen"
         overlay="medium"
         contentAlignment="center"
-        enableParallax={true}
-        parallaxSpeed={0.3}
         title="Featured Properties"
         breadcrumbs={[
           { label: "Home", href: "/" },
@@ -80,14 +78,16 @@ const PropertyDetailContent: React.FC = () => {
         </div>
 
         {/* New Pricing and 3D Layout Section */}
-        <PricingAndLayoutSection 
+        {/* <PricingAndLayoutSection 
           property={currentProperty} 
           selectedProperty={selectedProperty}
-        />
+        /> */}
 
         <PropertyDetailAmenities />
       </div>
-      <RegisterHero />
+      {/* <Amenities /> */}
+      <RegisterHero /> 
+      
     </>
   );
 };
@@ -102,8 +102,6 @@ const PropertyDetailLoading: React.FC = () => (
       height="screen"
       overlay="gradient"
       contentAlignment="center"
-      enableParallax={true}
-      parallaxSpeed={0.3}
       title="Featured Properties"
       breadcrumbs={[
         { label: "Home", href: "/" },

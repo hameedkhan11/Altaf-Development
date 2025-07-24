@@ -81,7 +81,7 @@ export const PropertyDetailAmenities: React.FC = () => {
   // };
 
   return (
-    <div className="mt-24">
+    <div className="mt-24 relative">
       <div className="text-center mb-8">
         <AnimatedH3 className="text-3xl mb-4">What this property offers</AnimatedH3>
       </div>

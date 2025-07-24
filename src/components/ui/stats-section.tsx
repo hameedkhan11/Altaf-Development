@@ -21,7 +21,7 @@ const StatsSection = () => {
 
   return (
     <motion.div
-      className="mt-8 sm:mt-10 md:mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full"
+      className="mt-8 sm:mt-10 md:mt-12 lg:mt-16 grid grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full"
       {...lazyStatsContainer}
       viewport={viewportDefault}
     >

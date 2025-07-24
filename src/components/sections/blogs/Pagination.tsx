@@ -20,7 +20,7 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
     } else {
       params.delete('page')
     }
-    return `/blog?${params.toString()}`
+    return `/blogs?${params.toString()}`
   }
 
   const pages = []

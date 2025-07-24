@@ -72,7 +72,7 @@ export default async function BlogPage(props: {
           searchParams={searchParams}
           backgroundImage="imgi_33_XHjb2nvN3Jd2DDPrmmf2kYt3IM_1_d6eb7c"
           fallbackImage="blog-hero-fallback"
-          heroImage={heroImage} // Pass the fetched hero image
+          heroImage={heroImage}
         />
         
         <div className="mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-16 py-8 sm:py-12 md:py-16">

@@ -1,9 +1,9 @@
-import { SmoothScrollProvider } from "@/hooks/lenis";
-import AnimationProvider from "@/components/ui/animation-provider";
+import React from "react";
+// import AnimationProvider from "@/components/ui/animation-provider";
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import { Metadata } from "next";
-
+import LenisProvider from "@/hooks/lenis";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -20,14 +20,21 @@ export const metadata: Metadata = {
     template: "%s | Altaf Development",
   },
   description: "Premium property listings and real estate services in Pakistan",
-  keywords: ["real estate", "property", "development", "Pakistan", "premium properties"],
+  keywords: [
+    "real estate",
+    "property",
+    "development",
+    "Pakistan",
+    "premium properties",
+  ],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
     siteName: "Altaf Development",
     title: "Altaf Development - Premium Real Estate",
-    description: "Premium property listings and real estate services in Pakistan",
+    description:
+      "Premium property listings and real estate services in Pakistan",
   },
   twitter: {
     card: "summary_large_image",
@@ -47,13 +54,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} antialiased font-light`}
-      >
-        <AnimationProvider>
-          <SmoothScrollProvider>
-            {children}
-          </SmoothScrollProvider>
-        </AnimationProvider>
+      <body className={`${poppins.variable} antialiased font-light`}>
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   );

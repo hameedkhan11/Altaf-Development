@@ -13,8 +13,7 @@ import {
 import { useEffect } from "react";
 import { CldImage } from "next-cloudinary";
 import { AnimatedH2, AnimatedP } from "@/components/ui/text-animations";
-import StatsSection from "@/components/ui/stats-section";
-import AnimatedBackground from "@/components/ui/animated-background";
+import { Shield, Monitor, Handshake, User } from "lucide-react";
 
 const MissionVisionSection = () => {
   const performanceMode = getPerformanceMode();
@@ -33,73 +32,124 @@ const MissionVisionSection = () => {
       }
     : quickFade;
 
+  const cardAnimation = canAnimate
+    ? {
+        initial: { opacity: 0, y: 40 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: viewportOnce,
+      }
+    : quickFade;
+
   useEffect(() => {
     animationMetrics.track("whychoose-section", !canAnimate);
   }, [canAnimate]);
 
+  const values = [
+    {
+      icon: Shield,
+      title: "Integrity",
+      description: "Honesty and transparency in every transaction.",
+    },
+    {
+      icon: Monitor,
+      title: "Expertise",
+      description: "Deep market knowledge to guide informed decisions",
+    },
+    {
+      icon: Handshake,
+      title: "Commitment",
+      description: "Dedicated to achieving the best results for every client.",
+    },
+    {
+      icon: User,
+      title: "Personalized Service",
+      description: "We tailor our approach to fit their needs.",
+    },
+  ];
+
   return (
     <div className="relative">
       {/* Background Image Section */}
-      <div className="relative h-[90vh] overflow-hidden">
+      <div className="relative h-screen overflow-hidden">
         <motion.div
-          initial={canAnimate ? { scaleX: 0, transformOrigin: "left center" } : { scaleX: 1, transformOrigin: "left center" }}
-          whileInView={canAnimate ? { scaleX: 1, transformOrigin: "left center" } : undefined}
-          viewport={canAnimate ? { once: true, amount: 0.8, margin: "-30% 0px -30% 0px" } : undefined}
+          initial={canAnimate ? { scale: 1.1 } : { scale: 1 }}
+          whileInView={canAnimate ? { scale: 1 } : undefined}
+          viewport={canAnimate ? { once: true, amount: 0.3 } : undefined}
           transition={canAnimate ? {
-            duration: performanceMode === "fast" ? 1.2 : 1.6,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-            delay: 0.1
+            duration: performanceMode === "fast" ? 1.2 : 1.8,
+            ease: easingPresets.smooth,
           } : undefined}
           className="w-full h-full"
         >
           <CldImage
             src="imgi_20_istur_Neo-futuristic_house_with_pool_architecture_by_david_rock_997de75f-5df4-4851-89b3-9ab751d93bbf-min_ubf7zz"
-            alt="ALTAF Development Office"
+            alt="Modern living room interior"
             className="w-full h-full object-cover"
             width={1920}
             height={1080}
           />
         </motion.div>
-        
-        {/* Dark overlay for text readability - appears after animation */}
-        <motion.div 
-          className="absolute inset-0 bg-black/40"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ 
-            once: true, 
-            amount: 0.8,
-            margin: "-30% 0px -30% 0px"
-          }}
-          transition={{ 
-            duration: performanceMode === "fast" ? 0.6 : 0.8,
-            delay: performanceMode === "fast" ? 1.3 : 1.7 // Appears after curtain animation
-          }}
-        />
+
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/50" />
 
         {/* Content Container */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-left px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24">
+        <div className="absolute inset-0 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
           {/* Header Section */}
-          <motion.div {...titleAnimation} className="mb-6 sm:mb-8 text-center">
-            <AnimatedP className="text-sm sm:text-base md:text-xl lg:text-2xl text-white/70 mb-4">
-              Building Trust, Delivering Excellence
+          <motion.div {...titleAnimation} className="text-center mb-16">
+            <AnimatedP className="text-lg md:text-xl text-white/80 mb-4 tracking-wider">
+              BUILDING TRUST, DELIVERING EXCELLENCE
             </AnimatedP>
             <AnimatedH2
               wordByWord={true}
-              duration={0.6}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white tracking-wider leading-tight"
+              duration={0.8}
+              className="text-4xl md:text-5xl text-white font-light tracking-wider"
             >
               Mission & Values
             </AnimatedH2>
-            
-            {/* Statistics Section with Counter Animation */}
-            <StatsSection />
           </motion.div>
+
+          {/* Values Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 max-w-7xl mx-auto">
+            {values.map((value, index) => {
+              const Icon = value.icon;
+              return (
+                <motion.div
+                  key={value.title}
+                  {...cardAnimation}
+                  transition={{
+                    duration: performanceMode === "fast" ? 0.6 : 0.8,
+                    delay: canAnimate ? index * 0.15 : 0,
+                    ease: easingPresets.smooth,
+                  }}
+                  className="text-start text-white group"
+                >
+                  {/* Icon Container */}
+                  <motion.div
+                    whileHover={canAnimate ? { scale: 1.1 } : undefined}
+                    transition={{ duration: 0.3 }}
+                    className="mb-6 flex justify-start"
+                  >
+                    <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center border-2 border-white/30 rounded-full group-hover:border-white/60 transition-colors duration-300">
+                      <Icon className="w-8 h-8 md:w-10 md:h-10" />
+                    </div>
+                  </motion.div>
+
+                  {/* Title */}
+                  <h3 className="text-xl md:text-2xl text-white mb-4 tracking-wide">
+                    {value.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm md:text-base text-white leading-relaxed max-w-xs mx-auto">
+                    {value.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
-
-      {/* Animated Background Elements */}
-      <AnimatedBackground />
     </div>
   );
 };

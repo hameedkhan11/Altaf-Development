@@ -4,7 +4,7 @@ eslint-disable @typescript-eslint/no-explicit-any
 'use client';
 
 import { motion, useInView, Variants } from 'framer-motion';
-import { ReactNode, useRef, useEffect,  } from 'react';
+import { ReactNode, useRef,  } from 'react';
 // import { useScroll } from 'framer-motion';
 
 interface AnimatedTextProps {
@@ -218,39 +218,39 @@ export function AnimatedContainer({
 }
 
 // Lenis Scroll Provider Hook
-export function useLenisScroll() {
-  useEffect(() => {
-    let lenis: any;
+// export function useLenisScroll() {
+//   useEffect(() => {
+//     let lenis: any;
     
-    const initLenis = async () => {
-      const Lenis = (await import('@studio-freight/lenis')).default;
+//     const initLenis = async () => {
+//       const Lenis = (await import('@studio-freight/lenis')).default;
       
-      lenis = new Lenis({
-        duration: 0.2,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        touchMultiplier: 2,
-        syncTouch: false,
-        smoothWheel: true,
-        wheelMultiplier: 0.4
-      });
+//       lenis = new Lenis({
+//         duration: 0.2,
+//         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+//         touchMultiplier: 2,
+//         syncTouch: false,
+//         smoothWheel: true,
+//         wheelMultiplier: 0.4
+//       });
 
-      function raf(time: number) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
+//       function raf(time: number) {
+//         lenis.raf(time);
+//         requestAnimationFrame(raf);
+//       }
 
-      requestAnimationFrame(raf);
-    };
+//       requestAnimationFrame(raf);
+//     };
 
-    initLenis();
+//     initLenis();
 
-    return () => {
-      if (lenis) {
-        lenis.destroy();
-      }
-    };
-  }, []);
-}
+//     return () => {
+//       if (lenis) {
+//         lenis.destroy();
+//       }
+//     };
+//   }, []);
+// }
 
 // Scroll-triggered fade up animation for hero sections
 interface ScrollFadeUpProps {

@@ -353,7 +353,9 @@ class SanityService {
           "allImages": images[].cloudinaryUrl
         }
       `);
-      return result.flatMap((prop: { allImages: string[] }) => prop.allImages || []);
+      return result.flatMap(
+        (prop: { allImages: string[] }) => prop.allImages || []
+      );
     } catch (error) {
       console.error("Error fetching all property images:", error);
       return [];
@@ -501,15 +503,18 @@ class SanityService {
   }
 
   // Get related posts (by categories and locations)
-  async getRelatedPosts(postId: string, limit: number = 3): Promise<PostPreview[]> {
+  async getRelatedPosts(
+    postId: string,
+    limit: number = 3
+  ): Promise<PostPreview[]> {
     const query = `*[_type == "post" && _id != $postId && publishedAt <= now() && (
       count((categories[]->slug.current)[@ in *[_type == "post" && _id == $postId][0].categories[]->slug.current]) > 0 ||
       count((locations[]->slug.current)[@ in *[_type == "post" && _id == $postId][0].locations[]->slug.current]) > 0
     )] | order(publishedAt desc) [0...${limit}] {
       ${POST_PREVIEW_QUERY}
-    }`
-    
-    return await client.fetch<PostPreview[]>(query, { postId })
+    }`;
+
+    return await client.fetch<PostPreview[]>(query, { postId });
   }
   // Get all post slugs for static generation
   async getAllPostSlugs(): Promise<string[]> {
@@ -517,22 +522,30 @@ class SanityService {
     return await client.fetch<string[]>(query);
   }
 
-  async getHeroImageByPage(pageSlug: string): Promise<HeroImage | null> {
-    const query = `*[_type == "heroImages" && pageSlug == $pageSlug && isActive == true] | order(priority asc)[0] {
-      _id,
-      title,
-      pageSlug,
-      cloudinaryUrl,
-      altText,
-      isActive,
-      overlaySettings,
-      heroText,
-      priority
-    }`;
+  async getHeroImageBySlug(slug: string): Promise<HeroImage | null> {
+    // UPDATED QUERY: Fetches cloudinaryPublicId and heightSettings
+    const query = `
+      *[_type == "heroImages" && pageSlug == $slug && isActive == true] | order(priority asc)[0] {
+        _id,
+        title,
+        pageSlug,
+        cloudinaryPublicId,
+        altText,
+        isActive,
+        heightSettings,
+        overlaySettings,
+        heroText,
+        priority
+      }
+    `;
 
-    return await client.fetch<HeroImage | null>(query, { pageSlug });
+    try {
+      return await client.fetch<HeroImage | null>(query, { slug });
+    } catch (error) {
+      console.error(`Error fetching hero image for slug "${slug}":`, error);
+      return null;
+    }
   }
-
   // Get all hero images for a specific page (in case you need multiple options)
   async getHeroImagesByPage(pageSlug: string): Promise<HeroImage[]> {
     const query = `*[_type == "heroImages" && pageSlug == $pageSlug && isActive == true] | order(priority asc) {
@@ -597,45 +610,6 @@ class SanityService {
   }
 
   // Helper function to get overlay CSS class based on settings
-  getOverlayClass(overlaySettings?: HeroImage["overlaySettings"]): string {
-    if (!overlaySettings?.hasOverlay) return "";
-
-    const opacity = overlaySettings.overlayOpacity || 0.5;
-
-    switch (overlaySettings.overlayColor) {
-      case "black":
-        return `bg-black/${Math.round(opacity * 100)}`;
-      case "white":
-        return `bg-white/${Math.round(opacity * 100)}`;
-      case "darkblue":
-        return `bg-blue-900/${Math.round(opacity * 100)}`;
-      case "custom":
-        return ""; // Handle custom colors with inline styles
-      default:
-        return `bg-black/${Math.round(opacity * 100)}`;
-    }
-  }
-
-  // Helper function to get custom overlay style
-  getCustomOverlayStyle(
-    overlaySettings?: HeroImage["overlaySettings"]
-  ): React.CSSProperties | undefined {
-    if (
-      !overlaySettings?.hasOverlay ||
-      overlaySettings.overlayColor !== "custom"
-    ) {
-      return undefined;
-    }
-
-    const opacity = overlaySettings.overlayOpacity || 0.5;
-    const color = overlaySettings.customOverlayColor || "#000000";
-
-    return {
-      backgroundColor: `${color}${Math.round(opacity * 255)
-        .toString(16)
-        .padStart(2, "0")}`,
-    };
-  }
 
   // Helper function to get text position classes
   getTextPositionClasses(textPosition?: string): string {
@@ -741,7 +715,6 @@ class SanityService {
     return null;
   }
 }
-
 
 // Export singleton instance
 export const sanityService = new SanityService();

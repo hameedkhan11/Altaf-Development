@@ -1,7 +1,6 @@
 // components/ContactHero.tsx
 "use client";
 import React from 'react';
-import { BreadcrumbItem } from '@/lib/types';
 import { Hero } from '@/components/common/Hero';
 
 interface ContactHeroProps {
@@ -9,11 +8,6 @@ interface ContactHeroProps {
 }
 
 export const ContactHero: React.FC<ContactHeroProps> = ({ className = "" }) => {
-  const breadcrumbs: BreadcrumbItem[] = [
-    { label: 'Home', href: '/' },
-    { label: 'Contact Us', href: '/contact-us' }
-  ];
-
   return (
     <div className={className}>
       <Hero
@@ -24,10 +18,6 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ className = "" }) => {
         height="half"
         overlay="medium"
         contentAlignment="center"
-        breadcrumbs={breadcrumbs}
-        enableParallax={true}
-        parallaxSpeed={0.3}
-        enableAnimations={true}
         ariaLabel="Contact us hero section"
       />
     </div>

@@ -3,7 +3,7 @@ import ProjectsSection from "@/components/sections/home/Projects";
 import Testimonials from "@/components/sections/home/Testimonials";
 import PropertyShowcase from "@/components/sections/home/PropertySlider";
 import CEOMessage from "@/components/sections/home/Vision";
-import Amenities from "@/components/sections/home/Amenities";
+// import Amenities from "@/components/sections/home/Amenities";
 import { Hero } from "@/components/common/Hero";
 import { RegisterHero } from "@/components/register-form/hero-section";
 import LuxuryRealEstateFAQ from "@/components/sections/home/FAQs";
@@ -22,19 +22,16 @@ const HomePage = async () => {
         backgroundType="video"
         backgroundSrc="Altaf_hero_4K_under100MB_wzjl1l"
         fallbackImage=""
-        enableParallax={true}
-        parallaxSpeed={0.5}
         ariaLabel="Altaf Development Home Section"
         contentAlignment="center"
-        enableAnimations={true}
       />
 
       <div>
         <ApartmentGallery />
-        <CEOMessage />
-        <ProjectsSection />
+        {/* <CEOMessage /> */}
         <PropertyShowcase />
-        <Amenities />
+        <ProjectsSection />
+        {/* <Amenities /> */}
         <WhyChoose />
         <Testimonials />
         <FeaturedPostsSection posts={featuredPosts} />

@@ -42,11 +42,11 @@ const CounterStat = ({ value, label, index }: CounterStatProps) => {
       }}
       viewport={viewportOnce}
     >
-      <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-2 sm:mb-4 font-bold">
+      <div className="text-xl sm:text-2xl md:text-3xl lg:text-5xl text-white mb-2 sm:mb-4 font-bold">
         {canAnimate ? (
           <>
-            <span ref={counterRef} className="text-4xl sm:text-5xl font-bold">0</span>
-            <span className="text-4xl sm:text-5xl font-bold">+</span>
+            <span ref={counterRef} className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold">0</span>
+            <span className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold">+</span>
           </>
         ) : (
           value
