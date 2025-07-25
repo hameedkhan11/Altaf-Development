@@ -20,20 +20,20 @@ export const viewportOnce: ViewportOnce = {
 export const propertySections: PropertySection[] = [
   {
     id: 'properties',
-    title: 'Our Properties',
-    image: 'jason-briscoe-UV81E0oXXWQ-unsplash_hamzba',
+    title: 'Powdered Room',
+    image: 'powder-room_akquqb',
     alt: 'Luxury living room with modern furniture'
   },
   {
     id: 'transactions',
-    title: 'Past Transactions',
-    image: 'vangel-dimo-Rx7TgJ8LiX0-unsplash_nugirl',
+    title: 'Grand Lobby',
+    image: 'grand-lobby_awpfkg',
     alt: 'Modern room with fireplace and large windows'
   },
   {
     id: 'connect',
-    title: "Let's Connect",
-    image: 'imgi_2_EXTERIOR_FRONT_STREET_VIEW_REVISED_vajrlu',
+    title: "Dream suite",
+    image: 'dream-suite_ez3xq0',
     alt: 'Elegant dining area with natural lighting'
   }
 ];

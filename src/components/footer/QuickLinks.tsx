@@ -9,12 +9,12 @@ export const QuickLinks = () => (
     </h3>
     <ul className="space-y-1 lg:space-y-2 w-full">
       {quickLinks.map((item) => (
-        <li key={item} className="w-full">
+        <li key={item.name} className="w-full">
           <Link
-            href="#"
+            href={item.href}
             className="text-black dark:text-white hover:text-[#8c2e47] dark:hover:text-[#8c2e47] transition-colors duration-300 text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base font-optima block w-full"
           >
-            {item}
+            {item.name}
           </Link>
         </li>
       ))}

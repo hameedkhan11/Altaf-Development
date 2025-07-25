@@ -9,93 +9,90 @@ import { useEffect, useRef, useState } from "react";
 export const ApartmentGallery = () => {
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  // const [canScrollLeft, setCanScrollLeft] = useState(false);
-  // const [canScrollRight, setCanScrollRight] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Auto-scroll functionality for mobile
+  // Create duplicated sections for infinite scroll
+  const duplicatedSections = [...propertySections, ...propertySections];
+
+  // Auto-scroll functionality for mobile - infinite forward scroll
   useEffect(() => {
-    if (!isAutoScrolling) return;
+    if (!isAutoScrolling || isTransitioning) return;
 
     const interval = setInterval(() => {
       const container = scrollContainerRef.current;
       if (!container) return;
 
-      const nextIndex = (currentIndex + 1) % propertySections.length;
+      setIsTransitioning(true);
       const cardWidth = container.clientWidth;
+      const nextScrollIndex = currentIndex + 1;
       
       container.scrollTo({
-        left: nextIndex * cardWidth,
+        left: nextScrollIndex * cardWidth,
         behavior: 'smooth'
       });
-      
-      setCurrentIndex(nextIndex);
+
+      // If we've scrolled past the original sections, reset to beginning
+      if (nextScrollIndex >= propertySections.length) {
+        setTimeout(() => {
+          // Jump back to the beginning without animation
+          container.scrollTo({
+            left: 0,
+            behavior: 'auto'
+          });
+          setCurrentIndex(0);
+          setIsTransitioning(false);
+        }, 500); // Wait for smooth scroll to complete
+        
+        // Update visual indicator immediately
+        setCurrentIndex(0);
+      } else {
+        setCurrentIndex(nextScrollIndex);
+        setTimeout(() => setIsTransitioning(false), 500);
+      }
     }, 3000); // Scroll every 3 seconds
 
     return () => clearInterval(interval);
-  }, [isAutoScrolling, currentIndex]);
+  }, [isAutoScrolling, currentIndex, isTransitioning]);
 
-  // Check scroll position
-  const checkScrollPosition = () => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    // setCanScrollLeft(container.scrollLeft > 0);
-    // setCanScrollRight(container.scrollLeft < container.scrollWidth - container.clientWidth);
-  };
-
-  // const scrollLeft = () => {
-  //   setIsAutoScrolling(false);
-  //   const container = scrollContainerRef.current;
-  //   if (!container) return;
-
-  //   const cardWidth = container.clientWidth;
-  //   const newIndex = Math.max(0, currentIndex - 1);
-    
-  //   container.scrollTo({
-  //     left: newIndex * cardWidth,
-  //     behavior: 'smooth'
-  //   });
-    
-  //   setCurrentIndex(newIndex);
-    
-  //   // Resume auto-scroll after 10 seconds
-  //   setTimeout(() => setIsAutoScrolling(true), 10000);
-  // };
-
-  // const scrollRight = () => {
-  //   setIsAutoScrolling(false);
-  //   const container = scrollContainerRef.current;
-  //   if (!container) return;
-
-  //   const cardWidth = container.clientWidth;
-  //   const newIndex = Math.min(propertySections.length - 1, currentIndex + 1);
-    
-  //   container.scrollTo({
-  //     left: newIndex * cardWidth,
-  //     behavior: 'smooth'
-  //   });
-    
-  //   setCurrentIndex(newIndex);
-    
-  //   // Resume auto-scroll after 10 seconds
-  //   setTimeout(() => setIsAutoScrolling(true), 10000);
-  // };
-
-  // Handle scroll events to update current index
+  // Handle manual scroll events to update current index
   const handleScroll = () => {
+    if (isTransitioning) return;
+    
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const cardWidth = container.clientWidth;
     const scrollLeft = container.scrollLeft;
-    const newIndex = Math.round(scrollLeft / cardWidth);
+    const scrollIndex = Math.round(scrollLeft / cardWidth);
     
-    if (newIndex !== currentIndex) {
-      setCurrentIndex(Math.max(0, Math.min(propertySections.length - 1, newIndex)));
+    // Map the scroll index to the visual index (for dots)
+    const visualIndex = scrollIndex % propertySections.length;
+    
+    if (visualIndex !== currentIndex) {
+      setCurrentIndex(visualIndex);
+    }
+  };
+
+  // Handle manual dot navigation
+  const handleDotClick = (index: number) => {
+    setIsAutoScrolling(false);
+    setIsTransitioning(true);
+    
+    const container = scrollContainerRef.current;
+    if (container) {
+      const cardWidth = container.clientWidth;
+      container.scrollTo({
+        left: index * cardWidth,
+        behavior: 'smooth'
+      });
+      setCurrentIndex(index);
     }
     
-    checkScrollPosition();
+    setTimeout(() => {
+      setIsTransitioning(false);
+      setIsAutoScrolling(true);
+    }, 10000);
   };
 
   return (
@@ -130,16 +127,16 @@ export const ApartmentGallery = () => {
               WebkitOverflowScrolling: 'touch'
             }}
           >
-            {propertySections.map((section, index) => (
-              <div key={section.id} className="flex-shrink-0 w-full h-full snap-start px-2">
+            {duplicatedSections.map((section, index) => (
+              <div key={`${section.id}-${Math.floor(index / propertySections.length)}`} className="flex-shrink-0 w-full h-full snap-start px-2">
                 <div className="w-full h-full">
-                  <PropertyCard2 section={section} index={index} />
+                  <PropertyCard2 section={section} index={index % propertySections.length} />
                 </div>
               </div>
             ))}
           </div>
           
-          {/* Navigation dots */}
+          {/* Navigation dots - only show original sections count */}
           <div className="flex justify-center mt-4 space-x-2">
             {propertySections.map((_, index) => (
               <button
@@ -147,19 +144,7 @@ export const ApartmentGallery = () => {
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   index === currentIndex ? 'bg-white' : 'bg-white/50'
                 }`}
-                onClick={() => {
-                  setIsAutoScrolling(false);
-                  const container = scrollContainerRef.current;
-                  if (container) {
-                    const cardWidth = container.clientWidth;
-                    container.scrollTo({
-                      left: index * cardWidth,
-                      behavior: 'smooth'
-                    });
-                    setCurrentIndex(index);
-                  }
-                  setTimeout(() => setIsAutoScrolling(true), 10000);
-                }}
+                onClick={() => handleDotClick(index)}
               />
             ))}
           </div>

@@ -1,6 +1,6 @@
 // ProjectsSection.jsx
 "use client";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/cards/ProjectCard";
@@ -113,7 +113,6 @@ const ProjectsSection = () => {
               <ProjectCard
                 image={property.featuredImage}
                 title={property.title}
-                price={property.price}
                 bedrooms={property.bedrooms}
                 bathrooms={property.bathrooms}
                 propertyType={property.propertyType}

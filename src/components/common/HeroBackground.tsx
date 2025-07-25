@@ -1,20 +1,24 @@
-// Fixed HeroBackground.tsx
+// common/components/HeroBackground.tsx
 "use client";
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { CldImage } from 'next-cloudinary';
-import { HeroImage } from '@/lib/hero/types';
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { CldImage } from "next-cloudinary";
 
 interface HeroBackgroundProps {
-  heroImage?: HeroImage | null;
-  type?: 'video' | 'image';
+  type?: "video" | "image";
   src?: string; // This will be the public ID for images, or a video source
   fallbackImage?: string;
-  overlay?: 'light' | 'medium' | 'dark' | 'gradient' | 'none';
+  overlay?: "light" | "medium" | "dark" | "gradient" | "none";
   className?: string;
+  altText?: string;
+  parallaxSpeed?: number;
+  customOverlay?: {
+    color?: string;
+    opacity?: number;
+  };
   videoOptimization?: {
-    quality?: 'auto' | 'auto:low' | 'auto:good' | 'auto:best' | number;
-    format?: 'auto' | 'mp4' | 'webm';
+    quality?: "auto" | "auto:low" | "auto:good" | "auto:best" | number;
+    format?: "auto" | "mp4" | "webm";
     width?: number;
     height?: number;
     bitrate?: string;
@@ -23,65 +27,73 @@ interface HeroBackgroundProps {
 }
 
 export const HeroBackground: React.FC<HeroBackgroundProps> = ({
-  heroImage,
-  type = 'image',
+  type = "image",
   src,
   fallbackImage,
-  overlay = 'medium',
+  overlay = "medium",
   className = "absolute inset-0 w-full h-full",
-  videoOptimization = {}
+  altText = "Hero background image",
+  parallaxSpeed = 0.3,
+  customOverlay,
+  videoOptimization = {},
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const parallaxSpeed = 0.3; // Default parallax speed
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"]
+    offset: ["start start", "end start"],
   });
 
-  const smoothY = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const smoothY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+  
   const y = useTransform(smoothY, [0, 1], [0, -(100 * parallaxSpeed)]);
-  const scale = useTransform(smoothY, [0, 1], [1 + (parallaxSpeed * 0.2), 1 + (parallaxSpeed * 0.3)]);
-
-  // Use the public ID from the src prop. For videos, this is the video public ID.
-  const publicId = src;
-  const altText = heroImage?.altText ?? "Hero background image";
+  const scale = useTransform(
+    smoothY,
+    [0, 1],
+    [1 + parallaxSpeed * 0.2, 1 + parallaxSpeed * 0.3]
+  );
 
   const getOverlayClass = () => {
-    // Prioritize overlay settings from Sanity
-    if (heroImage?.overlaySettings?.hasOverlay) {
-      const { overlayColor, overlayOpacity = 0.5 } = heroImage.overlaySettings;
-      const opacityValue = Math.round(overlayOpacity * 100);
-      switch (overlayColor) {
-        case 'black': return `bg-black/${opacityValue}`;
-        case 'white': return `bg-white/${opacityValue}`;
-        case 'darkblue': return `bg-blue-900/${opacityValue}`;
-        case 'custom': return '';
-        default: return `bg-black/${opacityValue}`;
-      }
+    // Check for custom overlay first
+    if (customOverlay) {
+      return ""; // Will use inline styles instead
     }
-    // Fallback to prop-based overlay
+    
+    // Default overlay classes
     switch (overlay) {
-      case 'light': return 'bg-black/20';
-      case 'medium': return 'bg-black/40';
-      case 'dark': return 'bg-black/70';
-      case 'gradient': return 'bg-gradient-to-b from-black/20 via-black/30 to-black/40';
-      case 'none': return '';
-      default: return 'bg-black/40';
+      case "light":
+        return "bg-black/20";
+      case "medium":
+        return "bg-black/40";
+      case "dark":
+        return "bg-black/70";
+      case "gradient":
+        return "bg-gradient-to-b from-black/20 via-black/30 to-black/40";
+      case "none":
+        return "";
+      default:
+        return "bg-black/40";
     }
   };
 
   const getCustomOverlayStyle = (): React.CSSProperties | undefined => {
-    if (heroImage?.overlaySettings?.hasOverlay && heroImage.overlaySettings.overlayColor === 'custom') {
-      const opacity = heroImage.overlaySettings.overlayOpacity || 0.5;
-      const color = heroImage.overlaySettings.customOverlayColor || '#000000';
-      return { backgroundColor: `${color}${Math.round(opacity * 255).toString(16).padStart(2, '0')}` };
+    if (customOverlay) {
+      const { color = "#000000", opacity = 0.5 } = customOverlay;
+      return {
+        backgroundColor: `${color}${Math.round(opacity * 255)
+          .toString(16)
+          .padStart(2, "0")}`,
+      };
     }
     return undefined;
   };
-  
+
   // Return null if there is no source for either image or video
-  if (!publicId) {
+  if (!src) {
     return null;
   }
 
@@ -89,66 +101,81 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
     <div
       ref={containerRef}
       className={`${className} overflow-hidden bg-gray-900`}
-      style={{ backgroundColor: '#1f2937' }}
+      style={{ backgroundColor: "#1f2937" }}
     >
       <motion.div
         className="absolute w-full h-full will-change-transform"
         style={{
-          y, scale,
+          y,
+          scale,
           top: `-${parallaxSpeed * 20}%`,
-          left: '-10%',
-          width: '120%',
-          height: `${120 + (parallaxSpeed * 40)}%`,
+          left: "-10%",
+          width: "120%",
+          height: `${120 + parallaxSpeed * 40}%`,
         }}
       >
         <ParallaxContent
           type={type}
-          publicId={publicId}
+          publicId={src}
           altText={altText}
           fallbackImage={fallbackImage}
           videoOptimization={videoOptimization}
         />
       </motion.div>
 
-      {(heroImage?.overlaySettings?.hasOverlay || overlay !== 'none') && (
-        <div className={`absolute inset-0 z-10 ${getOverlayClass()}`} style={getCustomOverlayStyle()} />
+      {overlay !== "none" && (
+        <div
+          className={`absolute inset-0 z-10 ${getOverlayClass()}`}
+          style={getCustomOverlayStyle()}
+        />
       )}
     </div>
   );
 };
 
-// ParallaxContent now cleanly accepts a publicId
+// ParallaxContent component for rendering image or video content
 const ParallaxContent: React.FC<{
-  type: 'video' | 'image';
+  type: "video" | "image";
   publicId: string;
   altText: string;
   fallbackImage?: string;
-  videoOptimization: HeroBackgroundProps['videoOptimization'];
+  videoOptimization: HeroBackgroundProps["videoOptimization"];
 }> = ({ type, publicId, altText, fallbackImage, videoOptimization }) => {
   const buildVideoUrl = () => {
-    const { quality = 'auto:good', format = 'auto' } = videoOptimization ?? {};
+    const { quality = "auto:good", format = "auto" } = videoOptimization ?? {};
     const transformations = `q_${quality},f_${format},w_1920,c_fill,ac_none`;
     return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformations}/${publicId}`;
   };
 
   return (
     <>
-      {type === 'video' ? (
+      {type === "video" ? (
         <video
-          autoPlay loop muted playsInline preload="metadata"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover z-0"
-          poster={fallbackImage ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1920,h_1080,f_auto,q_auto/${fallbackImage}` : undefined}
+          poster={
+            fallbackImage
+              ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1920,h_1080,f_auto,q_auto/${fallbackImage}`
+              : undefined
+          }
         >
           <source src={buildVideoUrl()} type="video/mp4" />
         </video>
       ) : (
         <CldImage
-          src={publicId} // Directly use the publicId
+          src={publicId}
           alt={altText}
-          fill
+          width={3840}
+          height={2160}
           sizes="100vw"
           priority
-          className="absolute inset-0 object-cover z-0"
+          gravity="center"
+          quality="auto:good"
+          className="absolute inset-0 w-full h-full object-cover z-0"
         />
       )}
     </>

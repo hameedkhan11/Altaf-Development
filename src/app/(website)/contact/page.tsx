@@ -13,7 +13,7 @@ export default function ContactPage() {
       <div className="w-full px-4 sm:px-6 lg:px-8 py-16">
         <div className="w-full">
           <div className="mb-12 text-center">
-            <h2 className="text-5xl mb-8 bg-gradient-to-r from-[rgb(140,46,71)] to-[rgb(120,40,65)] bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl mb-8 bg-gradient-to-r from-[rgb(140,46,71)] to-[rgb(120,40,65)] bg-clip-text text-transparent">
               Explore Our HEAD OFFICE
             </h2>
             

@@ -32,12 +32,12 @@ export const PropertyDetailInfo: React.FC<PropertyDetailInfoProps> = ({ property
             <h1 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">
               {property?.propertyType === "1bed" ? "Luxury Apartment" : "Luxury Residence"}
             </h1>
-            <p className="text-sm md:text-base mb-3 text-gray-600">
+            {/* <p className="text-sm md:text-base mb-3 text-gray-600">
               Starting from
             </p>
             <div className="text-xl lg:text-2xl font-semibold mb-6 text-gray-900">
               {property?.totalPrice || "Price not available"}
-            </div>
+            </div> */}
           </div>
         </div>
 

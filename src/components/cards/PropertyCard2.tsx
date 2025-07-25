@@ -20,12 +20,13 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
       }}
       viewport={{ once: true, margin: "-50px" }}
     >
-      <div className="h-full relative">
+      <div className="h-full relative flex items-center justify-center">
         <CldImage
           src={section.image}
           alt={section.alt}
-          fill
-          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          width={800}
+          height={600}
+          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={index === 0}
         />

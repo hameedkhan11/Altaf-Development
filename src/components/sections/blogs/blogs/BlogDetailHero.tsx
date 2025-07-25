@@ -20,7 +20,7 @@ interface BlogDetailHeroProps {
   heroImage?: HeroImage | null; // New prop for Sanity hero image
 }
 
-const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post, heroImage }) => {
+const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post }) => {
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Blogs", href: "/blogs" },
@@ -29,14 +29,12 @@ const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post, heroImage }) => {
 
   return (
     <Hero
-      heroImage={heroImage}
       // title={post.title}
       // subtitle={post.excerpt}
       backgroundType="image"
-      backgroundSrc="imgi_89_e7vHmyk3naIt1aqkQMnTzkZ50_tjrfnt"
+      backgroundSrc="About_Page_ydfqpl"
       breadcrumbs={breadcrumbs}
-      height="half"
-      overlay="gradient"
+      height="three-quarter"
       contentAlignment="left"
       enableAnimations={true}
       // enableParallax={true}

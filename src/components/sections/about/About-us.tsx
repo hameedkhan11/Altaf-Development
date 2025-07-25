@@ -5,11 +5,11 @@ import MissionVisionSection  from './MissionVisionSection';
 import  TeamSection  from './TeamSection';
 import { aboutPageData, breadcrumbs } from "@/data/about-us/data";
 import { CompanyValuesSection } from "./CompanyValue";
-import { HeroImage } from "@/lib/hero/types";
+import MissionVisionCards from "@/components/cards/MissionVisionCard";
 // import FeaturesGrid from "./FeaturesGrid";
 
 
-export default function AboutPage({ heroImage }: { heroImage: HeroImage | null }) {
+export default function AboutPage() {
   const [, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -104,11 +104,11 @@ export default function AboutPage({ heroImage }: { heroImage: HeroImage | null }
         {/* Hero Section */}
         <Hero
           title="Home/About Us"
-          heroImage={heroImage}
           backgroundType="image"
-          backgroundSrc="imgi_12_newimages_g66xoj"
+          backgroundSrc="About_Page_ydfqpl"
           breadcrumbs={breadcrumbs}
-          overlay="dark"
+          height="three-quarter"
+          overlay="medium"
           ariaLabel="About us hero section"
         />
 
@@ -123,6 +123,7 @@ export default function AboutPage({ heroImage }: { heroImage: HeroImage | null }
           values={aboutPageData.company.values} 
           description={aboutPageData.company.description}
         />
+        <MissionVisionCards />
       </div>
     </>
   );

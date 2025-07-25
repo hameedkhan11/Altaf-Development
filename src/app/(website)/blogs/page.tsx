@@ -70,7 +70,7 @@ export default async function BlogPage(props: {
       <div className="min-h-screen">
         <BlogHero
           searchParams={searchParams}
-          backgroundImage="imgi_33_XHjb2nvN3Jd2DDPrmmf2kYt3IM_1_d6eb7c"
+          backgroundImage="Blogs_lbursu"
           fallbackImage="blog-hero-fallback"
           heroImage={heroImage}
         />

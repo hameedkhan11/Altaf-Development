@@ -79,12 +79,12 @@ const generateId = (text: string): string => {
 export const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }: { value: SanityImage }) => (
-      <figure className="my-10 rounded-xl overflow-hidden shadow-lg">
+      <figure className="my-10 rounded-sm overflow-hidden shadow-lg">
         <Image
-          src={urlFor(value).width(800).height(500).url()}
+          src={urlFor(value).width(1920).height(1080).url()}
           alt={value.alt || "Blog image"}
-          width={800}
-          height={500}
+          width={1920}
+          height={1080}
           className="w-full h-auto"
           sizes="(max-width: 768px) 100vw, 800px"
         />

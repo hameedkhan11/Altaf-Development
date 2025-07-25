@@ -60,7 +60,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
         <div className="w-full lg:w-1/2 p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-center">
           <AnimatedH1 
             wordByWord={true} 
-            duration={0.2}  
+            duration={0.1}  
             className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 sm:mb-4 line-clamp-2 transition-colors"
           >
             {post?.title || "Untitled Post"}

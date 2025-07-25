@@ -15,7 +15,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ className = "" }) => {
         backgroundType="image"
         backgroundSrc="Booking1_rg1bhs"
         fallbackImage="luxury-apartments/hero-contact-fallback"
-        height="half"
+        height="three-quarter"
         overlay="medium"
         contentAlignment="center"
         ariaLabel="Contact us hero section"

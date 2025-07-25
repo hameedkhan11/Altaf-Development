@@ -79,8 +79,12 @@ const PropertyGalleryPage: React.FC = () => {
       <Hero
         title="Photo Gallery"
         backgroundType="image"
-        backgroundSrc="Booking1_rg1bhs"
+        backgroundSrc="media_center_xdtlge"
         height="screen"
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "/Media/photos", href: "/photos" },
+        ]}
         overlay="dark"
         contentAlignment="center"
         enableAnimations={true}

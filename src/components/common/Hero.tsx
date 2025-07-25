@@ -6,16 +6,16 @@ import { HeroBackground } from './HeroBackground';
 import { Breadcrumb } from './Breadcrumb';
 import { HeroProps } from '@/lib/types';
 import { ScrollIndicator } from './ScrollIndicator';
-import { HeroImage } from '@/lib/hero/types';
 import { AnimatedH1, AnimatedP } from '../ui/text-animations';
 
-// Extended HeroProps interface
+// Simplified HeroProps interface without Sanity dependencies
 interface ExtendedHeroProps extends HeroProps {
-  heroImage?: HeroImage | null; // New prop for Sanity data
   pageSlug?: string;
   showHeroButtons?: boolean;
   isHomePage?: boolean;
   children?: React.ReactNode;
+  customHeight?: number; // For custom vh values
+  minHeight?: number; // Minimum height in pixels
 }
 
 // Content variants for coordinating animations
@@ -31,7 +31,6 @@ const contentVariants = {
 };
 
 export const Hero: React.FC<ExtendedHeroProps> = ({
-  heroImage,
   title,
   isHomePage,
   subtitle,
@@ -39,6 +38,8 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
   backgroundSrc,
   fallbackImage,
   height = 'screen',
+  customHeight,
+  minHeight = 400,
   overlay = 'medium',
   contentAlignment = 'center',
   breadcrumbs,
@@ -70,45 +71,44 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  // Prioritize Sanity data, with fallbacks to props
-  const displayHeight = heroImage?.heightSettings?.height ?? height;
-  const displayTitle = heroImage?.heroText?.hasText ? heroImage.heroText.headline : title;
-  const displaySubtitle = heroImage?.heroText?.hasText ? heroImage.heroText.subheadline : subtitle;
-  // Use the cloudinaryPublicId from Sanity, or fall back to the backgroundSrc prop
-  const finalBackgroundSrc = heroImage?.cloudinaryPublicId ?? backgroundSrc;
-
   const getHeightClass = () => {
-    // This switch now uses the determined height (from Sanity or props)
-    switch (displayHeight) {
+    switch (height) {
       case 'screen':
         return 'h-screen min-h-screen';
       case 'half':
         return 'h-[50vh] min-h-[400px]';
       case 'three-quarter':
-        return 'h-[75vh] min-h-[600px]';
+        return 'h-[70vh] min-h-[560px]';
       case 'auto':
         return 'min-h-[60vh]';
-      // Note: 'custom' height would be handled via inline styles if needed
+      case 'custom':
+        return customHeight 
+          ? `min-h-[${minHeight}px]` 
+          : 'h-screen min-h-screen';
       default:
         return 'h-screen min-h-screen';
     }
   };
 
-  const getContentAlignmentClass = () => {
-    if (heroImage?.heroText?.hasText && heroImage.heroText.textPosition) {
-      switch (heroImage.heroText.textPosition) {
-        case 'center': return 'items-center justify-center text-center';
-        case 'left': return 'items-center justify-start text-left';
-        case 'right': return 'items-center justify-end text-right';
-        case 'top-center': return 'items-start justify-center text-center pt-20';
-        case 'bottom-center': return 'items-end justify-center text-center pb-20';
-        default: return 'items-center justify-center text-center';
-      }
+  const getCustomHeightStyle = (): React.CSSProperties | undefined => {
+    if (height === 'custom' && customHeight) {
+      return {
+        height: `${customHeight}vh`,
+        minHeight: `${minHeight}px`
+      };
     }
+    return undefined;
+  };
+
+  const getContentAlignmentClass = () => {
     switch (contentAlignment) {
-      case 'center': return 'items-center justify-center text-center';
-      case 'right': return 'items-center justify-end text-right';
-      case 'left': default: return 'items-center justify-start text-left';
+      case 'center': 
+        return 'items-center justify-center text-center';
+      case 'right': 
+        return 'items-center justify-end text-right';
+      case 'left': 
+      default: 
+        return 'items-center justify-start text-left';
     }
   };
 
@@ -116,12 +116,12 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
     <section
       ref={heroRef}
       className={`relative ${getHeightClass()} overflow-hidden flex flex-col justify-center items-center`}
+      style={getCustomHeightStyle()}
       aria-label={ariaLabel}
     >
       <HeroBackground
-        heroImage={heroImage}
         type={backgroundType}
-        src={finalBackgroundSrc} // Pass the final determined source
+        src={backgroundSrc}
         fallbackImage={fallbackImage}
         overlay={overlay}
       />
@@ -138,14 +138,14 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
         animate={showContent ? "visible" : "hidden"}
       >
         <div className={`w-full flex flex-col items-center justify-center mx-auto mt-8 ${isHomePage ? 'max-w-2xl' : ''}`}>
-          {displayTitle && (
+          {title && (
             <AnimatedH1 className={`text-4xl sm:text-5xl ${isHomePage ? 'lg:text-6xl' : ''} text-white leading-tight`}>
-              {displayTitle}
+              {title}
             </AnimatedH1>
           )}
-          {displaySubtitle && (
-            <AnimatedP className="text-lg sm:text-xl text-gray-50 max-w-3xl">
-              {displaySubtitle}
+          {subtitle && (
+            <AnimatedP className="text-lg text-gray-50 max-w-3xl">
+              {subtitle}
             </AnimatedP>
           )}
 

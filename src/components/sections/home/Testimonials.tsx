@@ -130,7 +130,7 @@ const Testimonials = () => {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <CldImage
-            src="imgi_15_istur_Neo-futuristic_house_with_pool_architecture_by_david_rock_64ad3b44-766a-420a-8ab7-4ef23d6857c3-min_yjy3uo"
+            src="testimonialImage_etg2ca"
             alt="Modern living room interior"
             fill
             className="object-cover"
@@ -140,7 +140,7 @@ const Testimonials = () => {
             priority
           />
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/60 to-black/40" />
         </div>
 
         {/* Curtain Effect - Opens from both sides - Perfect scroll timing */}

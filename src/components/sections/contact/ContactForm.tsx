@@ -36,7 +36,7 @@ const ContactForm = () => {
             {/* Left Side - CldImage */}
             <div className="bg-white rounded-sm border border-slate-200 order-2 lg:order-1 mt-4">
               <CldImage
-                src="imgi_6_default_ar0vxg"
+                src="Contact_aucys5"
                 alt="Luxury Property"
                 width={600}
                 height={400}

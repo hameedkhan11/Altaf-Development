@@ -33,12 +33,26 @@ export const COMPANY_INFO = {
 };
 
 export const quickLinks = [
-  "Properties",
-  "Communities",
-  "Projects",
-  "Services",
-  "About Us",
-  "Contact Us",
+  {
+    name: "About Us",
+    href: '/about'
+  },
+  {
+    name: "Properties",
+    href: '/property-detail'
+  },
+  {
+    name: "Blogs",
+    href: '/blogs'
+  },
+  {
+    name: "Media Center",
+    href: '/media'
+  },
+  {
+    name: "Contact Us",
+    href: '/contact'
+  },
 ];
 
 export const socialMediaLinks = [

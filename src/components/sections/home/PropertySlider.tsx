@@ -8,12 +8,12 @@ import { CldImage } from 'next-cloudinary';
 const showcaseProperties = [
   {
     id: 1,
-    title: "Luxury Villa Paradise",
+    title: "Grand Lobby",
     image: "imgi_21_IjGNDVkEAbAhpxd8VU8yRt7KGM_exhsbq",
   },
   {
     id: 2,
-    title: "Modern Downtown Penthouse",
+    title: "Dream suite",
     image: "imgi_28_hFGYVnlwaecZbMBXIolx5d7ExQ_uo5x2i",
   },
   {

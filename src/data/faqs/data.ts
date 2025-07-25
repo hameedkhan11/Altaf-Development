@@ -30,4 +30,14 @@ export const faqData: FAQItem[] = [
     answer:
       "Yes, Faisal Hills is currently one of the most promising investment locations in the Islamabad region. With major infrastructure development underway and increasing demand, early investments can offer high returns in both residential and commercial sectors.",
   },
+  {
+    id: 5,
+    question: "How can overseas Pakistanis invest with ALTAF Developments?",
+    answer: "We offer a secure and streamlined investment process for overseas clients, including Verified booking from abroad, Dedicated client relationship managers, Secure international payment options, Regular project updates and digital documentation."
+  },
+  {
+    id:6,
+    question: "Does ALTAF Developments offer after-sales service?",
+    answer: "Yes, our relationship doesn’t end at the sale. We offer Dedicated after-sales support, transfer and possession assistance, Long-term investment guidance and re sales with the consent of the owner"
+  }
 ];

@@ -18,6 +18,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
   const minSwipeDistance = 50;
+  const thumbnailContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -63,6 +64,20 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
   };
+
+  // Scroll thumbnail into view when currentImageIndex changes
+  useEffect(() => {
+    if (thumbnailContainerRef.current && images.length > 0) {
+      const thumbnailWidth = 64; // w-16 = 64px
+      const gap = 12; // gap-3 = 12px
+      const scrollPosition = currentImageIndex * (thumbnailWidth + gap);
+      
+      thumbnailContainerRef.current.scrollTo({
+        left: scrollPosition - (thumbnailContainerRef.current.offsetWidth / 2) + (thumbnailWidth / 2),
+        behavior: 'smooth'
+      });
+    }
+  }, [currentImageIndex, images.length]);
 
   // Handle touch events for swipe functionality
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -288,12 +303,19 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
             </>
           )}
 
-          {/* Thumbnails overlaid at bottom of main image - Hidden on mobile */}
+          {/* Horizontal Thumbnail Slider overlaid at bottom of main image - Hidden on mobile */}
           {images.length > 1 && (
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 sm:bottom-4 hidden sm:block">
               <div className="rounded-lg p-2 sm:p-3">
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-xs sm:max-w-sm md:max-w-md">
-                  {images.slice(0, 6).map((image, index) => (
+                <div 
+                  ref={thumbnailContainerRef}
+                  className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide max-w-xs sm:max-w-sm md:max-w-md"
+                  style={{ 
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none'
+                  }}
+                >
+                  {images.map((image, index) => (
                     <button
                       key={index}
                       onClick={(e) => {

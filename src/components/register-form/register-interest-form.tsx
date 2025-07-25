@@ -88,8 +88,8 @@ export function ContactForm() {
   return (
     <div className="w-full max-w-xs xs:max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-xl 2xl:max-w-2xl mx-auto p-3 xs:p-4 sm:p-6 text-white">
       <div className="mb-3 xs:mb-4 sm:mb-6">
-        <h2 className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-2 text-white leading-tight">
-          Let&apos;s Talk with us
+        <h2 className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl mb-2 text-white leading-tight">
+          Step Inside Your Future Home
         </h2>
       </div>
 

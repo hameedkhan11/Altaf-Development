@@ -1,8 +1,7 @@
 // components/blog/BlogHero.tsx
-import React from 'react';
 import { BreadcrumbItem } from '@/lib/types';
-import { Hero } from '@/components/common/Hero';
 import { HeroImage } from '@/lib/hero/types';
+import { Hero } from '@/components/common/Hero';
 
 interface BlogHeroProps {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -17,7 +16,6 @@ export function BlogHero({
   backgroundImage = "blog-hero-bg", 
   backgroundVideo,
   fallbackImage = "blog-hero-fallback",
-  heroImage
 }: BlogHeroProps) {
   // Create breadcrumb items for blog
   const breadcrumbs: BreadcrumbItem[] = [
@@ -35,13 +33,12 @@ export function BlogHero({
 
   return (
     <Hero
-      heroImage={heroImage} 
-      title="Real Estate Blog"
-      subtitle="Expert insights, market trends, and property advice"
+      title="Spaces with Stories"
+      subtitle="Thoughts, trends, and journeys from the heart of our developments."
       backgroundType={backgroundVideo ? "video" : "image"}
       backgroundSrc={backgroundVideo || backgroundImage}
       fallbackImage={fallbackImage}
-      height="auto"
+      height='three-quarter'
       overlay="medium"
       contentAlignment="center"
       breadcrumbs={breadcrumbs}

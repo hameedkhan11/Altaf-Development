@@ -7,7 +7,7 @@ import { properties } from "@/data/properties";
 import { PropertySelector } from "@/components/property-detail/PropertySelector";
 import { ImageGallery } from "@/components/property-detail/ImageDetailGallery";
 import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailInfo";
-import { PropertyDetailAmenities } from "@/components/property-detail/PropertyDetailAmenities";
+import PropertyDetailAmenities  from "@/components/property-detail/PropertyDetailAmenities";
 import { PropertyKey } from "@/lib/types";
 // import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
 
@@ -46,9 +46,9 @@ const PropertyDetailContent: React.FC = () => {
     <>
       <Hero
         backgroundType="image"
-        backgroundSrc="Booking1_rg1bhs"
+        backgroundSrc="About_Us_g8hqxo"
         fallbackImage="luxury-apartment-hero-gallery"
-        height="screen"
+        height="three-quarter"
         overlay="medium"
         contentAlignment="center"
         title="Featured Properties"

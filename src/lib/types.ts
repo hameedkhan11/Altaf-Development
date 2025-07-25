@@ -215,7 +215,7 @@ export interface CEOMessageProps {
   title?: string;
   content: string[];
   ceoName: string;
-  ceoTitle: string;
+  ceoTitle?: string;
   ceoImage: string;
 }
 
@@ -268,7 +268,7 @@ export interface HeroProps {
   fallbackImage?: string;
   
   // Layout & Styling
-  height?: 'screen' | 'half' | 'auto';
+  height?: 'screen' | 'half' | 'three-quarter' | 'custom' | 'auto';
   overlay?: 'light' | 'medium' | 'dark' | 'gradient' | 'none';
   contentAlignment?: 'left' | 'center' | 'right';
   

@@ -1,109 +1,72 @@
 import React from "react";
-import { motion } from "framer-motion";
 import {
-  FaHome,
+  FaCar,
+  FaTshirt,
+  FaBuilding,
   FaDumbbell,
-  FaChild,
-  FaCouch,
-  FaUtensils,
+  FaHotTub,
+  FaSpa,
   FaSwimmingPool,
-  FaComments,
+  FaCut,
+  FaShoppingCart,
+  FaCoffee,
+  FaBook,
+  FaMosque,
+  FaFilm,
+  FaGamepad,
   FaUsers,
+  FaFire,
+  // FaBuilding as FaRoof,
+  // FaVideo,
+  FaBriefcase,
 } from "react-icons/fa";
-import { AnimatedH3 } from "../ui/text-animations";
+import { MdSecurity, MdRoofing } from "react-icons/md";
 
-export const PropertyDetailAmenities: React.FC = () => {
-  const propertyAmenities = [
-    {
-      icon: <FaHome className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "CLUB HOUSE",
-    },
-    {
-      icon: <FaDumbbell className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "FULLY EQUIPPED GYM",
-    },
-    {
-      icon: <FaChild className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "KID'S PLAY GROUND",
-    },
-    {
-      icon: <FaCouch className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "SITTING AREA",
-    },
-    {
-      icon: <FaUtensils className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "BBQ AREA",
-    },
-    {
-      icon: <FaSwimmingPool className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "ROOFTOP INFINITY POOL",
-    },
-    {
-      icon: <FaComments className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "OUTDOOR DINING",
-    },
-    {
-      icon: <FaUsers className="w-8 h-8 text-[rgb(140,46,71)]" />,
-      label: "MEETING AREA",
-    },
+interface Amenity {
+  name: string;
+  icon: React.ReactNode;
+}
+
+const ResidenceAmenities: React.FC = () => {
+  const amenities: Amenity[] = [
+    { name: "Smart car parking", icon: <FaCar /> },
+    { name: "Laundry services", icon: <FaTshirt /> },
+    { name: "Grand entrance lobby", icon: <FaBuilding /> },
+    { name: "Gym", icon: <FaDumbbell /> },
+    { name: "Sauna", icon: <FaHotTub /> },
+    { name: "Spa", icon: <FaSpa /> },
+    { name: "Indoor pool", icon: <FaSwimmingPool /> },
+    { name: "Barber shop", icon: <FaCut /> },
+    { name: "Grocery store", icon: <FaShoppingCart /> },
+    { name: "Cafe shop", icon: <FaCoffee /> },
+    { name: "Tuition centre", icon: <FaBook /> },
+    { name: "Mosque", icon: <FaMosque /> },
+    { name: "Cinema", icon: <FaFilm /> },
+    { name: "Snooker", icon: <FaGamepad /> },
+    { name: "Meet-up area", icon: <FaUsers /> },
+    { name: "BBQ area", icon: <FaFire /> },
+    { name: "Roof top", icon: <MdRoofing /> },
+    { name: "24/7 security camera", icon: <MdSecurity /> },
+    { name: "Management office", icon: <FaBriefcase /> },
   ];
 
-  // const itemVariants = {
-  //   initial: {
-  //     scale: 1,
-  //     y: 0,
-  //   },
-  //   hover: {
-  //     scale: 1.05,
-  //     y: -8,
-  //     transition: {
-  //       type: "spring",
-  //       stiffness: 300,
-  //       damping: 20,
-  //     },
-  //   },
-  // };
-
-  // const iconVariants = {
-  //   initial: {
-  //     scale: 1,
-  //     rotate: 0,
-  //   },
-  //   hover: {
-  //     scale: 1.1,
-  //     rotate: 5,
-  //     transition: {
-  //       type: "spring",
-  //       stiffness: 400,
-  //       damping: 15,
-  //     },
-  //   },
-  // };
-
   return (
-    <div className="mt-24 relative">
-      <div className="text-center mb-8">
-        <AnimatedH3 className="text-3xl mb-4">What this property offers</AnimatedH3>
+    <div className="w-full mx-auto py-24 px-16">
+      <div className="text-center">
+        <h2 className="text-4xl md:text-5xl mb-20">THE RESIDENCES AMENITIES</h2>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 gap-y-8 mx-auto mt-16 mb-24">
-        {propertyAmenities.map((amenity, index) => (
-          <motion.div
-            key={index}
-            className="flex flex-col items-center text-center cursor-pointer"
-          >
-            <motion.div
-              className="w-24 h-24 rounded-full border-2 border-[rgb(140,46,71)] flex items-center justify-center mb-4 "
-              initial="initial"
-              whileHover="hover"
-            >
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8 list-none">
+        {amenities.map((amenity, index) => (
+          <li key={index} className="flex items-center space-x-3">
+            <div className="flex-shrink-0 text-[rgb(140,46,71)] text-lg">
               {amenity.icon}
-            </motion.div>
-            <span className="text-sm font-medium leading-tight">
-              {amenity.label}
-            </span>
-          </motion.div>
+            </div>
+            <span className="text-gray-800 font-medium">{amenity.name}</span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
+
+export default ResidenceAmenities;
