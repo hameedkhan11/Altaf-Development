@@ -140,7 +140,7 @@ const Lightbox: React.FC<LightboxProps> = ({
         >
           <motion.div
             key={currentImage.id}
-            className="relative max-w-[90vw] max-h-[90vh]"
+            className="relative max-w-[95vw] max-h-[95vh] md:max-w-[90vw] md:max-h-[90vh]"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -151,7 +151,7 @@ const Lightbox: React.FC<LightboxProps> = ({
               alt={currentImage.alt}
               width={1920}
               height={1080}
-              className="max-h-[80vh] max-w-full object-contain rounded-lg"
+              className="max-h-[90vh] max-w-full object-contain rounded-lg md:max-h-[80vh]"
               crop="fill"
               gravity="auto"
               quality="auto"
@@ -160,51 +160,19 @@ const Lightbox: React.FC<LightboxProps> = ({
           </motion.div>
         </div>
 
-        {/* Image info panel */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6"
+        {/* Simplified image info panel - only title */}
+        {/* <motion.div
+          className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 md:p-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
           <div className="max-w-4xl mx-auto">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-bold text-white mb-1">
-                  {currentImage.title || currentImage.alt}
-                </h2>
-                {currentImage.description && (
-                  <p className="text-gray-300 mb-2">
-                    {currentImage.description}
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  {currentImage.category && (
-                    <Badge variant="secondary" className="bg-white/10 text-white">
-                      {currentImage.category.split('-').map(word => 
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                      ).join(' ')}
-                    </Badge>
-                  )}
-                  {currentImage.tags?.map((tag, index) => (
-                    <Badge key={index} variant="outline" className="text-gray-300 border-white/20">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleDownload}
-                className="flex items-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                Download
-              </Button>
-            </div>
+            <h2 className="text-lg md:text-xl font-bold text-white text-center">
+              {currentImage.title || currentImage.alt}
+            </h2>
           </div>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </AnimatePresence>
   );
