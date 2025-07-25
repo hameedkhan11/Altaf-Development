@@ -3,10 +3,9 @@
 
 import React, { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, } from "lucide-react";
 import { CldImage } from "next-cloudinary";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 interface LightboxImage {
   id: string;
@@ -72,14 +71,6 @@ const Lightbox: React.FC<LightboxProps> = ({
 
   if (selectedImage === null || !currentImage) return null;
 
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${currentImage.src}`;
-    link.download = `${currentImage.alt || "image"}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
     <AnimatePresence>
