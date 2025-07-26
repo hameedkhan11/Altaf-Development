@@ -1,25 +1,13 @@
-// components/cards/FeatureCard.tsx
-"use client";
+import { motion } from 'framer-motion';
+import { BiSolidTone } from "react-icons/bi";
 
-import { motion } from "framer-motion";
-import { LucideIcon } from "lucide-react";
-import {
-  viewportOnce,
-  delays,
-  shouldAnimate,
-  getPerformanceMode,
-  easingPresets
-} from "@/lib/constants";
-
-interface FeatureCardProps {
-  icon: LucideIcon;
+type FeatureCardProps = {
   title: string;
-  description?: string;
+  description: string | undefined;
   index: number;
-  // Optional props for contact info usage
   primary?: string;
   secondary?: string;
-  variant?: 'feature' | 'contact';
+  variant?: string;
 }
 
 const FeatureCard = ({ 
@@ -30,105 +18,84 @@ const FeatureCard = ({
   secondary, 
   variant = 'feature' 
 }: FeatureCardProps) => {
-  const performanceMode = getPerformanceMode();
-  const canAnimate = shouldAnimate();
-
-  // Performance-optimized feature item animation
-  const featureAnimation = canAnimate ? {
-    initial: { opacity: 0, y: 20, scale: 0.95 },
-    whileInView: { opacity: 1, y: 0, scale: 1 },
-    viewport: viewportOnce,
-    transition: {
-      duration: performanceMode === "fast" ? 0.5 : 0.7,
-      delay: delays.stagger(index) * 0.1,
-      ease: easingPresets.smooth
-    }
-  } : {
-    initial: { opacity: 1, y: 0, scale: 1 },
-    animate: { opacity: 1, y: 0, scale: 1 },
-    transition: { duration: 0 }
-  };
-
-  // Optimized hover animations
-  const itemHoverAnimation = canAnimate ? {
-    whileHover: {
-      y: -8,
-      scale: 1.03,
-      transition: { duration: performanceMode === "fast" ? 0.3 : 0.4 }
-    }
-  } : {};
-
-  // const iconHoverAnimation = canAnimate ? {
-  //   whileHover: {
-  //     scale: 1.15,
-  //     transition: { duration: performanceMode === "fast" ? 0.3 : 0.4 }
-  //   }
-  // } : {};
-
-  // Render content based on variant
-  const renderContent = () => {
-    if (variant === 'contact') {
-      return (
-        <div className="text-center">
-          <h3
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ 
+        duration: 0.7,
+        delay: index * 0.1,
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
+      whileHover={{ 
+        y: -15,
+        scale: 1.02,
+        transition: { duration: 0.3 }
+      }}
+      className="relative overflow-hidden rounded-3xl group text-black "
+    >
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
+        {/* <div className="absolute -top-1/2 -right-1/2 h-[200%] w-[200%] bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)] animate-pulse"></div> */}
+      </div>
+      
+      {/* Card Content */}
+      <div className="relative z-10 p-8 h-80 sm:h-88 flex flex-col">
+        {/* Header Glow Effect */}
+        {/* <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div> */}
+        
+        {/* Title Section */}
+        <div className="flex">
+          <BiSolidTone className="w-8 h-8 text-[rgb(140,46,71)] duration-300" />
+          <h3 
             id={`feature-${index}-title`}
-            className="text-xl sm:text-2xl mb-4 sm:mb-5 text-black"
+            className="text-2xlleading-tight ml-2"
           >
             {title}
           </h3>
-          {primary && (
-            <p className=" leading-relaxed font-light text-base sm:text-lg mb-2 text-black">
-              {primary}
-            </p>
-          )}
-          {secondary && (
-            <p className=" text-white leading-relaxed font-light text-base sm:text-lg mb-2">
-              {secondary}
-            </p>
-          )}
-          <p className=" text-white leading-relaxed font-light text-base sm:text-lg">
-            {description}
-          </p>
         </div>
-      );
-    }
-
-    // Default feature variant
-    return (
-      <div className="text-start">
-        <h3
-          id={`feature-${index}-title`}
-          className="text-sm sm:texbase md:text-lg lg:text-xl mb-4 sm:mb-5 leading-tight"
-        >
-          {title}
-        </h3>
-        <p className=" leading-relaxed font-light text-sm text-black">
-          {description}
-        </p>
+        
+        {/* Content Area */}
+        <div className="flex-grow">
+          {variant === 'contact' ? (
+            <div className="space-y-4">
+              {primary && (
+                <p className="text-xl font-semibold text-white tracking-wide">
+                  {primary}
+                </p>
+              )}
+              {secondary && (
+                <p className="text-lg font-light tracking-wide">
+                  {secondary}
+                </p>
+              )}
+              {description && (
+                <p className="text-base leading-relaxed font-light mt-4">
+                  {description}
+                </p>
+              )}
+            </div>
+          ) : (
+            <p className="text-base leading-relaxed font-light">
+              {description}
+            </p>
+          )}
+        </div>
+        
+        {/* Bottom Accent */}
+        {/* <div className="mt-8 pt-6 border-t border-white/10">
+          <div className="flex items-center justify-between">
+            <div className="w-12 h-0.5 bg-gradient-to-r from-white/40 to-transparent rounded-full"></div>
+            <div className="w-3 h-3 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors duration-300"></div>
+          </div>
+        </div> */}
       </div>
-    );
-  };
-
-  return (
-    <motion.article
-      {...featureAnimation}
-      {...itemHoverAnimation}
-      viewport={viewportOnce}
-      className="border-2  rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 w-full max-w-[330px] sm:max-w-[350px]  lg:max-w-[400px] h-80 sm:h-88 lg:h-96 hover:shadow-3xl transition-all duration-500 overflow-hidden"
-      role="article"
-      aria-labelledby={`feature-${index}-title`}
-    >
-      {/* Icon */}
-      {/* <motion.div 
-        className="w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br bg-[rgb(80,18,35)] rounded-2xl sm:rounded-3xl flex items-center justify-center mb-6 sm:mb-8 mx-auto shadow-xl"
-        {...iconHoverAnimation}
-        aria-hidden="true"
-      >
-        <Icon className="h-8 w-8 sm:h-9 sm:w-9 text-white" />
-      </motion.div> */}
       
-      {/* Content */}
-      {renderContent()}
+      {/* Hover Effects */}
+      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+      <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+      <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white/3 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700 delay-100"></div>
     </motion.article>
   );
 };

@@ -23,7 +23,7 @@ const ContactForm = () => {
 
       {/* Contact Form Section */}
       <div className="py-6 sm:py-8 lg:py-12 px-3 sm:px-4 lg:px-8 xl:px-16">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto">
           <div className="text-center mt-4 sm:mt-6 lg:mt-8">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl mb-1 sm:mb-2">Register Your Interest</h2>
             <p className="font-optima text-xs sm:text-sm md:text-base px-2 sm:px-0">

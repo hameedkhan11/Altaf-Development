@@ -82,7 +82,7 @@ export const footerLinks = {
 export const companyInfo = {
   name: "ALTAF DEVELOPMENT",
   description:
-    "Redefining luxury living with exceptional properties in prime locations. Experience the pinnacle of architectural excellence and craftsmanship.",
+    "ALTAF Developments builds with purpose creating spaces that meet real needs, uplift communities, and inspire lasting change in people’s lives.",
   copyright: "© 2025 ALTAF DEVELOPMENT. All rights reserved.",
 };
 

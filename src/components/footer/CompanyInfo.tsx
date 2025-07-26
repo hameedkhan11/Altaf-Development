@@ -11,7 +11,7 @@ export const CompanyInfo = () => (
     </Link>
 
     {/* Company Description */}
-    <p className="text-black dark:text-white text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base leading-relaxed font-optima w-full max-w-full sm:max-w-[250px] lg:max-w-[180px] xl:max-w-[220px] 2xl:max-w-[280px]">
+    <p className="text-black dark:text-white text-xs sm:text-sm lg:text-xs xl:text-sm leading-relaxed font-optima w-full max-w-full sm:max-w-[250px] lg:max-w-[180px] xl:max-w-[220px] 2xl:max-w-[280px]">
       {companyInfo.description}
     </p>
   </div>

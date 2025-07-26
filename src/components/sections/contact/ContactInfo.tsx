@@ -65,7 +65,7 @@ export const ContactInfoCard = () => {
             {contactInfo.map((item, index) => (
               <FeatureCard
                 key={index}
-                icon={item.icon}
+                // icon={item.icon}
                 title={item.title}
                 description={item.description}
                 primary={item.primary}

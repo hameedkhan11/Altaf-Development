@@ -12,7 +12,7 @@ interface BlogContentProps {
 
 export function BlogContent({ posts, totalPages, currentPage, searchParams }: BlogContentProps) {
   return (
-    <section className="w-full max-w-7xl mx-auto">
+    <section className="w-full mx-auto">
       {posts?.length > 0 ? (
         <>
           <div className="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12 mb-8 sm:mb-12 md:mb-16">
