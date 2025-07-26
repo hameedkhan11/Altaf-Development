@@ -139,7 +139,7 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
       >
         <div className={`w-full flex flex-col items-center justify-center mx-auto mt-8 ${isHomePage ? 'max-w-2xl' : ''}`}>
           {title && (
-            <AnimatedH1 className={`text-xl sm:text-2xl md:text-3xl lg:text-5xl ${isHomePage ? 'lg:text-6xl' : ''} text-white leading-tight`}>
+            <AnimatedH1 className={`text-3xl sm:text-4xl md:text-5xl ${isHomePage ? 'lg:text-6xl' : ''} text-white leading-tight`}>
               {title}
             </AnimatedH1>
           )}
