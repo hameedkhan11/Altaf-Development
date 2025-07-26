@@ -18,13 +18,7 @@ export const viewportOnce: ViewportOnce = {
 };
 
 export const propertySections: PropertySection[] = [
-  {
-    id: 'properties',
-    title: 'Powdered Room',
-    image: 'powder-room_akquqb',
-    alt: 'Luxury living room with modern furniture'
-  },
-  {
+   {
     id: 'transactions',
     title: 'Grand Lobby',
     image: 'grand-lobby_awpfkg',
@@ -35,6 +29,12 @@ export const propertySections: PropertySection[] = [
     title: "Dream suite",
     image: 'dream-suite_ez3xq0',
     alt: 'Elegant dining area with natural lighting'
+  },
+   {
+    id: 'properties',
+    title: 'Suite Bath',
+    image: 'powder-room_akquqb',
+    alt: 'Luxury living room with modern furniture'
   }
 ];
 

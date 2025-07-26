@@ -86,7 +86,7 @@ export const ProjectCard = ({
       style={{ willChange: 'transform, opacity' }}
     >
       {/* Card Container */}
-      <div className="bg-white rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group w-full">
+      <div className="bg-white rounded-md shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group w-full">
         {/* Image Container */}
         {/* 
           UPDATED: Replaced the chain of fixed height classes 
