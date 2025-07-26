@@ -68,7 +68,7 @@ const MissionVisionSection = () => {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative mt-12 sm:mt-16 md:mt-20 lg:mt-24">
       {/* Background Image Section */}
       <div className="relative h-[70vh] sm:h-[80vh] md:h-[90vh] lg:h-[100vh] min-h-[500px] sm:min-h-[600px] max-h-[1200px] overflow-hidden">
         <motion.div
