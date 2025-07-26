@@ -24,13 +24,13 @@ export const PropertyDetailInfo: React.FC<PropertyDetailInfoProps> = ({ property
         {/* Header Section */}
         <div className="space-y-2 sm:space-y-3 md:space-y-4 flex-shrink-0">
           {/* Descriptive text matching the image layout */}
-          <div className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">
+          {/* <div className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">
             Real Estate Residence - {property?.propertyType === "1bed" ? "1 Bedroom" : "2 Bedroom"} Apartment
-          </div>
+          </div> */}
                    
           <div>
             <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2 leading-tight">
-              {property?.propertyType === "1bed" ? "Luxury Apartment" : "Luxury Residence"}
+              {property?.propertyType === "1bed" ? "Luxury Apartment" : "Luxury Residences"}
             </h1>
           </div>
         </div>
