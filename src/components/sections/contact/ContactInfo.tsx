@@ -2,39 +2,39 @@
 "use client";
 
 import { motion } from 'framer-motion';
-import { Phone, Mail, Clock, Building } from 'lucide-react';
-import FeatureCard from '@/components/cards/FeatureCard';
+// import { Phone, Mail, Clock, Building } from 'lucide-react';
+// import FeatureCard from '@/components/cards/FeatureCard';
 
-const contactInfo = [
-  {
-    icon: Building,
-    title: 'Property Details',
-    primary: 'Main Boulevard Plot #1',
-    secondary: 'Block B, Faisal Hills',
-    description: 'Near Islamabad Rawalpindi'
-  },
-  {
-    icon: Phone,
-    title: 'Sales & Inquiries', 
-    primary: '+92 333 0777775',
-    secondary: 'Direct sales line',
-    description: 'Available Mon - Sun, 9 AM - 7 PM'
-  },
-  {
-    icon: Mail,
-    title: 'Information & Support',
-    primary: 'info@altafdevelopment.com',
-    secondary: 'General inquiries and support',
-    // description: 'Response within 24 hours'
-  },
-  {
-    icon: Clock,
-    title: 'Office Hours',
-    primary: 'Mon - Sun: 9:00 AM - 7:00 PM',
-    secondary: 'Open 7 days a week',
-    description: 'Extended hours by appointment'
-  }
-];
+// const contactInfo = [
+//   {
+//     icon: Building,
+//     title: 'Property Details',
+//     primary: 'Main Boulevard Plot #1',
+//     secondary: 'Block B, Faisal Hills',
+//     description: 'Near Islamabad Rawalpindi'
+//   },
+//   {
+//     icon: Phone,
+//     title: 'Sales & Inquiries', 
+//     primary: '+92 333 0777775',
+//     secondary: 'Direct sales line',
+//     description: 'Available Mon - Sun, 9 AM - 7 PM'
+//   },
+//   {
+//     icon: Mail,
+//     title: 'Information & Support',
+//     primary: 'info@altafdevelopment.com',
+//     secondary: 'General inquiries and support',
+//     // description: 'Response within 24 hours'
+//   },
+//   {
+//     icon: Clock,
+//     title: 'Office Hours',
+//     primary: 'Mon - Sun: 9:00 AM - 7:00 PM',
+//     secondary: 'Open 7 days a week',
+//     description: 'Extended hours by appointment'
+//   }
+// ];
 
 export const ContactInfoCard = () => {
   return (
@@ -62,18 +62,17 @@ export const ContactInfoCard = () => {
             role="list"
             aria-label="Contact information and details"
           >
-            {contactInfo.map((item, index) => (
+            {/* {contactInfo.map((item, index) => (
               <FeatureCard
                 key={index}
                 // icon={item.icon}
                 title={item.title}
-                description={item.description}
                 primary={item.primary}
                 secondary={item.secondary}
                 index={index}
                 variant="contact"
               />
-            ))}
+            ))} */}
           </div>
         </div>
       </motion.div>

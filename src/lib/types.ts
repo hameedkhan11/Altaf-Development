@@ -1,4 +1,3 @@
-import type { LucideIcon } from "lucide-react"
 import { Author, Category, Post, PropertyType } from "./sanity/sanity"
 
 export interface Testimonial {
@@ -25,7 +24,6 @@ export interface NavigationItem {
 }
 
 export interface Features {
-  icon: LucideIcon
   title: string
   desc: string
 }

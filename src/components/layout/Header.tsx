@@ -2,10 +2,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+
 // import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
-  Menu,
   X,
   ArrowRight,
 } from "lucide-react";
@@ -118,7 +119,7 @@ const Header = () => {
                 <AltafLogo 
                   className={`cursor-pointer transition-all duration-500 ${
                     isClient && isMobile 
-                      ? 'w-[120px] h-[88px]' 
+                      ? 'w-[140px] h-[100px] mt-2' 
                       : 'lg:w-[130px] lg:h-[88px] xl:w-[150px] xl:h-[100px]'
                   } ${
                     !scrolled 
@@ -150,10 +151,10 @@ const Header = () => {
             </div>
 
             {/* Mobile Menu Button - Left side with larger size */}
-            <Button
-              variant="ghost"
-              size="lg"
-              className={`lg:hidden absolute left-4 top-1/2 transform -translate-y-1/2 transition-all duration-500 ${
+            <div
+              // variant="ghost"
+              // size="lg"
+              className={`lg:hidden absolute left-2 top-1/2 transform -translate-y-1/2 transition-all duration-500 ${
                 scrolled
                   ? "text-foreground hover:bg-gray-100"
                   : "text-white hover:bg-white/20"
@@ -161,11 +162,11 @@ const Header = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
-                <X className="h-8 w-8" />
+                <X className="h-full w-full" />
               ) : (
-                <Menu className="h-8 w-8" />
+                <GiHamburgerMenu className="h-7 w-7 mb-1" />
               )}
-            </Button>
+            </div>
           </div>
         </div>
       </Animate>

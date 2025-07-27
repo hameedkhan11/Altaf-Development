@@ -1,101 +1,58 @@
-import { motion } from 'framer-motion';
-import { BiSolidTone } from "react-icons/bi";
+import { motion } from "framer-motion";
+import { LucideIcon } from "lucide-react";
 
-type FeatureCardProps = {
+interface FeatureCardProps {
   title: string;
-  description: string | undefined;
+  description: string;
   index: number;
-  primary?: string;
-  secondary?: string;
-  variant?: string;
+  Icon?: LucideIcon;
 }
 
-const FeatureCard = ({ 
-  title, 
-  description, 
-  index, 
-  primary, 
-  secondary, 
-  variant = 'feature' 
-}: FeatureCardProps) => {
+const FeatureCard = ({ title, description, index, Icon }: FeatureCardProps) => {
   return (
     <motion.article
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ 
+      transition={{
         duration: 0.7,
         delay: index * 0.1,
-        ease: [0.25, 0.1, 0.25, 1]
+        ease: [0.25, 0.1, 0.25, 1],
       }}
-      whileHover={{ 
+      whileHover={{
         y: -15,
-        scale: 1.02,
-        transition: { duration: 0.3 }
+        scale: 1.03,
+        transition: { duration: 0.4, ease: "easeOut" },
       }}
-      className="relative overflow-hidden rounded-3xl group text-black "
+      className="relative group overflow-hidden rounded-3xl border border-black/10 shadow-md after:absolute after:inset-0 after:bg-[radial-gradient(circle_at_30%_30%,rgba(0,0,0,0.04),transparent_40%)] h-72"
     >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        {/* <div className="absolute -top-1/2 -right-1/2 h-[200%] w-[200%] bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)] animate-pulse"></div> */}
-      </div>
-      
       {/* Card Content */}
-      <div className="relative z-10 p-8 h-80 sm:h-88 flex flex-col">
-        {/* Header Glow Effect */}
-        {/* <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div> */}
-        
-        {/* Title Section */}
-        <div className="flex">
-          <BiSolidTone className="w-8 h-8 text-[rgb(140,46,71)] duration-300" />
-          <h3 
+      <div className="relative z-10 p-8  flex flex-col">
+        {/* Icon Header */}
+        <div>
+          <div className="inline-flex items-center">
+            {Icon && (
+              <div className="w-20 h-20 bg-[rgb(140,46,71)] rounded-full flex items-center justify-center pt-4">
+                <Icon className="w-6 h-6 text-[rgb(140,46,71)]" />
+              </div>
+            )}
+            <div className="w-4 h-4 bg-[rgb(140,46,71)] rounded-full"></div>
+          </div>
+          <p
             id={`feature-${index}-title`}
-            className="text-2xlleading-tight ml-2"
+            className="text-base sm:text-xl font-semibold text-[rgb(140,46,71)] leading-tight tracking-tight pb-2"
           >
             {title}
-          </h3>
+          </p>
         </div>
         
         {/* Content Area */}
         <div className="flex-grow">
-          {variant === 'contact' ? (
-            <div className="space-y-4">
-              {primary && (
-                <p className="text-xl font-semibold text-white tracking-wide">
-                  {primary}
-                </p>
-              )}
-              {secondary && (
-                <p className="text-lg font-light tracking-wide">
-                  {secondary}
-                </p>
-              )}
-              {description && (
-                <p className="text-base leading-relaxed font-light mt-4">
-                  {description}
-                </p>
-              )}
-            </div>
-          ) : (
-            <p className="text-base leading-relaxed font-light">
-              {description}
-            </p>
-          )}
+          <p className=" text-xs sm:text-sm leading-relaxed text-black font-light">
+            {description}
+          </p>
         </div>
-        
-        {/* Bottom Accent */}
-        {/* <div className="mt-8 pt-6 border-t border-white/10">
-          <div className="flex items-center justify-between">
-            <div className="w-12 h-0.5 bg-gradient-to-r from-white/40 to-transparent rounded-full"></div>
-            <div className="w-3 h-3 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors duration-300"></div>
-          </div>
-        </div> */}
       </div>
-      
-      {/* Hover Effects */}
-      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-      <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-      <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white/3 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700 delay-100"></div>
     </motion.article>
   );
 };
