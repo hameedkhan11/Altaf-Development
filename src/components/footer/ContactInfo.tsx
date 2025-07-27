@@ -3,7 +3,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 export const ContactInfo = () => (
   <div className="w-full">
-    <h3 className="text-sm sm:text-base lg:text-sm xl:text-base 2xl:text-lg mb-3 lg:mb-4 font-medium font-optima text-black dark:text-white">
+    <h3 className="text-sm sm:text-base lg:text-sm xl:text-base 2xl:text-lg mb-3 lg:mb-4">
       Contact Us
     </h3>
     <ul className="space-y-2 lg:space-y-3 w-full">

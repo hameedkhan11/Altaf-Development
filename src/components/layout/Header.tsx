@@ -119,8 +119,8 @@ const Header = () => {
                 <AltafLogo 
                   className={`cursor-pointer transition-all duration-500 ${
                     isClient && isMobile 
-                      ? 'w-[140px] h-[100px] mt-2' 
-                      : 'lg:w-[130px] lg:h-[88px] xl:w-[150px] xl:h-[100px]'
+                      ? 'w-[130px] h-[90px] mt-4' 
+                      : 'lg:w-[130px] lg:h-[88px] xl:w-[140px] xl:h-[100px]'
                   } ${
                     !scrolled 
                       ? "text-white" // White when not scrolled
@@ -164,7 +164,7 @@ const Header = () => {
               {isMobileMenuOpen ? (
                 <X className="h-full w-full" />
               ) : (
-                <GiHamburgerMenu className="h-7 w-7 mb-1" />
+                <GiHamburgerMenu className="h-6 w-6 mt-3" />
               )}
             </div>
           </div>

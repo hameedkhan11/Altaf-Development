@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const QuickLinks = () => (
   <div className="w-full">
-    <h3 className="text-sm sm:text-base lg:text-sm xl:text-base 2xl:text-lg font-medium mb-3 lg:mb-4 font-optima dark:text-white text-black">
+    <h3 className="text-sm sm:text-base lg:text-sm xl:text-base 2xl:text-lg font-medium mb-3 lg:mb-4 ">
       Quick Links
     </h3>
     <ul className="space-y-1 lg:space-y-2 w-full">

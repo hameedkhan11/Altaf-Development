@@ -222,7 +222,7 @@ export interface AmenityData {
   id: string;
   name: string;
   title: string;
-  description: string;
+  description: string[];
   image: string;
   features: string[];
 }

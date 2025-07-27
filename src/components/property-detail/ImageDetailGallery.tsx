@@ -229,13 +229,6 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
               </Button>
             </>
           )}
-
-          {/* Image Counter for Fullscreen */}
-          {images.length > 1 && (
-            <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 bg-white/20 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full text-base sm:text-lg font-medium">
-              {safeCurrentIndex + 1} / {images.length}
-            </div>
-          )}
         </div>
       </div>
     );

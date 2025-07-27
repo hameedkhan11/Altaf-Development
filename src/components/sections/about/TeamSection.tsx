@@ -1,5 +1,4 @@
 // components/CEOMessage.tsx
-"use client";
 import { motion } from "framer-motion";
 import { visionData } from "@/data/vision";
 import { CldImage } from "next-cloudinary";
@@ -28,7 +27,7 @@ const CEOMessage = () => {
   const chairmanTitle = "Chairman, Altaf Developments";
 
   return (
-    <div className="space-y-8 sm:space-y-12 md:space-y-16 lg:space-y-20 xl:space-y-24">
+    <>
       {/* CEO Section - Content Left, Image Right */}
       <section className="py-6 sm:py-8 md:py-12 lg:py-16 xl:py-24 px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 relative">
         <div className="mx-auto">
@@ -198,7 +197,7 @@ const CEOMessage = () => {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 };
 

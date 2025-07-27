@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Phone } from "lucide-react";
 import { AnimatedH3, AnimatedP } from "../ui/text-animations";
+import Link from "next/link";
 
 // Function to get Cloudinary video URL
 const getCloudinaryVideoUrl = (publicId: string, options?: {
@@ -119,10 +120,12 @@ const FAQCTA: React.FC = () => {
             personalized consultation and answer any specific questions about
             your property needs.
           </AnimatedP>
-          <button className="inline-flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-4 bg-neutral-900 cursor-pointer text-white font-medium rounded-lg hover:bg-neutral-800 transition-colors duration-300 shadow-sm text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-opacity-50">
+          <Link 
+            href="/contact" 
+            className="inline-flex items-center px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-4 bg-neutral-900 cursor-pointer text-white font-medium rounded-full hover:bg-neutral-800 transition-colors duration-300 shadow-sm text-sm sm:text-base">
             <Phone className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
             Contact Our Team
-          </button>
+          </Link>
         </div>
       </div>
     </div>

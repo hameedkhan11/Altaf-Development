@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CldImage } from "next-cloudinary";
 import { testimonials } from "@/data/testimonials";
+import Image from "next/image";
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -108,7 +109,7 @@ const Testimonials = () => {
               What Our Clients Say
             </motion.h2>
             <motion.p
-              className="text-xs sm:text-sm md:text-base lg:text-lg max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto px-2 sm:px-4 md:px-0 mb-6"
+              className="text-xs sm:text-sm md:text-base lg:text-lg mx-auto px-2 sm:px-4 md:px-0 mb-10 sm:mb-2"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -200,22 +201,20 @@ const Testimonials = () => {
                   {/* Profile */}
                   <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6">
                     <div className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 xl:w-22 xl:h-22 rounded-full overflow-hidden border-2 border-white/20 shadow-lg flex-shrink-0">
-                      <CldImage
-                        src={currentTestimonial.image || "default-avatar"}
-                        alt={currentTestimonial.name}
+                      <Image
+                        src={currentTestimonial?.image || "default-avatar"}
+                        alt={currentTestimonial?.name}
                         width={40}
                         height={40}
                         className="object-cover w-full h-full"
-                        quality="auto"
-                        format="auto"
                       />
                     </div>
                     <div className="text-left mt-8">
-                      <h4 className="text-white text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl font-semibold -mb-2">
-                        {currentTestimonial.name}
-                      </h4>
-                      <p className="text-white/80 text-xs xs:text-sm sm:text-base md:text-base lg:text-lg font-optima mb-1">
-                        {currentTestimonial.role}
+                      <p className="text-white text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl font-semibold -mb-2">
+                        {currentTestimonial?.name}
+                      </p>
+                      <p className="text-white/80 text-xs xs:text-sm sm:text-base md:text-base lg:text-lg mb-1">
+                        {currentTestimonial?.role}
                       </p>
                       {/* Star Rating */}
                       <StarRating rating={4.5} />

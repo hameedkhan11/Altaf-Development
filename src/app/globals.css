@@ -302,7 +302,7 @@ video {
   }
 
   /* All Heading Styles - Using Optima Font */
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3 {
     font-family: "Optima", sans-serif;
     letter-spacing: -0.01em;
     line-height: 1.2;
@@ -317,6 +317,22 @@ video {
     margin-right: 0px;
     margin-top: 0px;
     text-transform: uppercase;
+    unicode-bidi: isolate;
+  }
+  h4,h5,h6{
+     font-family: "Optima", sans-serif;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: rgb(140, 46, 71);
+    box-sizing: border-box;
+    margin-block-end: 15px;
+    margin-block-start: 0px;
+    margin-bottom: 15px;
+    margin-inline-end: 0px;
+    margin-inline-start: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
     unicode-bidi: isolate;
   }
 

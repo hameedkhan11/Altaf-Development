@@ -187,14 +187,14 @@ const FeaturesGrid = () => {
             <>
               <button
                 onClick={goToPrev}
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-[rgb(140,46,71)] hover:bg-white transition-all duration-200 hover:scale-110"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10  rounded-full flex items-center justify-center text-[rgb(140,46,71)] transition-all duration-200 hover:scale-110"
                 aria-label="Previous slide"
               >
                 <FaArrowLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={goToNext}
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-[rgb(140,46,71)] hover:bg-white transition-all duration-200 hover:scale-110"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10  rounded-full flex items-center justify-center text-[rgb(140,46,71)] transition-all duration-200 hover:scale-110"
                 aria-label="Next slide"
               >
                 <FaArrowRight className="w-4 h-4" />
@@ -231,36 +231,6 @@ const FeaturesGrid = () => {
             </motion.div>
           </div>
         </div>
-
-        {/* Mobile Indicators */}
-        {isMobile && (
-          <div className="flex justify-center mt-8 space-x-2">
-            {features.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                  index === (currentIndex % features.length) 
-                    ? 'bg-[rgb(140,46,71)] w-8' 
-                    : 'bg-gray-300 opacity-50 hover:opacity-75'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Desktop Indicators */}
-        {!isMobile && (
-          <div className="flex justify-center mt-8 space-x-2">
-            {features.map((_, index) => (
-              <div
-                key={index}
-                className="w-2 h-2 rounded-full bg-gray-300 opacity-50"
-              />
-            ))}
-          </div>
-        )}
       </motion.div>
     </section>
   );

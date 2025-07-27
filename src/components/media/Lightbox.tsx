@@ -118,12 +118,6 @@ const Lightbox: React.FC<LightboxProps> = ({
             </Button>
           </>
         )}
-
-        {/* Image counter */}
-        <div className="absolute top-4 left-4 z-40 text-white text-sm">
-          {selectedImage + 1} / {filteredImages.length}
-        </div>
-
         {/* Main image display */}
         <div 
           className="flex items-center justify-center h-full w-full"

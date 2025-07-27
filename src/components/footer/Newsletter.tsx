@@ -14,7 +14,7 @@ export const NewsletterSection = ({
   onSubmit,
 }: NewsletterSectionProps) => (
   <div className="w-full">
-    <h3 className="text-sm sm:text-base lg:text-sm xl:text-base 2xl:text-lg mb-3 lg:mb-4 font-medium font-optima dark:text-white text-black">
+    <h3 className="text-sm sm:text-base lg:text-sm xl:text-base 2xl:text-lg mb-3 lg:mb-4">
       Stay Updated
     </h3>
     <p className="text-black dark:text-white text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base leading-relaxed mb-3 lg:mb-4 font-optima w-full max-w-full sm:max-w-[250px] lg:max-w-[180px] xl:max-w-[220px] 2xl:max-w-[280px]">
@@ -34,7 +34,7 @@ export const NewsletterSection = ({
         />
         <Button
           type="submit"
-          className="w-full px-4 py-2 lg:px-6 lg:py-3 bg-[#8c2e47] hover:bg-[#6d1f36] text-white font-medium rounded-lg transition-all duration-300 text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base font-optima"
+          className="w-full px-4 py-2 lg:px-6 lg:py-4 bg-[#8c2e47] hover:bg-transparent border border-[#8c2e47] hover:border-[#8c2e47] hover:text-black cursor-pointer text-white font-medium rounded-full transition-all duration-300 ease-in text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base"
         >
           Subscribe
         </Button>

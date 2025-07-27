@@ -48,7 +48,7 @@ const ProjectsSection = () => {
 
   if (loading) {
     return (
-      <section className="py-6 xs:py-8 sm:py-10 md:py-12 lg:py-16 xl:py-20 2xl:py-24 px-4 xs:px-5 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
+      <section className="py-6 xs:py-8 sm:py-10 md:py-12 lg:py-16 xl:py-20 px-4 xs:px-5 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         {/* UPDATED: Changed lg:grid-cols-2 to md:grid-cols-2 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xs:gap-5 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 2xl:gap-16">
           {[1, 2].map((i) => (
