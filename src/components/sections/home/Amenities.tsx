@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   fadeInUp,
@@ -24,11 +24,11 @@ const Amenities = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [prevIndex, setPrevIndex] = useState<number>(0);
 
-  // Combine location with additional amenities for slider
-  const allAmenities: Array<{ key: string; data: AmenityData | SimpleAmenityData }> = [
+  // Memoize the combined amenities array to prevent recreation on every render
+  const allAmenities: Array<{ key: string; data: AmenityData | SimpleAmenityData }> = useMemo(() => [
     { key: 'location', data: amenitiesData.location },
     ...additionalAmenities
-  ];
+  ], []);
 
   const currentAmenity = allAmenities[currentIndex];
 

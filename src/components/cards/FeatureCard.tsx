@@ -24,7 +24,7 @@ const FeatureCard = ({ title, description, index, Icon }: FeatureCardProps) => {
         scale: 1.03,
         transition: { duration: 0.4, ease: "easeOut" },
       }}
-      className="relative group overflow-hidden rounded-3xl border border-black/10 shadow-md after:absolute after:inset-0 after:bg-[radial-gradient(circle_at_30%_30%,rgba(0,0,0,0.04),transparent_40%)] h-72"
+      className="relative group overflow-hidden rounded-3xl border border-black/10 shadow-md after:absolute after:inset-0 after:bg-[radial-gradient(circle_at_30%_30%,rgba(0,0,0,0.04),transparent_40%)] h-80"
     >
       {/* Card Content */}
       <div className="relative z-10 p-8  flex flex-col">
