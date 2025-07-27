@@ -80,8 +80,8 @@ const NotFoundPage = () => {
           </h2>
           
           <p className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-4">
-            The page you're looking for seems to have moved or doesn't exist. 
-            Don't worry, even the best properties sometimes change their address!
+            The page you&apos;re looking for seems to have moved or doesn&apos;t exist. 
+            Don&apos;t worry, even the best properties sometimes change their address!
           </p>
         </motion.div>
 

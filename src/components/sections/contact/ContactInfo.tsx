@@ -61,8 +61,7 @@ export const ContactInfoCard = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="leading-relaxed text-sm sm:text-base max-w-2xl mx-auto"
           >
-            Experience luxury living redefined. Our expert team is ready to help you 
-            discover your perfect home in our premium residential developments.
+            At Altaf Developments, we craft more than homes — we create elevated lifestyles. Let our expert team guide you in discovering your perfect residence within our premium, thoughtfully designed communities.
           </motion.p>
         </div>
         
