@@ -25,7 +25,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
       <div
         className={`flex flex-col lg:flex-row ${
           isEven ? "lg:flex-row" : "lg:flex-row-reverse"
-        } min-h-[320px] sm:min-h-[360px] md:min-h-[400px] lg:min-h-[460px] w-full`}
+        } min-h-[360px] sm:min-h-[400px] md:min-h-[430px] lg:min-h-[460px] w-full`}
       >
         {/* Image Section */}
         <div className="w-full lg:w-1/2 h-56 sm:h-56 md:h-64 lg:h-auto relative overflow-hidden">
