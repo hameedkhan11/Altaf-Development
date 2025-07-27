@@ -32,7 +32,7 @@ const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post }) => {
       // title={post.title}
       // subtitle={post.excerpt}
       backgroundType="image"
-      backgroundSrc="About_Page_ydfqpl"
+      backgroundSrc="Blogs_lbursu"
       breadcrumbs={breadcrumbs}
       height="three-quarter"
       contentAlignment="left"

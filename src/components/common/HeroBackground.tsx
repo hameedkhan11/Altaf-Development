@@ -143,7 +143,7 @@ const ParallaxContent: React.FC<{
 }> = ({ type, publicId, altText, fallbackImage, videoOptimization }) => {
   const buildVideoUrl = () => {
     const { quality = "auto:good", format = "auto" } = videoOptimization ?? {};
-    const transformations = `q_${quality},f_${format},w_1920,c_fill,ac_none`;
+    const transformations = `q_${quality},f_${format},w_3840,h_2160,c_fill,ac_none`;
     return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformations}/${publicId}`;
   };
 
@@ -159,7 +159,7 @@ const ParallaxContent: React.FC<{
           className="absolute inset-0 w-full h-full object-cover z-0"
           poster={
             fallbackImage
-              ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1920,h_1080,f_auto,q_auto/${fallbackImage}`
+              ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_3840,h_2160,f_auto,q_auto/${fallbackImage}`
               : undefined
           }
         >
