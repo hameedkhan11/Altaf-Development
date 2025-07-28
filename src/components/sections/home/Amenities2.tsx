@@ -174,6 +174,7 @@ const Amenities2 = () => {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                   priority
+                  aria-label='Amenity image'
                 />
                 {/* Responsive Overlays */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 lg:to-black/50" />

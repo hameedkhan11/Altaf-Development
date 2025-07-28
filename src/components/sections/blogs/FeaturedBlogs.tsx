@@ -155,6 +155,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ post }) => {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
+                  aria-label='Blog image'
                 />
               </motion.div>
               

@@ -139,6 +139,7 @@ const Testimonials = () => {
             format="auto"
             sizes="100vw"
             priority
+            aria-label="Modern living room interior"
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/60 to-black/40" />
@@ -210,10 +211,10 @@ const Testimonials = () => {
                       />
                     </div>
                     <div className="text-left mt-8">
-                      <p className="text-white text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl font-semibold -mb-2">
+                      <p className="text-white text-sm xs:text-base sm:text-lg md:text-lg lg:text-xl font-semibold -mb-0">
                         {currentTestimonial?.name}
                       </p>
-                      <p className="text-white/80 text-xs xs:text-sm sm:text-base md:text-base lg:text-lg mb-1">
+                      <p className="text-white/80 text-xs xs:text-sm sm:text-base md:text-base lg:text-lg mb-0">
                         {currentTestimonial?.role}
                       </p>
                       {/* Star Rating */}

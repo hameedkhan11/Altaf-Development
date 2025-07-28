@@ -43,6 +43,7 @@ const ContactForm = () => {
                 className="w-full h-auto rounded-lg object-cover"
                 crop="fill"
                 gravity="auto"
+                aria-label="Luxury Property"
               />
             </div>
 

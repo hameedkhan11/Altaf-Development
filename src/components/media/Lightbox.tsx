@@ -141,6 +141,7 @@ const Lightbox: React.FC<LightboxProps> = ({
               gravity="auto"
               quality="auto"
               format="auto"
+              aria-label="Lightbox image"
             />
           </motion.div>
         </div>

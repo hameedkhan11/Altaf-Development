@@ -126,6 +126,7 @@ const CEOMessage = () => {
                   className="object-cover object-center"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
                   priority
+                  aria-label={`${ceoName} - ${ceoTitle}`}
                 />
               </motion.div>
 

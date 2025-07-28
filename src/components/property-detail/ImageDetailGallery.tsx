@@ -206,6 +206,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
             className="max-w-full max-h-full object-contain"
             sizes="100vw"
             priority
+            aria-label='Property image'
           />
 
           {/* Navigation Arrows for Fullscreen - Hidden on mobile, visible on larger screens */}
@@ -253,6 +254,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
             alt={`Property view ${safeCurrentIndex + 1}`}
             className="w-full h-full object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
+            aria-label="Property image"
           />
 
           {/* Fullscreen Button */}
@@ -324,6 +326,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                         alt={`Thumbnail ${index + 1}`}
                         className="w-full h-full object-cover"
                         sizes="(max-width: 768px) 48px, (max-width: 1024px) 56px, 64px"
+                        aria-label="Property thumbnail"
                       />
                       {index === safeCurrentIndex && (
                         <div className="absolute inset-0 bg-blue-500/20"></div>

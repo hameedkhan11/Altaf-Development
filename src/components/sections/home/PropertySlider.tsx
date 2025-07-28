@@ -86,6 +86,7 @@ const PropertyShowcase = () => {
             // NOTE: object-cover now works as intended because the container has the correct aspect ratio
             className="object-cover"
             priority
+            aria-label='Property image'
           />
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
@@ -108,6 +109,7 @@ const PropertyShowcase = () => {
             sizes="100vw"
             className="object-cover"
             priority
+            aria-label='Property image'
           />
           <div className="absolute inset-0 bg-black/40" />
           <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />

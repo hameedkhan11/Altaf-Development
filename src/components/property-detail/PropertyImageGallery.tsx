@@ -83,6 +83,7 @@ const PropertyImageGalleryComponent: React.FC<PropertyImageGalleryProps> = ({
                   loading="lazy"
                   placeholder="blur"
                   blurDataURL="/path-to-blur-placeholder.png"
+                  aria-label="Property Image"
                 />
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />

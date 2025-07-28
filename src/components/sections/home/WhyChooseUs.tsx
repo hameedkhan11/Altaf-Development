@@ -66,6 +66,7 @@ const WhyChoose = () => {
             className="w-full h-full object-cover"
             width={1920}
             height={1080}
+            aria-label="ALTAF Development Office"
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/40" />

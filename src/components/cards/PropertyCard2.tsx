@@ -29,6 +29,7 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={index === 0}
+          aria-label='Property image'
         />
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
         <motion.div

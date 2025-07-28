@@ -184,6 +184,7 @@ export const AnimatedImage = forwardRef<HTMLDivElement, AnimatedImageProps>(({
           willChange: 'transform',
           backfaceVisibility: 'hidden',
         }}
+        aria-label='Parallax Image'
       />
       {overlayChildren && (
         <div className="absolute inset-0 flex items-center justify-center">
@@ -247,6 +248,7 @@ export function ParallaxImage({
             willChange: 'transform',
             backfaceVisibility: 'hidden',
           }}
+          aria-label='Parallax Image'
         />
       </motion.div>
       {overlayChildren && (

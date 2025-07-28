@@ -49,7 +49,7 @@ const CEOMessage = () => {
                 className="text-left"
               >
                 <AnimatedH2 className="text-xl sm:text-2xl md:text-3xl mb-0 leading-tight">
-                  About Altaf Development
+                  About Altaf Developments
                 </AnimatedH2>
               </motion.div>
 
@@ -101,6 +101,7 @@ const CEOMessage = () => {
                     className="object-cover object-center"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
                     priority
+                    aria-label="CEO Image"
                   />
                 </motion.div>
 
@@ -136,6 +137,7 @@ const CEOMessage = () => {
                     fill
                     className="object-cover object-center"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
+                    aria-label="Chairman Image"
                   />
                 </motion.div>
 

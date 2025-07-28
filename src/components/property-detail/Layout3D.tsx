@@ -11,6 +11,7 @@ export default function Layout3D() {
           fill
           className="object-contain"
           priority
+          aria-label='3D Apartment Layout'
         />
       </div>
     </section>

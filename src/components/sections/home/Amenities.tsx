@@ -132,6 +132,7 @@ const Amenities = () => {
                     className="object-cover"
                     sizes="(max-width: 720px) 100vw, (max-width: 1024px) 100vw, 50vw"
                     priority
+                    aria-label="Previous amenity image"
                   />
                 </motion.div>
 
@@ -152,6 +153,7 @@ const Amenities = () => {
                     className="object-cover"
                     sizes="(max-width: 720px) 100vw, (max-width: 1024px) 100vw, 50vw"
                     priority
+                    aria-label="Current amenity image"
                   />
                 </motion.div>
               </div>

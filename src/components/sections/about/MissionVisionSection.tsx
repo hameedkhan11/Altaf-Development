@@ -89,6 +89,7 @@ const MissionVisionSection = () => {
             height={1080}
             sizes="100vw"
             priority
+            aria-label="Modern living room interior"
           />
         </motion.div>
 

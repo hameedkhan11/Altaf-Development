@@ -24,6 +24,7 @@ export const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, reversed
               src={member.image}
               alt={member.name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              aria-label='Team member image'
             />
             <div className="absolute bottom-6 left-6 right-6 z-20">
               <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
