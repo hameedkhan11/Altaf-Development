@@ -82,7 +82,7 @@ const MissionVisionSection = () => {
           className="w-full h-full"
         >
           <CldImage
-            src="About_us_Hero_cxrska"
+            src="about_us_core_yjsm3l"
             alt="Modern living room interior"
             className="w-full h-full object-cover"
             width={1920}

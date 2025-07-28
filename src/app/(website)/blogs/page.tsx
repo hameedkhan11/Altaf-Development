@@ -21,7 +21,7 @@ export default async function BlogPage(props: {
 }) {
   const searchParams = await props.searchParams
   const page = parseInt(searchParams?.page as string) || 1
-  const limit = 12
+  const limit = 6
   const offset = (page - 1) * limit
 
   const filters: PostFilters = {

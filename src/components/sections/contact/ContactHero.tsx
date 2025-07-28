@@ -1,6 +1,4 @@
 // components/ContactHero.tsx
-"use client";
-import React from 'react';
 import { Hero } from '@/components/common/Hero';
 
 interface ContactHeroProps {

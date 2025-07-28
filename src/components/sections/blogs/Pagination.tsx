@@ -45,7 +45,7 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
         {currentPage > 1 && (
           <Link
             href={getPageUrl(currentPage - 1)}
-            className="px-4 py-2 text-gray-600 hover:text-blue-600 border border-gray-300 rounded-full hover:border-blue-300 transition-colors"
+            className="px-6 py-2 bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] font-semibold  rounded-full transition-colors ease-in"
           >
             Previous
           </Link>
@@ -56,7 +56,7 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
           <>
             <Link
               href={getPageUrl(1)}
-              className="w-10 h-10 flex items-center justify-center text-gray-700 border border-gray-300 rounded-full hover:border-blue-300 hover:text-blue-600 transition-colors"
+              className="w-10 h-10 flex items-center justify-center font-semibold transition-colors"
             >
               1
             </Link>
@@ -67,12 +67,13 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
         {/* Page numbers */}
         {pages.map((page) => (
           <Link
+          
             key={page}
             href={getPageUrl(page)}
             className={`w-10 h-10 flex items-center justify-center border rounded-full transition-colors ${
               page === currentPage
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'text-gray-700 border-gray-300 hover:border-blue-300 hover:text-blue-600'
+                ? 'bg-[rgb(140,46,71)] text-white font-semibold'
+                : ' border-gray-300'
             }`}
           >
             {page}
@@ -85,7 +86,7 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
             {endPage < totalPages - 1 && <span className="px-2 text-gray-500">...</span>}
             <Link
               href={getPageUrl(totalPages)}
-              className="w-10 h-10 flex items-center justify-center text-gray-700 border border-gray-300 rounded-full hover:border-blue-300 hover:text-blue-600 transition-colors"
+              className="w-10 h-10 flex items-center justify-center text-white border border-gray-300 rounded-full hover:border-blue-300 hover:text-blue-600 transition-colors"
             >
               {totalPages}
             </Link>
@@ -96,7 +97,7 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
         {currentPage < totalPages && (
           <Link
             href={getPageUrl(currentPage + 1)}
-            className="px-4 py-2 text-gray-600 hover:text-blue-600 border border-gray-300 rounded-full hover:border-blue-300 transition-colors"
+            className="px-6 py-2 font-semibold bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] ease-in rounded-full"
           >
             Next
           </Link>
