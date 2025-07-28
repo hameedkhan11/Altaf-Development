@@ -104,14 +104,10 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
       style={{ backgroundColor: "#1f2937" }}
     >
       <motion.div
-        className="absolute w-full h-full will-change-transform"
+        className="absolute inset-0 w-full h-full will-change-transform"
         style={{
           y,
           scale,
-          top: `-${parallaxSpeed * 20}%`,
-          left: "-10%",
-          width: "120%",
-          height: `${120 + parallaxSpeed * 40}%`,
         }}
       >
         <ParallaxContent
@@ -141,42 +137,92 @@ const ParallaxContent: React.FC<{
   fallbackImage?: string;
   videoOptimization: HeroBackgroundProps["videoOptimization"];
 }> = ({ type, publicId, altText, fallbackImage, videoOptimization }) => {
-  const buildVideoUrl = () => {
+  const buildVideoUrl = (width: number = 1920) => {
     const { quality = "auto:good", format = "auto" } = videoOptimization ?? {};
-    const transformations = `q_${quality},f_${format},w_1920,c_fill,ac_none`;
+    const transformations = `q_${quality},f_${format},w_${width},c_fill,ac_none`;
     return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformations}/${publicId}`;
+  };
+
+  const buildPosterUrl = (width: number = 1920, height: number = 1080) => {
+    return fallbackImage
+      ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_${width},h_${height},f_auto,q_auto/${fallbackImage}`
+      : undefined;
+  };
+
+  // Get responsive dimensions based on screen size
+  const getResponsiveDimensions = () => {
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth;
+      if (width <= 640) return { width: 640, height: 360 };
+      if (width <= 768) return { width: 768, height: 432 };
+      if (width <= 1024) return { width: 1024, height: 576 };
+      if (width <= 1536) return { width: 1920, height: 1080 };
+      return { width: 2560, height: 1440 };
+    }
+    return { width: 1920, height: 1080 };
   };
 
   return (
     <>
       {type === "video" ? (
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          poster={
-            fallbackImage
-              ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1920,h_1080,f_auto,q_auto/${fallbackImage}`
-              : undefined
-          }
-        >
-          <source src={buildVideoUrl()} type="video/mp4" />
-        </video>
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              minWidth: '100%',
+              minHeight: '100%',
+            }}
+            poster={buildPosterUrl()}
+          >
+            {/* Multiple source elements for different screen sizes */}
+            <source 
+              src={buildVideoUrl(2560)} 
+              type="video/mp4" 
+              media="(min-width: 1536px)" 
+            />
+            <source 
+              src={buildVideoUrl(1920)} 
+              type="video/mp4" 
+              media="(min-width: 1024px)" 
+            />
+            <source 
+              src={buildVideoUrl(1024)} 
+              type="video/mp4" 
+              media="(min-width: 768px)" 
+            />
+            <source 
+              src={buildVideoUrl(640)} 
+              type="video/mp4" 
+              media="(max-width: 767px)" 
+            />
+            {/* Fallback source */}
+            <source src={buildVideoUrl(1920)} type="video/mp4" />
+          </video>
+        </div>
       ) : (
-        <CldImage
-          src={publicId}
-          alt={altText}
-          width={3840}
-          height={2160}
-          sizes="100vw"
-          priority
-          gravity="center"
-          quality="auto:good"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        />
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <CldImage
+            src={publicId}
+            alt={altText}
+            width={getResponsiveDimensions().width}
+            height={getResponsiveDimensions().height}
+            sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, (max-width: 1536px) 1920px, 2560px"
+            priority
+            gravity="center"
+            quality="auto:good"
+            className="w-full h-full object-cover"
+            style={{
+              minWidth: '100%',
+              minHeight: '100%',
+            }}
+            crop="fill"
+          />
+        </div>
       )}
     </>
   );

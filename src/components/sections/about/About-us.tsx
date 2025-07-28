@@ -48,11 +48,11 @@ export default function AboutPage() {
       <div className="min-h-screen">
         {/* Hero Section */}
         <Hero
-          title=""
+          title="Home/About Us"
           backgroundType="image"
-          backgroundSrc="About_US_HERO_Page_iu4nv4"
+          backgroundSrc="About_Page_ydfqpl"
           breadcrumbs={breadcrumbs}
-          height="screen"
+          height="three-quarter"
           overlay="medium"
           ariaLabel="About us hero section"
         />

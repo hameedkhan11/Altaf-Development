@@ -46,7 +46,7 @@ const PropertyDetailContent: React.FC = () => {
     <>
       <Hero
         backgroundType="image"
-        backgroundSrc="About_Us_g8hqxo"
+        backgroundSrc="About_US_HERO_Page_iu4nv4"
         fallbackImage="luxury-apartment-hero-gallery"
         height="three-quarter"
         overlay="medium"
