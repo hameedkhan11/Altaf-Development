@@ -35,7 +35,6 @@ const FAQCTA: React.FC = () => {
   const [videoError, setVideoError] = useState(false);
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   
   // Replace with your actual Cloudinary video public ID
   const videoPublicId = 'Comp_1_1_jjidyq';

@@ -160,7 +160,7 @@ const ParallaxContent: React.FC<{
   }, []);
 
   const getOptimalDimensions = () => {
-    const { width, height, devicePixelRatio } = screenSize;
+    const { width, devicePixelRatio } = screenSize;
     
     // Account for device pixel ratio for sharp images on high-DPI screens
     const pixelRatio = Math.min(devicePixelRatio, 2); // Cap at 2x to avoid huge files
@@ -221,7 +221,7 @@ const ParallaxContent: React.FC<{
       videoQuality = quality === "auto:good" ? "auto:best" : quality;
     }
     
-    let transformations = [
+    const transformations = [
       `q_${videoQuality}`,
       `f_${format}`,
       `w_${width}`,
