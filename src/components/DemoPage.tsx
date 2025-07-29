@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // Simulate the enhanced hooks (in your app, import from your hooks file)
 const useLenisScroll = () => {

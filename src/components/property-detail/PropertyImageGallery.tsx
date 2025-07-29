@@ -81,8 +81,6 @@ const PropertyImageGalleryComponent: React.FC<PropertyImageGalleryProps> = ({
                   gravity="auto"
                   format="auto"
                   loading="lazy"
-                  placeholder="blur"
-                  blurDataURL="/path-to-blur-placeholder.png"
                   aria-label="Property Image"
                 />
                 {/* Overlay */}

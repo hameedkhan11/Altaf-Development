@@ -14,7 +14,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL || "http://altafdevelopments.com"
   ),
   title: {
     default: "Altaf Developments",
@@ -29,12 +29,13 @@ export const metadata: Metadata = {
     "premium properties",
   ],
   icons: {
-    // icon: "/favicon.png",
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "http://altafdevelopments.com",
     siteName: "Altaf Developments",
     title: "Altaf Developments - Premium Real Estate",
     description:
