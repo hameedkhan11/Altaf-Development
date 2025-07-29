@@ -5,6 +5,6 @@ export const visionData: CEOMessageProps = {
     content: [
     "Our vision at Altaf Developments lies in creating communities that not only reflect architectural brilliance, but also resonate with the dreams and aspirations of modern living. With unwavering commitment to innovation, sustainability, and quality, we're dedicated to shaping environments that inspire and elevate."
   ],
-  ceoImage: "altaf2_ikdngn",
+  ceoImage: "FINAL_IMAGE_FOR_WEBSITE_SQUARE_1X1_ji4fnn",
   ceoName: "Altaf Developments"
 }

@@ -12,7 +12,7 @@ const getCloudinaryVideoUrl = (publicId: string, options?: {
   height?: number;
 }) => {
   // Replace with your actual Cloudinary cloud name
-  const cloudName = `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`; // Change this to your actual cloud name
+  const cloudName = `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`;
   const baseUrl = `https://res.cloudinary.com/${cloudName}/video/upload/`;
   
   const transformations = [];
@@ -33,25 +33,58 @@ const getCloudinaryVideoUrl = (publicId: string, options?: {
 const FAQCTA: React.FC = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   
   // Replace with your actual Cloudinary video public ID
   const videoPublicId = 'Comp_1_1_jjidyq';
   
-  // Generate video URLs
-  const mp4Url = getCloudinaryVideoUrl(videoPublicId, { 
-    format: 'mp4', 
-    quality: 'auto',
-    width: 1600,
-    height: 1200
-  });
-  
-  const webmUrl = getCloudinaryVideoUrl(videoPublicId, { 
-    format: 'webm', 
-    quality: 'auto',
-    width: 1600,
-    height: 1200
-  });
+  // Detect screen size for optimal video dimensions
+  useEffect(() => {
+    const updateScreenSize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setScreenSize('mobile');
+      } else if (width < 1024) {
+        setScreenSize('tablet');
+      } else {
+        setScreenSize('desktop');
+      }
+    };
+
+    updateScreenSize();
+    window.addEventListener('resize', updateScreenSize);
+    return () => window.removeEventListener('resize', updateScreenSize);
+  }, []);
+
+  // Generate responsive video URLs based on screen size
+  const getVideoUrls = () => {
+    const dimensions = {
+      mobile: { width: 800, height: 600 },
+      tablet: { width: 1200, height: 800 },
+      desktop: { width: 1600, height: 1200 }
+    };
+
+    const { width, height } = dimensions[screenSize];
+    
+    return {
+      mp4: getCloudinaryVideoUrl(videoPublicId, { 
+        format: 'mp4', 
+        quality: 'auto',
+        width,
+        height
+      }),
+      webm: getCloudinaryVideoUrl(videoPublicId, { 
+        format: 'webm', 
+        quality: 'auto',
+        width,
+        height
+      })
+    };
+  };
+
+  const { mp4, webm } = getVideoUrls();
 
   // Handle video load
   const handleVideoLoad = () => {
@@ -65,7 +98,7 @@ const FAQCTA: React.FC = () => {
     console.error('Video failed to load. Check your Cloudinary settings and video public ID.');
   };
 
-  // Force video play on mount (some browsers need this)
+  // Force video play and handle responsive reloading
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -77,7 +110,7 @@ const FAQCTA: React.FC = () => {
         });
       }
     }
-  }, []);
+  }, [mp4, webm]); // Reload when URLs change due to screen size
 
   return (
     <div className="mt-8 sm:mt-12 md:mt-16 lg:mt-20 text-center">
@@ -99,8 +132,8 @@ const FAQCTA: React.FC = () => {
               transition: 'opacity 0.5s ease-in-out'
             }}
           >
-            <source src={mp4Url} type="video/mp4" />
-            <source src={webmUrl} type="video/webm" />
+            <source src={mp4} type="video/mp4" />
+            <source src={webm} type="video/webm" />
           </video>
         )}
         

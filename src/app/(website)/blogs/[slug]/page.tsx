@@ -28,34 +28,35 @@ export async function generateMetadata(props: {
     };
   }
 
-  const imageUrl = post.featuredImage
-    ? urlFor(post.featuredImage).width(1200).height(630).url()
+  // Safe image URL generation with proper null checks
+  const imageUrl = post?.featuredImage?.asset
+    ? urlFor(post.featuredImage)?.width(1200)?.height(630)?.url()
     : null;
 
-  const ogImageUrl = post.ogImage
-    ? urlFor(post.ogImage).width(1200).height(630).url()
+  const ogImageUrl = post?.ogImage?.asset
+    ? urlFor(post.ogImage)?.width(1200)?.height(630)?.url()
     : imageUrl;
 
   return {
-    title: post.seoTitle || post.title,
-    description: post.excerpt,
-    keywords: post.targetKeywords?.join(", "),
+    title: post?.seoTitle || post?.title,
+    description: post?.excerpt,
+    keywords: post?.targetKeywords?.join(", "),
     authors: [{ name: "Altaf Developments" }],
     openGraph: {
-      title: post.seoTitle || post.title,
-      description: post.excerpt,
+      title: post?.seoTitle || post?.title,
+      description: post?.excerpt,
       type: "article",
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
+      publishedTime: post?.publishedAt,
+      modifiedTime: post?.updatedAt,
       authors: ["Altaf Developments"],
-      url: `/blogs/${post.slug?.current}`,
+      url: `/blogs/${post?.slug?.current}`,
       images: ogImageUrl
         ? [
             {
               url: ogImageUrl,
               width: 1200,
               height: 630,
-              alt: post.featuredImage?.alt || post.title,
+              alt: post?.featuredImage?.alt || post?.title || "Blog post image",
             },
           ]
         : undefined,
@@ -63,26 +64,26 @@ export async function generateMetadata(props: {
     },
     twitter: {
       card: "summary_large_image",
-      title: post.seoTitle || post.title,
-      description: post.excerpt,
+      title: post?.seoTitle || post?.title,
+      description: post?.excerpt,
       images: ogImageUrl ? [ogImageUrl] : undefined,
       creator: "@AltafDevelopments",
     },
     alternates: {
-      canonical: post.canonicalUrl || `/blogs/${post.slug?.current}`,
+      canonical: post?.canonicalUrl || `/blogs/${post?.slug?.current}`,
     },
     robots: {
-      index: !post.noIndex,
-      follow: !post.noIndex,
+      index: !post?.noIndex,
+      follow: !post?.noIndex,
       googleBot: {
-        index: !post.noIndex,
-        follow: !post.noIndex,
+        index: !post?.noIndex,
+        follow: !post?.noIndex,
       },
     },
     other: {
       "article:author": "Altaf Developments",
-      "article:section": post.categories?.[0]?.title || "Real Estate",
-      "article:tag": post.targetKeywords?.join(", ") || "",
+      "article:section": post?.categories?.[0]?.title || "Real Estate",
+      "article:tag": post?.targetKeywords?.join(", ") || "",
     },
   };
 }
@@ -93,40 +94,44 @@ export default async function BlogPostPage(props: {
 }) {
   const params = await props.params;
   
-  // Fetch data in parallel
+  // Fetch data in parallel with error handling
   const [post, heroImages] = await Promise.all([
-    sanityService.getPostBySlug(params.slug),
-    sanityService.getHeroImagesByPage('blog-detail'),
+    sanityService.getPostBySlug(params.slug).catch(() => null),
+    sanityService.getHeroImagesByPage('blog-detail').catch(() => []),
   ]);
 
   if (!post) {
     notFound();
   }
 
-  // Fetch related posts
-  const relatedPosts = await sanityService.getRelatedPosts(post._id, 3);
+  // Fetch related posts with error handling
+  const relatedPosts = post?._id ? await sanityService.getRelatedPosts(post._id, 3).catch(() => []) : [];
   
-  // Generate structured data for SEO
-  const structuredData = generateBlogStructuredData(post);
-  const breadcrumbStructuredData = generateBreadcrumbStructuredData(post);
+  // Generate structured data for SEO with safe access
+  const structuredData = post ? generateBlogStructuredData(post) : null;
+  const breadcrumbStructuredData = post ? generateBreadcrumbStructuredData(post) : null;
 
   const heroImage = heroImages && heroImages.length > 0 ? heroImages[0] : null;
 
   return (
     <>
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbStructuredData),
-        }}
-      />
+      {/* Structured Data - only render if data exists */}
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+      )}
+      {breadcrumbStructuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbStructuredData),
+          }}
+        />
+      )}
       
       <BlogDetailHero 
         post={post} 
@@ -135,7 +140,7 @@ export default async function BlogPostPage(props: {
       
       <article className="min-h-screen mt-8">
         <BlogPostContent post={post} />
-        <RelatedPostsSection relatedPosts={relatedPosts} />
+        <RelatedPostsSection relatedPosts={relatedPosts || []} />
       </article>
     </>
   );

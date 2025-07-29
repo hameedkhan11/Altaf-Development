@@ -132,7 +132,7 @@ const CEOMessage = () => {
                   transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <CldImage
-                    src={"altaf2_ikdngn"} // Replace with chairman's image
+                    src={"FINAL_IMAGE_FOR_WEBSITE_SQUARE_1X1_ji4fnn"} // Replace with chairman's image
                     alt={`${chairmanName} - ${chairmanTitle}`}
                     fill
                     className="object-cover object-center"

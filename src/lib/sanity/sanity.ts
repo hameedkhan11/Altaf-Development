@@ -164,7 +164,7 @@ export interface Post extends SanityDocument {
   relatedPosts?: SanityReference[];
   seoTitle?: string;
   focusKeyword: string;
-  ogImage?: SanityImage;
+  ogImage?: SanityImage | undefined;
   canonicalUrl?: string;
   noIndex?: boolean;
 }

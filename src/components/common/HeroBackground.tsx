@@ -1,6 +1,6 @@
 // common/components/HeroBackground.tsx
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { CldImage } from "next-cloudinary";
 
@@ -33,7 +33,7 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   overlay = "medium",
   className = "absolute inset-0 w-full h-full",
   altText = "Hero background image",
-  parallaxSpeed = 0.3,
+  parallaxSpeed = 0.5,
   customOverlay,
   videoOptimization = {},
 }) => {
@@ -137,29 +137,184 @@ const ParallaxContent: React.FC<{
   fallbackImage?: string;
   videoOptimization: HeroBackgroundProps["videoOptimization"];
 }> = ({ type, publicId, altText, fallbackImage, videoOptimization }) => {
-  const buildVideoUrl = (width: number = 1920) => {
-    const { quality = "auto:good", format = "auto" } = videoOptimization ?? {};
-    const transformations = `q_${quality},f_${format},w_${width},c_fill,ac_none`;
-    return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformations}/${publicId}`;
+  const [screenSize, setScreenSize] = useState<{
+    width: number;
+    height: number;
+    devicePixelRatio: number;
+  }>({ width: 1920, height: 1080, devicePixelRatio: 1 });
+
+  useEffect(() => {
+    const updateScreenSize = () => {
+      if (typeof window !== 'undefined') {
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+          devicePixelRatio: window.devicePixelRatio || 1,
+        });
+      }
+    };
+
+    updateScreenSize();
+    window.addEventListener('resize', updateScreenSize);
+    return () => window.removeEventListener('resize', updateScreenSize);
+  }, []);
+
+  const getOptimalDimensions = () => {
+    const { width, height, devicePixelRatio } = screenSize;
+    
+    // Account for device pixel ratio for sharp images on high-DPI screens
+    const pixelRatio = Math.min(devicePixelRatio, 2); // Cap at 2x to avoid huge files
+    
+    // Mobile-first responsive breakpoints with proper scaling
+    if (width <= 480) {
+      return { 
+        width: Math.ceil(480 * pixelRatio), 
+        height: Math.ceil(854 * pixelRatio) // 16:9 aspect ratio
+      };
+    }
+    if (width <= 768) {
+      return { 
+        width: Math.ceil(768 * pixelRatio), 
+        height: Math.ceil(1366 * pixelRatio) 
+      };
+    }
+    if (width <= 1024) {
+      return { 
+        width: Math.ceil(1024 * pixelRatio), 
+        height: Math.ceil(768 * pixelRatio) 
+      };
+    }
+    if (width <= 1440) {
+      return { 
+        width: Math.ceil(1440 * pixelRatio), 
+        height: Math.ceil(900 * pixelRatio) 
+      };
+    }
+    if (width <= 1920) {
+      return { 
+        width: Math.ceil(1920 * pixelRatio), 
+        height: Math.ceil(1080 * pixelRatio) 
+      };
+    }
+    
+    // 4K and above
+    return { 
+      width: Math.ceil(2560 * Math.min(pixelRatio, 1.5)), 
+      height: Math.ceil(1440 * Math.min(pixelRatio, 1.5)) 
+    };
   };
 
-  const buildPosterUrl = (width: number = 1920, height: number = 1080) => {
+  const buildVideoUrl = () => {
+    const { 
+      quality = "auto:good", 
+      format = "auto",
+      bitrate,
+      fps = 30 
+    } = videoOptimization ?? {};
+    
+    const { width, height } = getOptimalDimensions();
+    const { width: screenWidth } = screenSize;
+    
+    // Use higher quality for mobile to compensate for compression
+    let videoQuality = quality;
+    if (screenWidth <= 768) {
+      videoQuality = quality === "auto:good" ? "auto:best" : quality;
+    }
+    
+    let transformations = [
+      `q_${videoQuality}`,
+      `f_${format}`,
+      `w_${width}`,
+      `h_${height}`,
+      `c_fill`,
+      `g_center`,
+      `ac_none`,
+      `fps_${fps}`
+    ];
+    
+    // Add bitrate control for mobile
+    if (bitrate && screenWidth <= 768) {
+      transformations.push(`br_${bitrate}`);
+    }
+    
+    const transformString = transformations.join(',');
+    
+    return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformString}/${publicId}`;
+  };
+
+  const buildPosterUrl = () => {
+    const { width, height } = getOptimalDimensions();
+    
     return fallbackImage
-      ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_${width},h_${height},f_auto,q_auto/${fallbackImage}`
+      ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_${width},h_${height},f_auto,q_auto:best,g_center/${fallbackImage}`
       : undefined;
   };
 
-  // Get responsive dimensions based on screen size
-  const getResponsiveDimensions = () => {
-    if (typeof window !== 'undefined') {
-      const width = window.innerWidth;
-      if (width <= 640) return { width: 640, height: 360 };
-      if (width <= 768) return { width: 768, height: 432 };
-      if (width <= 1024) return { width: 1024, height: 576 };
-      if (width <= 1536) return { width: 1920, height: 1080 };
-      return { width: 2560, height: 1440 };
-    }
-    return { width: 1920, height: 1080 };
+  // Generate multiple video sources for different screen sizes and connection speeds
+  const generateVideoSources = () => {
+    const sources = [];
+    const { devicePixelRatio } = screenSize;
+    
+    // High-end mobile (iPhone Pro, Samsung S-series, etc.)
+    sources.push({
+      src: buildVideoUrlForSize(480 * Math.min(devicePixelRatio, 2), 854 * Math.min(devicePixelRatio, 2), "auto:best"),
+      media: "(max-width: 480px) and (-webkit-min-device-pixel-ratio: 2)",
+      type: "video/mp4"
+    });
+    
+    // Standard mobile
+    sources.push({
+      src: buildVideoUrlForSize(480, 854, "auto:good"),
+      media: "(max-width: 480px)",
+      type: "video/mp4"
+    });
+    
+    // Tablet portrait
+    sources.push({
+      src: buildVideoUrlForSize(768 * Math.min(devicePixelRatio, 1.5), 1024 * Math.min(devicePixelRatio, 1.5), "auto:good"),
+      media: "(max-width: 768px)",
+      type: "video/mp4"
+    });
+    
+    // Tablet landscape / Small desktop
+    sources.push({
+      src: buildVideoUrlForSize(1024, 768, "auto:good"),
+      media: "(max-width: 1024px)",
+      type: "video/mp4"
+    });
+    
+    // Desktop
+    sources.push({
+      src: buildVideoUrlForSize(1920, 1080, "auto:good"),
+      media: "(max-width: 1920px)",
+      type: "video/mp4"
+    });
+    
+    // 4K
+    sources.push({
+      src: buildVideoUrlForSize(2560, 1440, "auto:good"),
+      media: "(min-width: 1921px)",
+      type: "video/mp4"
+    });
+    
+    return sources;
+  };
+
+  const buildVideoUrlForSize = (width: number, height: number, quality = "auto:good") => {
+    const { format = "auto", fps = 30 } = videoOptimization ?? {};
+    
+    const transformations = [
+      `q_${quality}`,
+      `f_${format}`,
+      `w_${width}`,
+      `h_${height}`,
+      `c_fill`,
+      `g_center`,
+      `ac_none`,
+      `fps_${fps}`
+    ].join(',');
+    
+    return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformations}/${publicId}`;
   };
 
   return (
@@ -179,29 +334,16 @@ const ParallaxContent: React.FC<{
             }}
             poster={buildPosterUrl()}
           >
-            {/* Multiple source elements for different screen sizes */}
-            <source 
-              src={buildVideoUrl(2560)} 
-              type="video/mp4" 
-              media="(min-width: 1536px)" 
-            />
-            <source 
-              src={buildVideoUrl(1920)} 
-              type="video/mp4" 
-              media="(min-width: 1024px)" 
-            />
-            <source 
-              src={buildVideoUrl(1024)} 
-              type="video/mp4" 
-              media="(min-width: 768px)" 
-            />
-            <source 
-              src={buildVideoUrl(640)} 
-              type="video/mp4" 
-              media="(max-width: 767px)" 
-            />
+            {generateVideoSources().map((source, index) => (
+              <source 
+                key={index}
+                src={source.src} 
+                type={source.type} 
+                media={source.media} 
+              />
+            ))}
             {/* Fallback source */}
-            <source src={buildVideoUrl(1920)} type="video/mp4" />
+            <source src={buildVideoUrl()} type="video/mp4" />
           </video>
         </div>
       ) : (
@@ -209,12 +351,12 @@ const ParallaxContent: React.FC<{
           <CldImage
             src={publicId}
             alt={altText}
-            width={getResponsiveDimensions().width}
-            height={getResponsiveDimensions().height}
-            sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, (max-width: 1536px) 1920px, 2560px"
+            width={getOptimalDimensions().width}
+            height={getOptimalDimensions().height}
+            sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, (max-width: 1440px) 1440px, (max-width: 1920px) 1920px, 2560px"
             priority
             gravity="center"
-            quality="auto:good"
+            quality="auto:best"
             className="w-full h-full object-cover"
             style={{
               minWidth: '100%',

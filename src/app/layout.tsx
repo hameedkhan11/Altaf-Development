@@ -14,7 +14,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://altafdevelopments.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://altafdevelopments.com"
   ),
   title: {
     default: "Altaf Developments",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "http://altafdevelopments.com",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://altafdevelopments.com",
     siteName: "Altaf Developments",
     title: "Altaf Developments - Premium Real Estate",
     description:

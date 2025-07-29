@@ -1,5 +1,4 @@
 // FAQItem.tsx
-"use client";
 import React from "react";
 import { ChevronDown } from "lucide-react";
 import { FAQItem as FAQItemType } from "@/data/faqs/data";
