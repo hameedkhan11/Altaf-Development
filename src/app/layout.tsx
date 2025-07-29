@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ),
   title: {
-    default: "Altaf Development",
-    template: "%s | Altaf Development",
+    default: "Altaf Developments",
+    template: "%s | Altaf Developments",
   },
   description: "Premium property listings and real estate services in Pakistan",
   keywords: [
@@ -28,19 +28,22 @@ export const metadata: Metadata = {
     "Pakistan",
     "premium properties",
   ],
+  icons: {
+    // icon: "/favicon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-    siteName: "Altaf Development",
-    title: "Altaf Development - Premium Real Estate",
+    siteName: "Altaf Developments",
+    title: "Altaf Developments - Premium Real Estate",
     description:
       "Premium property listings and real estate services in Pakistan",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@altaf_development", // Update with actual Twitter handle
-    creator: "@altaf_development",
+    site: "@altaf_developments", // Update with actual Twitter handle
+    creator: "@altaf_developments",
   },
   robots: {
     index: true,
