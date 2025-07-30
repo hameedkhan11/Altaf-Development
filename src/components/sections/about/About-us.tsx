@@ -22,7 +22,7 @@ export default function AboutPage() {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "About Altaf Developments",
-    "description": "Learn about Altaf Developments, a luxury real estate developer founded in 1993. Meet our experienced leadership team and discover our mission, vision, and core values.",
+    "description": "Learn about Altaf Developments, a luxury real estate developer with a passion for creating exceptional spaces. Meet our experienced leadership team and discover our mission, vision, and core values.",
     "url": "https://altafdevelopments.com/about",
     "mainEntity": {
       "@type": "Organization",

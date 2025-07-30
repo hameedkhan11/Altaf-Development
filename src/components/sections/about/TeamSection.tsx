@@ -95,7 +95,7 @@ const CEOMessage = () => {
                   transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <CldImage
-                    src={"altaf2_ikdngn"}
+                    src={"Altaf_ggrxkm"}
                     alt={`${ceoName} - ${ceoTitle}`}
                     fill
                     className="object-cover object-center"
@@ -105,8 +105,6 @@ const CEOMessage = () => {
                   />
                 </motion.div>
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </motion.div>
           </div>
@@ -132,7 +130,7 @@ const CEOMessage = () => {
                   transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <CldImage
-                    src={"FINAL_IMAGE_FOR_WEBSITE_SQUARE_1X1_ji4fnn"} // Replace with chairman's image
+                    src={"Altaf_ggrxkm"} // Replace with chairman's image
                     alt={`${chairmanName} - ${chairmanTitle}`}
                     fill
                     className="object-cover object-center"
@@ -140,9 +138,6 @@ const CEOMessage = () => {
                     aria-label="Chairman Image"
                   />
                 </motion.div>
-
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </motion.div>
 

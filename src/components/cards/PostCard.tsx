@@ -16,9 +16,20 @@ export function PostCard({
   showBadge = false,
   badgeText = "Featured"
 }: PostCardProps) {
-  const imageUrl = post.featuredImage
-    ? urlFor(post.featuredImage).width(800).height(600).crop("focalpoint").url()
-    : null;
+  // Generate responsive image URLs for Next.js optimization
+  const getOptimizedImageUrl = () => {
+    if (!post.featuredImage) return null;
+    
+    return urlFor(post.featuredImage)
+      .width(800)
+      .height(600)
+      .crop("focalpoint")
+      .format('webp')
+      .quality(85)
+      .url();
+  };
+
+  const imageUrl = getOptimizedImageUrl();
 
   return (
     <article className="group cursor-pointer h-full flex flex-col w-full">
@@ -28,9 +39,12 @@ export function PostCard({
             <Image
               src={imageUrl}
               alt={post.featuredImage?.alt || post.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+              width={800}
+              height={600}
+              className="object-cover group-hover:scale-105 transition-transform duration-300 w-full h-full"
+              sizes="(max-width: 480px) 400px, (max-width: 768px) 600px, 800px"
+              priority={showBadge} // Prioritize featured images
+              quality={85}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-lg">

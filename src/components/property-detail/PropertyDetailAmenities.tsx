@@ -54,7 +54,7 @@ const ResidenceAmenities: React.FC = () => {
     { name: "Table tennis", icon: < FaTableTennis/> },
     { name: "High speed elevator", icon: <GiElevator /> },
     { name: "Airbnb Facilities", icon: <FaAirbnb /> },
-    { name: "Medical Centre", icon: <FaHospital /> },
+    { name: "Medical Store", icon: <FaHospital /> },
     { name: "House Keeping", icon: <FaHouseChimney /> },
   ];
 
