@@ -1,11 +1,15 @@
-/*
-eslint-disable @typescript-eslint/no-explicit-any
-*/
-// app/api/contact/route.ts
+// File: /api/contact/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 
-// Types
+// MailerLite Configuration
+const MAILERLITE_API_KEY = process.env.MAILERLITE_API_KEY;
+const MAILERLITE_GROUP_ID = process.env.MAILERLITE_GROUP_ID;
+
+// Email Service Configuration (Resend)
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const FROM_EMAIL = process.env.FROM_EMAIL; // Your verified domain email
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+
 interface ContactFormData {
   name: string;
   email: string;
@@ -16,534 +20,259 @@ interface ContactFormData {
   emailSubscription: boolean;
 }
 
-interface EmailConfig {
-  service?: string;
-  host?: string;
-  port?: number;
-  secure?: boolean;
-  auth: {
-    user: string;
-    pass: string;
-  };
+// Rate limiting (simple in-memory store)
+const rateLimitStore = new Map();
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX_REQUESTS = 5;
+
+function checkRateLimit(identifier: string): boolean {
+  const now = Date.now();
+  const userRequests = rateLimitStore.get(identifier) || [];
+  
+  // Clean old requests
+  const validRequests = userRequests.filter((time: number) => now - time < RATE_LIMIT_WINDOW);
+  
+  if (validRequests.length >= RATE_LIMIT_MAX_REQUESTS) {
+    return false;
+  }
+  
+  validRequests.push(now);
+  rateLimitStore.set(identifier, validRequests);
+  return true;
 }
 
-// Email configuration for Zoho Mail
-const createEmailConfig = (): EmailConfig => {
-  return {
-    host: 'smtp.zoho.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER!, // Your custom domain email (e.g., contact@yourdomain.com)
-      pass: process.env.EMAIL_PASSWORD!, // Your Zoho email password
+async function addToMailerLite(email: string, name: string, phone: string, countryCode: string) {
+  console.log('Adding to MailerLite...', { email, name, phone, countryCode });
+  if (!MAILERLITE_API_KEY || !MAILERLITE_GROUP_ID) {
+    throw new Error('MailerLite configuration missing');
+  }
+
+  const subscriberData = {
+    email: email,
+    fields: {
+      name: name,
+      phone: `${countryCode} ${phone}`,
+      country_code: countryCode,
+      source: 'Contact Form - Altaf Developments'
     },
-  };
-};
-
-// Email template
-const createEmailTemplate = (data: ContactFormData): string => {
-  const contactModeEmojis = {
-    whatsapp: '📱',
-    call: '📞',
-    email: '📧',
+    groups: [MAILERLITE_GROUP_ID]
   };
 
-  const contactModeLabels = {
-    whatsapp: 'WhatsApp',
-    call: 'Phone Call',
-    email: 'Email',
-  };
+  const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${MAILERLITE_API_KEY}`,
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(subscriberData)
+  });
 
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>New Contact Form Submission</title>
-      <style>
-        body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          max-width: 600px;
-          margin: 0 auto;
-          padding: 20px;
-          background-color: #f5f5f5;
-        }
-        .container {
-          background-color: white;
-          padding: 30px;
-          border-radius: 10px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header {
-          background: linear-gradient(135deg, rgb(140,46,71) 0%, rgb(180,66,91) 100%);
-          color: white;
-          padding: 20px;
-          border-radius: 8px;
-          margin-bottom: 30px;
-          text-align: center;
-        }
-        .header h1 {
-          margin: 0;
-          font-size: 24px;
-          font-weight: 600;
-        }
-        .field-group {
-          margin-bottom: 20px;
-          padding: 15px;
-          background-color: #f8f9fa;
-          border-radius: 8px;
-          border-left: 4px solid rgb(140,46,71);
-        }
-        .field-label {
-          font-weight: 600;
-          color: rgb(140,46,71);
-          margin-bottom: 5px;
-          text-transform: uppercase;
-          font-size: 12px;
-          letter-spacing: 0.5px;
-        }
-        .field-value {
-          font-size: 16px;
-          color: #333;
-          word-wrap: break-word;
-        }
-        .message-box {
-          background-color: #fff;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          padding: 20px;
-          margin-top: 10px;
-          font-style: italic;
-        }
-        .contact-preference {
-          display: inline-flex;
-          align-items: center;
-          background-color: rgb(140,46,71);
-          color: white;
-          padding: 8px 15px;
-          border-radius: 20px;
-          font-weight: 500;
-          margin-top: 5px;
-        }
-        .phone-number {
-          font-family: 'Courier New', monospace;
-          background-color: #e9ecef;
-          padding: 5px 10px;
-          border-radius: 4px;
-          font-weight: 600;
-        }
-        .subscription-badge {
-          display: inline-flex;
-          align-items: center;
-          background-color: #28a745;
-          color: white;
-          padding: 5px 12px;
-          border-radius: 15px;
-          font-size: 14px;
-          font-weight: 500;
-          margin-top: 5px;
-        }
-        .subscription-badge.declined {
-          background-color: #6c757d;
-        }
-        .footer {
-          margin-top: 30px;
-          padding: 20px;
-          background-color: #f8f9fa;
-          border-radius: 8px;
-          text-align: center;
-          font-size: 12px;
-          color: #666;
-        }
-        .timestamp {
-          color: #888;
-          font-size: 11px;
-          margin-top: 10px;
-        }
-        .marketing-note {
-          background-color: #fff3cd;
-          border: 1px solid #ffeaa7;
-          border-radius: 8px;
-          padding: 15px;
-          margin-top: 20px;
-          font-size: 13px;
-          color: #856404;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>🏠 New Property Inquiry</h1>
-          <p style="margin: 10px 0 0 0; opacity: 0.9;">Luxury Property Contact Form</p>
-        </div>
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(`MailerLite API error: ${response.status} - ${errorData.message || 'Unknown error'}`);
+  }
 
-        <div class="field-group">
-          <div class="field-label">👤 Client Name</div>
-          <div class="field-value">${data.name}</div>
-        </div>
+  return await response.json();
+}
 
-        <div class="field-group">
-          <div class="field-label">📧 Email Address</div>
-          <div class="field-value">
-            <a href="mailto:${data.email}" style="color: rgb(140,46,71); text-decoration: none;">
-              ${data.email}
-            </a>
+async function sendNotificationEmail(formData: ContactFormData) {
+  if (!RESEND_API_KEY || !FROM_EMAIL || !ADMIN_EMAIL) {
+    throw new Error('Resend configuration missing. Please check RESEND_API_KEY, FROM_EMAIL, and ADMIN_EMAIL environment variables.');
+  }
+
+  const htmlContent = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+      <div style="background: linear-gradient(135deg, #8c2e47 0%, #a53860 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+        <h2 style="margin: 0; font-size: 24px;">New Contact Form Submission</h2>
+        <p style="margin: 5px 0 0 0; opacity: 0.9;">Altaf Developments Website</p>
+      </div>
+      
+      <div style="background: #f9f9f9; padding: 25px; border-radius: 0 0 8px 8px;">
+        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <h3 style="margin-top: 0; color: #8c2e47; border-bottom: 2px solid #8c2e47; padding-bottom: 10px;">Contact Details</h3>
+          <div style="display: grid; gap: 12px;">
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Name:</strong> ${formData.name}</p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Email:</strong> <a href="mailto:${formData.email}" style="color: #333; text-decoration: none;">${formData.email}</a></p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Phone:</strong> <a href="tel:${formData.countryCode}${formData.phone}" style="color: #333; text-decoration: none;">${formData.countryCode} ${formData.phone}</a></p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Preferred Contact:</strong> ${formData.preferredContact.charAt(0).toUpperCase() + formData.preferredContact.slice(1)}</p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Email Subscription:</strong> <span style="color: ${formData.emailSubscription ? '#28a745' : '#dc3545'}; font-weight: bold;">${formData.emailSubscription ? 'Yes ✓' : 'No ✗'}</span></p>
           </div>
         </div>
-
-        <div class="field-group">
-          <div class="field-label">📞 Phone Number</div>
-          <div class="field-value">
-            <span class="phone-number">
-              <a href="tel:${data.countryCode}${data.phone}" style="color: #333; text-decoration: none;">
-                ${data.countryCode} ${data.phone}
-              </a>
-            </span>
+        
+        <div style="background: white; padding: 20px; border-left: 4px solid #8c2e47; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          <h3 style="margin-top: 0; color: #8c2e47;">Message</h3>
+          <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #e9ecef;">
+            <p style="line-height: 1.6; margin: 0; white-space: pre-wrap;">${formData.message}</p>
           </div>
         </div>
-
-        <div class="field-group">
-          <div class="field-label">💬 Preferred Contact Method</div>
-          <div class="field-value">
-            <span class="contact-preference">
-              ${contactModeEmojis[data.preferredContact as keyof typeof contactModeEmojis]} 
-              ${contactModeLabels[data.preferredContact as keyof typeof contactModeLabels]}
-            </span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">📬 Email Marketing Subscription</div>
-          <div class="field-value">
-            <span class="subscription-badge ${!data.emailSubscription ? 'declined' : ''}">
-              ${data.emailSubscription ? '✅ Subscribed to offers and blog posts' : '❌ Declined email marketing'}
-            </span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-label">💭 Message</div>
-          <div class="field-value">
-            <div class="message-box">
-              ${data.message.replace(/\n/g, '<br>')}
-            </div>
-          </div>
-        </div>
-
-        ${data.emailSubscription ? `
-        <div class="marketing-note">
-          <strong>📧 Marketing Note:</strong> This client has opted in to receive marketing emails. 
-          Add them to your newsletter/offers mailing list.
-        </div>
-        ` : ''}
-
-        <div class="footer">
-          <p><strong>Action Required:</strong> Please respond to this inquiry within 24 hours for optimal client experience.</p>
-          <div class="timestamp">
-            📅 Received: ${new Date().toLocaleDateString('en-US', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              timeZoneName: 'short'
-            })}
-          </div>
+        
+        <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #ddd;">
+          <p style="margin: 0; color: #666; font-size: 12px;">This email was sent from the Altaf Developments contact form</p>
+          <p style="margin: 5px 0 0 0; color: #666; font-size: 12px;">Time: ${new Date().toLocaleString('en-US', { 
+            timeZone: 'Asia/Karachi',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          })} (PKT)</p>
         </div>
       </div>
-    </body>
-    </html>
+    </div>
   `;
-};
 
-// Validation function
-const validateFormData = (data: any): data is ContactFormData => {
-  const requiredFields = ['name', 'email', 'phone', 'countryCode', 'message', 'preferredContact'];
-  
-  for (const field of requiredFields) {
-    if (!data[field] || typeof data[field] !== 'string' || data[field].trim() === '') {
-      return false;
-    }
+  const textContent = `
+New Contact Form Submission - Altaf Developments
+
+CONTACT DETAILS:
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.countryCode} ${formData.phone}
+Preferred Contact: ${formData.preferredContact}
+Email Subscription: ${formData.emailSubscription ? 'Yes' : 'No'}
+
+MESSAGE:
+${formData.message}
+
+---
+Time: ${new Date().toLocaleString('en-US', { 
+  timeZone: 'Asia/Karachi',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+})} (PKT)
+
+This email was sent from the Altaf Developments contact form.
+  `;
+
+  const emailData = {
+    from: `Altaf Developments Website <${FROM_EMAIL}>`,
+    to: [ADMIN_EMAIL],
+    reply_to: formData.email,
+    subject: `🏢 New Contact Form Submission - ${formData.name}`,
+    text: textContent,
+    html: htmlContent
+  };
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${RESEND_API_KEY}`
+    },
+    body: JSON.stringify(emailData)
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(`Resend API error: ${response.status} - ${errorData.message || 'Unknown error'}`);
   }
 
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(data.email)) {
-    return false;
-  }
+  const result = await response.json();
+  console.log('Notification email sent successfully via Resend');
+  return result;
+}
 
-  // Phone validation (basic)
-  const phoneRegex = /^[0-9+\-\s()]{7,20}$/;
-  if (!phoneRegex.test(data.phone)) {
-    return false;
-  }
-
-  // Preferred contact validation
-  const validContactMethods = ['whatsapp', 'call', 'email'];
-  if (!validContactMethods.includes(data.preferredContact)) {
-    return false;
-  }
-
-  // Email subscription validation (should be boolean)
-  if (typeof data.emailSubscription !== 'boolean') {
-    return false;
-  }
-
-  return true;
-};
-
-// Rate limiting (simple in-memory store)
-const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
-
-const checkRateLimit = (ip: string): boolean => {
-  const now = Date.now();
-  const windowMs = 15 * 60 * 1000; // 15 minutes
-  const maxRequests = 5; // Max 5 requests per 15 minutes
-
-  const record = rateLimitStore.get(ip);
-  
-  if (!record || now > record.resetTime) {
-    rateLimitStore.set(ip, { count: 1, resetTime: now + windowMs });
-    return true;
-  }
-
-  if (record.count >= maxRequests) {
-    return false;
-  }
-
-  record.count++;
-  return true;
-};
-
-// Function to handle email subscription (you can integrate with your email service)
-const handleEmailSubscription = async (email: string, name: string): Promise<void> => {
-  if (!email || !name) return;
-  
-  // TODO: Integrate with your email marketing service
-  // Examples:
-  // - Mailchimp API
-  // - SendGrid Marketing Campaigns
-  // - ConvertKit
-  // - Campaign Monitor
-  
-  console.log(`Adding ${name} (${email}) to email marketing list`);
-  
-  // Example implementation:
-  // await addToMailingList({
-  //   email,
-  //   firstName: name.split(' ')[0],
-  //   lastName: name.split(' ').slice(1).join(' '),
-  //   source: 'contact_form',
-  //   timestamp: new Date().toISOString()
-  // });
-};
-
-// Main API handler
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
     const clientIP = request.headers.get('x-forwarded-for') || 
-                     request.headers.get('x-real-ip') || 
-                     'unknown';
+                    request.headers.get('x-real-ip') || 
+                    'unknown';
 
-    // Check rate limiting
+    // Check rate limit
     if (!checkRateLimit(clientIP)) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Too many requests. Please try again later.',
-          code: 'RATE_LIMIT_EXCEEDED'
-        },
+        { success: false, error: 'Too many requests. Please wait before trying again.', code: 'RATE_LIMIT_EXCEEDED' },
         { status: 429 }
       );
     }
 
-    // Parse and validate request body
-    const body = await request.json();
-    
-    if (!validateFormData(body)) {
+    const formData: ContactFormData = await request.json();
+
+    // Validation
+    if (!formData.name?.trim() || !formData.email?.trim() || !formData.phone?.trim() || !formData.message?.trim()) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Invalid form data. Please check all required fields.',
-          code: 'VALIDATION_ERROR'
-        },
+        { success: false, error: 'All required fields must be filled.', code: 'VALIDATION_ERROR' },
         { status: 400 }
       );
     }
 
-    const formData: ContactFormData = body;
-
-    // Check environment variables
-    const businessEmail = process.env.BUSINESS_EMAIL;
-    if (!businessEmail) {
-      console.error('BUSINESS_EMAIL environment variable is not set');
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Server configuration error. Please try again later.',
-          code: 'CONFIG_ERROR'
-        },
-        { status: 500 }
+        { success: false, error: 'Please enter a valid email address.', code: 'VALIDATION_ERROR' },
+        { status: 400 }
       );
     }
 
-    // Handle email subscription if opted in
+    let mailerliteResult = null;
+    let emailSent = false;
+
+    // Add to MailerLite if user subscribed
     if (formData.emailSubscription) {
       try {
-        await handleEmailSubscription(formData.email, formData.name);
+        mailerliteResult = await addToMailerLite(
+          formData.email,
+          formData.name,
+          formData.phone,
+          formData.countryCode
+        );
+        console.log('Successfully added to MailerLite:', mailerliteResult);
       } catch (error) {
-        console.error('Email subscription error:', error);
-        // Don't fail the entire request if subscription fails
+        console.error('MailerLite subscription error:', error);
+        // Continue with the process even if MailerLite fails
       }
     }
 
-    // Create email transporter
-    const emailConfig = createEmailConfig();
-    const transporter = nodemailer.createTransport(emailConfig);
+    // Send notification email to admin via Resend
+    try {
+      await sendNotificationEmail(formData);
+      emailSent = true;
+      console.log('Admin notification email sent successfully via Resend');
+    } catch (error) {
+      console.error('Failed to send notification email:', error);
+      // Continue with the process but log the error
+    }
 
-    // Verify transporter connection
-    await transporter.verify();
-
-    // Email options
-    const mailOptions = {
-      from: `"${formData.name}" <${process.env.EMAIL_USER}>`,
-      to: businessEmail,
-      replyTo: formData.email,
-      subject: `🏠 New Property Inquiry from ${formData.name}${formData.emailSubscription ? ' (Marketing Opt-in)' : ''}`,
-      html: createEmailTemplate(formData),
-      text: `
-        New Property Inquiry
-        
-        Name: ${formData.name}
-        Email: ${formData.email}
-        Phone: ${formData.countryCode} ${formData.phone}
-        Preferred Contact: ${formData.preferredContact}
-        Email Marketing: ${formData.emailSubscription ? 'Yes - Add to mailing list' : 'No'}
-        
-        Message:
-        ${formData.message}
-        
-        Received: ${new Date().toLocaleString()}
-      `,
-    };
-
-    // Send email
-    const info = await transporter.sendMail(mailOptions);
+    // Success response
+    let successMessage = 'Thank you for your message! Our luxury property consultant will contact you within 24 hours.';
     
-    console.log('Email sent successfully:', info.messageId);
-
-    // Prepare success message based on subscription status
-    let successMessage = 'Your inquiry has been sent successfully! We\'ll contact you within 24 hours.';
     if (formData.emailSubscription) {
-      successMessage += ' You\'ve also been subscribed to our latest offers and blog posts.';
+      if (mailerliteResult) {
+        successMessage += ' You have been subscribed to our newsletter for the latest property updates and blog posts.';
+      } else {
+        successMessage += ' There was an issue with the newsletter subscription, but your message has been received.';
+      }
     }
 
     return NextResponse.json({
       success: true,
       message: successMessage,
-      messageId: info.messageId,
+      messageId: `MSG_${Date.now()}`,
+      details: {
+        emailSent,
+        subscribed: formData.emailSubscription && !!mailerliteResult,
+        timestamp: new Date().toISOString()
+      }
     });
 
   } catch (error) {
     console.error('Contact form error:', error);
     
-    // Handle specific error types
-    if (error instanceof SyntaxError) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Invalid request format.',
-          code: 'INVALID_JSON'
-        },
-        { status: 400 }
-      );
-    }
-
-    if (error && typeof error === 'object' && 'code' in error) {
-      const nodeError = error as { code: string };
-      
-      if (nodeError.code === 'EAUTH') {
-        return NextResponse.json(
-          { 
-            success: false, 
-            error: 'Email authentication failed. Please try again later.',
-            code: 'EMAIL_AUTH_ERROR'
-          },
-          { status: 500 }
-        );
-      }
-      
-      if (nodeError.code === 'ECONNECTION') {
-        return NextResponse.json(
-          { 
-            success: false, 
-            error: 'Unable to connect to email server. Please try again later.',
-            code: 'EMAIL_CONNECTION_ERROR'
-          },
-          { status: 500 }
-        );
-      }
-    }
-
     return NextResponse.json(
       { 
         success: false, 
         error: 'Something went wrong. Please try again later.',
-        code: 'INTERNAL_ERROR'
+        code: 'SERVER_ERROR'
       },
       { status: 500 }
     );
   }
-}
-
-// Handle other HTTP methods
-export async function GET() {
-  return NextResponse.json(
-    { 
-      success: false, 
-      error: 'Method not allowed. Use POST to submit contact form.',
-      code: 'METHOD_NOT_ALLOWED'
-    },
-    { status: 405 }
-  );
-}
-
-export async function PUT() {
-  return NextResponse.json(
-    { 
-      success: false, 
-      error: 'Method not allowed. Use POST to submit contact form.',
-      code: 'METHOD_NOT_ALLOWED'
-    },
-    { status: 405 }
-  );
-}
-
-export async function DELETE() {
-  return NextResponse.json(
-    { 
-      success: false, 
-      error: 'Method not allowed. Use POST to submit contact form.',
-      code: 'METHOD_NOT_ALLOWED'
-    },
-    { status: 405 }
-  );
-}
-
-// OPTIONS handler for CORS (if needed)
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
 }

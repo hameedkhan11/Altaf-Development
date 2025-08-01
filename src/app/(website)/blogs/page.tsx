@@ -41,7 +41,6 @@ export default async function BlogPage(props: {
     locations,
     authors,
     searchResults,
-    heroImages, // Fetch hero images for blog page
   ] = await Promise.all([
     searchParams?.search
       ? { posts: await sanityService.searchPosts(searchParams.search as string, limit), total: 0, hasMore: false }
@@ -52,7 +51,6 @@ export default async function BlogPage(props: {
     searchParams?.search
       ? sanityService.searchPosts(searchParams.search as string, limit)
       : null,
-    sanityService.getHeroImagesByPage('blog'), // Fetch hero images for blog page
   ])
 
   const posts = searchResults || postsResult?.posts || []
@@ -60,7 +58,7 @@ export default async function BlogPage(props: {
   const totalPages = Math.ceil(totalPosts / limit)
 
   // Get the first active hero image for the blog page
-  const heroImage = heroImages && heroImages.length > 0 ? heroImages[0] : null
+  // const heroImage = heroImages && heroImages.length > 0 ? heroImages[0] : null
 
   return (
     <>
@@ -72,7 +70,7 @@ export default async function BlogPage(props: {
           searchParams={searchParams}
           backgroundImage="Blogs_lbursu"
           fallbackImage="blog-hero-fallback"
-          heroImage={heroImage}
+          // heroImage={heroImage}
         />
         
         <div className="mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-16 py-8 sm:py-12 md:py-16">

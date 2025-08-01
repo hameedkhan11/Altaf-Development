@@ -10,6 +10,7 @@ const ContactForm = () => {
   const {
     formData,
     isSubmitting,
+    submitStatus,
     countries,
     contactModes,
     handleInputChange,
@@ -49,7 +50,18 @@ const ContactForm = () => {
 
             {/* Right Side - Contact Form */}
             <div className="bg-white p-3 sm:p-4 lg:p-6 order-1 lg:order-2">
-              <div className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-3">
+                {/* Status Message */}
+                {submitStatus.type && (
+                  <div className={`p-3 rounded-md text-sm ${
+                    submitStatus.type === 'success' 
+                      ? 'bg-green-50 text-green-800 border border-green-200' 
+                      : 'bg-red-50 text-red-800 border border-red-200'
+                  }`}>
+                    {submitStatus.message}
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
                   {/* Name Field */}
                   <div className="">
@@ -180,7 +192,7 @@ const ContactForm = () => {
                 {/* Submit Button */}
                 <div className="flex justify-center pt-3 sm:pt-4 lg:pt-5">
                   <Button
-                    onClick={handleSubmit}
+                    type="submit"
                     disabled={isSubmitting}
                     className="bg-[rgb(140,46,71)] font-light text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 w-full rounded-full text-sm sm:text-base lg:text-lg transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)]"
                   >
@@ -194,7 +206,7 @@ const ContactForm = () => {
                     )}
                   </Button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

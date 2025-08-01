@@ -127,7 +127,12 @@ export const useContactForm = () => {
     return true;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    // Prevent default form submission if event is provided
+    if (e) {
+      e.preventDefault();
+    }
+
     if (!validateForm()) {
       return;
     }

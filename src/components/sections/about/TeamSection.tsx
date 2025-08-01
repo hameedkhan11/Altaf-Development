@@ -88,14 +88,14 @@ const CEOMessage = () => {
               transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               viewport={{ once: true, margin: "-50px" }}
             >
-              <div className="relative h-[250px] sm:h-[300px] md:h-[360px] lg:h-[400px] xl:h-[460px] 2xl:h-[520px] w-full overflow-hidden shadow-2xl rounded-lg">
+              <div className="relative h-[250px] sm:h-[300px] md:h-[360px] lg:h-[400px] xl:h-[460px] 2xl:h-[520px] w-full overflow-hidden shadow-lg rounded-lg">
                 <motion.div
                   className="w-full h-full"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <CldImage
-                    src={"Altaf_ggrxkm"}
+                    src={"Altaf_website_image_landscape_2_fxo3d3"}
                     alt={`${ceoName} - ${ceoTitle}`}
                     fill
                     className="object-cover object-center"
@@ -123,7 +123,7 @@ const CEOMessage = () => {
               transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               viewport={{ once: true, margin: "-50px" }}
             >
-              <div className="relative h-[250px] sm:h-[300px] md:h-[360px] lg:h-[400px] xl:h-[460px] 2xl:h-[520px] w-full overflow-hidden shadow-2xl rounded-lg">
+              <div className="relative h-[250px] sm:h-[300px] md:h-[360px] lg:h-[400px] xl:h-[460px] 2xl:h-[520px] w-full overflow-hidden shadow-lg rounded-lg">
                 <motion.div
                   className="w-full h-full"
                   whileHover={{ scale: 1.02 }}
