@@ -130,7 +130,7 @@ const Amenities = () => {
                     alt={allAmenities[prevIndex].data.name}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 720px) 100vw, (max-width: 1024px) 100vw, 50vw"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                     aria-label="Previous amenity image"
                   />
@@ -151,7 +151,7 @@ const Amenities = () => {
                     alt={currentAmenity.data.name}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 720px) 100vw, (max-width: 1024px) 100vw, 50vw"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                     aria-label="Current amenity image"
                   />
@@ -171,12 +171,14 @@ const Amenities = () => {
               {/* Desktop Slider Arrows */}
               <button
                 onClick={prevSlide}
+                aria-label="Previous amenity image"
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 hover:bg-[rgb(140,46,71)] text-white p-2 rounded-full transition-all duration-300 z-10"
               >
                 <FaArrowLeft size={24} />
               </button>
               <button
                 onClick={nextSlide}
+                aria-label="Next amenity image"
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 hover:bg-[rgb(140,46,71)] text-white p-2 rounded-full transition-all duration-300 z-10"
               >
                 <FaArrowRight size={24} />
@@ -194,6 +196,7 @@ const Amenities = () => {
                       ? "bg-[rgb(140,46,71)] scale-125"
                       : "bg-gray-300 hover:bg-gray-400"
                   }`}
+                  aria-label="Amenity image indicator"
                 />
               ))}
             </div>
@@ -218,7 +221,7 @@ const Amenities = () => {
                 src={allAmenities[prevIndex].data.image}
                 alt={allAmenities[prevIndex].data.name}
                 fill
-                sizes="100vw"
+                sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) calc(100vw - 4rem), 100vw"
                 className="object-cover"
                 priority
                 aria-label="Amenity Images"
@@ -240,7 +243,7 @@ const Amenities = () => {
                 src={currentAmenity.data.image}
                 alt={currentAmenity.data.name}
                 fill
-                sizes="100vw"
+                sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) calc(100vw - 4rem), 100vw"
                 className="object-cover"
                 priority
                 aria-label="Amenity Images"

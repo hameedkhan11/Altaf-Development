@@ -82,7 +82,9 @@ const ProjectsSection = () => {
         
         {/* UPDATED: Changed lg:w-[35%] to md:w-auto to allow natural sizing on tablet */}
         <Link href={'/property-detail'} className="flex flex-col gap-3 sm:gap-4 w-full sm:w-auto md:w-auto">
-          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-3 xs:py-3.5 sm:py-4 md:py-4.5 lg:py-4 xl:py-5 2xl:py-6 px-4 xs:px-5 sm:px-6 md:px-7 lg:px-6 xl:px-7 2xl:px-8 w-full text-sm xs:text-base sm:text-lg md:text-xl lg:text-base xl:text-lg 2xl:text-xl transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)] rounded-full font-medium">
+          <Button className="bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-3 xs:py-3.5 sm:py-4 md:py-4.5 lg:py-4 xl:py-5 2xl:py-6 px-4 xs:px-5 sm:px-6 md:px-7 lg:px-6 xl:px-7 2xl:px-8 w-full text-sm xs:text-base sm:text-lg md:text-xl lg:text-base xl:text-lg 2xl:text-xl transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)] rounded-full font-medium"
+          aria-label="View All Apartments"
+          >
             View All Apartments
           </Button>
         </Link>

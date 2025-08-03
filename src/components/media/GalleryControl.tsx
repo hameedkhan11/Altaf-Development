@@ -55,6 +55,7 @@ const GalleryControls: React.FC<GalleryControlsProps> = ({
                 ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg border-0"
                 : "hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700"
             }`}
+            aria-label="Filter by category"
           >
             {category.replace("-", " ")}
           </Button>

@@ -87,6 +87,7 @@ const Lightbox: React.FC<LightboxProps> = ({
           size="icon"
           className="absolute top-4 right-4 z-10 text-white hover:bg-white/10"
           onClick={onClose}
+          aria-label="Close lightbox"
         >
           <X className="w-6 h-6" />
         </Button>
@@ -102,6 +103,7 @@ const Lightbox: React.FC<LightboxProps> = ({
                 e.stopPropagation();
                 onPrev();
               }}
+              aria-label="Previous image"
             >
               <ChevronLeft className="w-8 h-8" />
             </Button>
@@ -113,6 +115,7 @@ const Lightbox: React.FC<LightboxProps> = ({
                 e.stopPropagation();
                 onNext();
               }}
+              aria-label="Next image"
             >
               <ChevronRight className="w-8 h-8" />
             </Button>

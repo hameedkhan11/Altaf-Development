@@ -40,6 +40,7 @@ const VideoCard = ({ video }: { video: PropertyVideo }) => {
               <button
                 onClick={() => setIsPlaying(true)}
                 className="bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-4 transition-all"
+                aria-label="Play video"
               >
                 <Play className="w-6 h-6 text-gray-800 ml-1" />
               </button>
@@ -106,6 +107,7 @@ export default function VideosPage() {
           <button 
             onClick={() => window.location.reload()}
             className="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors"
+            aria-label="Retry button"
           >
             Try Again
           </button>

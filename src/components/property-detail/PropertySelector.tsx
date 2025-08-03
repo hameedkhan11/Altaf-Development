@@ -21,6 +21,7 @@ export const PropertySelector: React.FC<PropertySelectorProps> = ({
             : "border-[rgb(140,46,71)] text-[rgb(140,46,71)] hover:bg-[rgb(140,46,71)] hover:text-white "
         } rounded-full cursor-pointer`}
         onClick={() => onPropertyChange("1bed")}
+        aria-label="1 Bedroom"
       >
         1 Bedroom
       </Button>
@@ -32,6 +33,7 @@ export const PropertySelector: React.FC<PropertySelectorProps> = ({
             : "border-[rgb(140,46,71)] text-[rgb(140,46,71)] hover:bg-[rgb(140,46,71)] hover:text-white"
         } cursor-pointer rounded-full hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 transition-all duration-300 ease-in hover:border-[rgb(140,46,71)]`}
         onClick={() => onPropertyChange("2bed")}
+        aria-label="2 Bedroom"
       >
         2 Bedroom
       </Button>

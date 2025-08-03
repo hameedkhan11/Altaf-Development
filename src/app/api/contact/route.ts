@@ -7,7 +7,7 @@ const MAILERLITE_GROUP_ID = process.env.MAILERLITE_GROUP_ID;
 
 // Email Service Configuration (Resend)
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const FROM_EMAIL = process.env.FROM_EMAIL; // Your verified domain email
+const FROM_EMAIL = process.env.FROM_EMAIL;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 interface ContactFormData {

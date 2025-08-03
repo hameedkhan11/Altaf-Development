@@ -35,6 +35,7 @@ export const NewsletterSection = ({
         <Button
           type="submit"
           className="w-full px-4 py-2 lg:px-6 lg:py-4 bg-[#8c2e47] hover:bg-transparent border border-[#8c2e47] hover:border-[#8c2e47] hover:text-black cursor-pointer text-white font-medium rounded-full transition-all duration-300 ease-in text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base"
+          aria-label="Subscribe to newsletter"
         >
           Subscribe
         </Button>

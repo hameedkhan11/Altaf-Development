@@ -104,6 +104,7 @@ const NotFoundPage = () => {
           <button
             onClick={() => router.back()}
             className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium transition-all duration-300 border border-gray-300 w-full sm:w-auto"
+            aria-label="Go Back"
           >
             <ArrowLeft className="w-5 h-5" />
             Go Back

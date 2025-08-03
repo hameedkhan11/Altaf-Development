@@ -177,6 +177,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
           size="sm"
           className="absolute top-2 right-2 sm:top-6 sm:right-6 z-[10000] bg-white/20 hover:bg-white/30 text-white border-0 p-2 sm:p-3"
           onClick={toggleFullscreen}
+          aria-label="Close fullscreen modal"
         >
           <X className="w-6 h-6 sm:w-6 sm:h-6" />
         </Button>
@@ -187,6 +188,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
           size="sm"
           className="absolute top-2 right-14 sm:top-6 sm:right-20 z-[10000] bg-white/20 hover:bg-white/30 text-white border-0 p-2 sm:p-3"
           onClick={toggleFullscreen}
+          aria-label="Minimize fullscreen modal"
         >
           <Minimize2 className="w-6 h-6 sm:w-6 sm:h-6" />
         </Button>
@@ -217,6 +219,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                 size="sm"
                 className="absolute left-2 sm:left-6 top-1/2 transform -translate-y-1/2 hidden sm:flex border-2 border-white text-white hover:text-white/80 p-3 sm:p-4 rounded-full items-center justify-center bg-transparent hover:bg-transparent"
                 onClick={prevImage}
+                aria-label="Previous image"
               >
                 <FaArrowLeft className="w-4 h-4 sm:w-6 sm:h-6" />
               </Button>
@@ -266,6 +269,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
               e.stopPropagation();
               toggleFullscreen();
             }}
+            aria-label="Open fullscreen modal"
           >
             <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4" />
           </Button>
@@ -292,6 +296,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                   e.stopPropagation();
                   nextImage();
                 }}
+                aria-label="Next image"
               >
                 <FaArrowRight className="w-4 h-4 sm:w-5 sm:h-5 bg-transparent" />
               </Button>
@@ -318,6 +323,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                         setCurrentImageIndex(index);
                       }}
                       className={`relative overflow-hidden rounded-md transition-all duration-200 flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16`}
+                      aria-label="Thumbnail"
                     >
                       <CldImage
                         width={80}
@@ -351,6 +357,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({ propertyType }) => {
                     ? "bg-black"
                     : "bg-transparent border border-gray-400"
                 }`}
+                aria-label="Thumbnail"
               />
             ))}
           </div>

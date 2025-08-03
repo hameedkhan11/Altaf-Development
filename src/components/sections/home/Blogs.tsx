@@ -127,6 +127,7 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
                   }
                   setTimeout(() => setIsAutoScrolling(true), 8000);
                 }}
+                aria-label="Go to slide"
               />
             ))}
           </div>
@@ -191,6 +192,7 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
           <Link href="/blogs">
             <Button
               className={`relative px-4 sm:px-5 bg-[rgb(140,46,71)] hover:bg-transparent hover:text-[rgb(140,46,71)] hover:border-2 hover:border-[rgb(140,46,71)] cursor-pointer rounded-full font-bold overflow-hidden py-4 sm:py-5 md:py-6 text-sm sm:text-base`}
+              aria-label="View All Blogs"
             >
               <div className="flex items-center">
                 <span className="transition-all duration-300 ease-in font-bold px-6 sm:px-7 md:px-8">

@@ -194,6 +194,7 @@ const ContactForm = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
+                    aria-label="Send Message"
                     className="bg-[rgb(140,46,71)] font-light text-white hover:bg-transparent hover:text-[rgb(140,46,71)] py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 w-full rounded-full text-sm sm:text-base lg:text-lg transition-all duration-300 ease-in transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-2 border-transparent cursor-pointer hover:border-[rgb(140,46,71)]"
                   >
                     {isSubmitting ? (

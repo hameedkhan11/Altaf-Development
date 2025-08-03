@@ -5,6 +5,9 @@ import { Poppins } from "next/font/google";
 import { Metadata } from "next";
 import LenisProvider from "@/hooks/lenis";
 import WhatsAppButton from "@/components/whatsapp/Whatsapp";
+import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
+import AnalyticsProvider from "@/components/ui/analytics-provider";
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -60,7 +63,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased font-light`}>
-        <LenisProvider>{children}</LenisProvider>
+        <GoogleAnalytics />
+        <AnalyticsProvider>
+          <LenisProvider>{children}</LenisProvider>
+        </AnalyticsProvider>
         <WhatsAppButton />
       </body>
     </html>

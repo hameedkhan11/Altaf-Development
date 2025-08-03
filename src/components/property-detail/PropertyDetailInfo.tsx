@@ -75,7 +75,9 @@ export const PropertyDetailInfo: React.FC<PropertyDetailInfoProps> = ({ property
           className="mt-2 sm:mt-3 md:mt-4 flex-shrink-0"
           href={"/contact"}
         >
-          <Button className="w-full py-3 sm:py-4 md:py-5 text-sm sm:text-base bg-[rgb(140,46,71)] hover:bg-transparent border border-[rgb(140,46,71)] hover:text-[rgb(140,46,71)] text-white transition-all duration-300 ease-in rounded-full cursor-pointer">
+          <Button className="w-full py-3 sm:py-4 md:py-5 text-sm sm:text-base bg-[rgb(140,46,71)] hover:bg-transparent border border-[rgb(140,46,71)] hover:text-[rgb(140,46,71)] text-white transition-all duration-300 ease-in rounded-full cursor-pointer"
+          aria-label="Contact Now"
+          >
             Contact Now
           </Button>
         </Link>

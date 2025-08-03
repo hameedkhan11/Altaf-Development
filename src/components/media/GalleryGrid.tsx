@@ -110,6 +110,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
           }}
           variant="outline"
           className="mt-4"
+          aria-label="Clear Filters"
         >
           Clear Filters
         </Button>

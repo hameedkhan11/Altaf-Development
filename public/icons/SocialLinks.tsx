@@ -91,6 +91,7 @@ const SocialHoverOverlay: React.FC<SocialHoverOverlayProps> = ({ socialLinks }) 
                 style={{
                   borderRadius: index === 0 ? '48px 4px 4px 4px' : '4px 48px 4px 4px'
                 }}
+                aria-label='Open in new tab'
               >
                 {getSocialIcon(platform)}
               </button>
@@ -113,6 +114,7 @@ const SocialHoverOverlay: React.FC<SocialHoverOverlayProps> = ({ socialLinks }) 
                   style={{
                     borderRadius: index === 0 ? '48px 4px 4px 4px' : '4px 48px 4px 4px'
                   }}
+                  aria-label='Open in new tab'
                 >
                   {getSocialIcon(platform)}
                 </button>
@@ -133,6 +135,7 @@ const SocialHoverOverlay: React.FC<SocialHoverOverlayProps> = ({ socialLinks }) 
                   style={{
                     borderRadius: index === 0 ? '4px 4px 4px 48px' : '4px 4px 48px 4px'
                   }}
+                  aria-label='Open in new tab'
                 >
                   {getSocialIcon(platform)}
                 </button>

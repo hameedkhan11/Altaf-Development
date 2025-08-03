@@ -33,7 +33,7 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   overlay = "medium",
   className = "absolute inset-0 w-full h-full",
   altText = "Hero background image",
-  parallaxSpeed = 0.5,
+  parallaxSpeed = 0.8,
   customOverlay,
   videoOptimization = {},
 }) => {

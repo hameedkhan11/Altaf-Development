@@ -235,6 +235,7 @@ export function TableOfContents({ content }: { content: ContentBlock[] }) {
                     : "pl-8 font-normal"
               }`}
               title={text}
+              aria-label="Table of Contents"
             >
               <span className="block truncate">{text}</span>
             </button>

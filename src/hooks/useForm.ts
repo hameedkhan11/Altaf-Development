@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { trackEvent } from "@/hooks/useGoogleAnalytics";
 
 // Types
 interface FormData {
@@ -40,9 +41,9 @@ export const useContactForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
-    type: 'success' | 'error' | null;
+    type: "success" | "error" | null;
     message: string;
-  }>({ type: null, message: '' });
+  }>({ type: null, message: "" });
 
   const countries: Country[] = [
     { code: "+92", name: "Pakistan", flag: "🇵🇰" },
@@ -50,9 +51,9 @@ export const useContactForm = () => {
     { code: "+1", name: "USA", flag: "🇺🇸" },
     { code: "+966", name: "Saudi Arabia", flag: "🇸🇦" },
     { code: "+44", name: "UK", flag: "🇬🇧" },
-    { code: "+91", name: "India", flag: "🇮🇳" },
+    { code: "+968", name: "Oman", flag: "🇴🇲" },
     { code: "+86", name: "China", flag: "🇨🇳" },
-    { code: "+81", name: "Japan", flag: "🇯🇵" },
+    { code: "+974", name: "Qatar", flag: "🇶🇦" },
     { code: "+49", name: "Germany", flag: "🇩🇪" },
     { code: "+33", name: "France", flag: "🇫🇷" },
   ];
@@ -70,57 +71,73 @@ export const useContactForm = () => {
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
-    
-    if (type === 'checkbox') {
+
+    if (type === "checkbox") {
       const { checked } = e.target as HTMLInputElement;
       setFormData((prev) => ({ ...prev, [name]: checked }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
-    
+
     // Clear status when user starts typing
     if (submitStatus.type) {
-      setSubmitStatus({ type: null, message: '' });
+      setSubmitStatus({ type: null, message: "" });
     }
   };
 
   const validateForm = (): boolean => {
     if (!formData.name.trim()) {
-      setSubmitStatus({ type: 'error', message: 'Please enter your name.' });
+      setSubmitStatus({ type: "error", message: "Please enter your name." });
       return false;
     }
 
     if (!formData.email.trim()) {
-      setSubmitStatus({ type: 'error', message: 'Please enter your email address.' });
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter your email address.",
+      });
       return false;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setSubmitStatus({ type: 'error', message: 'Please enter a valid email address.' });
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter a valid email address.",
+      });
       return false;
     }
 
     if (!formData.phone.trim()) {
-      setSubmitStatus({ type: 'error', message: 'Please enter your phone number.' });
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter your phone number.",
+      });
       return false;
     }
 
     // Phone validation
     const phoneRegex = /^[0-9+\-\s()]{7,20}$/;
     if (!phoneRegex.test(formData.phone)) {
-      setSubmitStatus({ type: 'error', message: 'Please enter a valid phone number.' });
+      setSubmitStatus({
+        type: "error",
+        message: "Please enter a valid phone number.",
+      });
       return false;
     }
 
     if (!formData.message.trim()) {
-      setSubmitStatus({ type: 'error', message: 'Please enter your message.' });
+      setSubmitStatus({ type: "error", message: "Please enter your message." });
       return false;
     }
 
     if (formData.message.trim().length < 10) {
-      setSubmitStatus({ type: 'error', message: 'Please provide a more detailed message (at least 10 characters).' });
+      setSubmitStatus({
+        type: "error",
+        message:
+          "Please provide a more detailed message (at least 10 characters).",
+      });
       return false;
     }
 
@@ -138,13 +155,13 @@ export const useContactForm = () => {
     }
 
     setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: '' });
+    setSubmitStatus({ type: null, message: "" });
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -152,9 +169,33 @@ export const useContactForm = () => {
       const data: ApiResponse = await response.json();
 
       if (data.success) {
+        // Track successful lead generation - Most important conversion event!
+        trackEvent("generate_lead", {
+          category: "conversion",
+          label: "contact_form_success",
+          value: 5000,
+          currency: "PKR",
+          country_code: formData.countryCode,
+          preferred_contact: formData.preferredContact,
+          email_subscription: formData.emailSubscription ? "true" : "false",
+          message_id: data.messageId || "unknown",
+          page_url: typeof window !== 'undefined' ? window.location.pathname : ""
+        });
+
+        // Track form submission success
+        trackEvent("form_submit_success", {
+          category: "conversion",
+          label: "contact_form",
+          value: 1,
+          submission_type: "contact_inquiry",
+          lead_source: "website_form",
+        });
+
         setSubmitStatus({
-          type: 'success',
-          message: data.message || 'Thank you for your message! Our luxury property consultant will contact you within 24 hours.',
+          type: "success",
+          message:
+            data.message ||
+            "Thank you for your message! Our luxury property consultant will contact you within 24 hours.",
         });
 
         // Reset form
@@ -169,43 +210,48 @@ export const useContactForm = () => {
         });
       } else {
         // Handle different error codes
-        let errorMessage = data.error || 'Something went wrong. Please try again.';
-        
+        let errorMessage =
+          data.error || "Something went wrong. Please try again.";
+
         switch (data.code) {
-          case 'RATE_LIMIT_EXCEEDED':
-            errorMessage = 'Too many requests. Please wait a few minutes before trying again.';
+          case "RATE_LIMIT_EXCEEDED":
+            errorMessage =
+              "Too many requests. Please wait a few minutes before trying again.";
             break;
-          case 'VALIDATION_ERROR':
-            errorMessage = 'Please check all required fields and try again.';
+          case "VALIDATION_ERROR":
+            errorMessage = "Please check all required fields and try again.";
             break;
-          case 'EMAIL_AUTH_ERROR':
-          case 'EMAIL_CONNECTION_ERROR':
-            errorMessage = 'Email service is temporarily unavailable. Please try again later.';
+          case "EMAIL_AUTH_ERROR":
+          case "EMAIL_CONNECTION_ERROR":
+            errorMessage =
+              "Email service is temporarily unavailable. Please try again later.";
             break;
-          case 'CONFIG_ERROR':
-            errorMessage = 'Service is temporarily unavailable. Please try again later.';
+          case "CONFIG_ERROR":
+            errorMessage =
+              "Service is temporarily unavailable. Please try again later.";
             break;
           default:
-            errorMessage = data.error || 'Something went wrong. Please try again.';
+            errorMessage =
+              data.error || "Something went wrong. Please try again.";
         }
 
         setSubmitStatus({
-          type: 'error',
+          type: "error",
           message: errorMessage,
         });
       }
     } catch (error) {
-      console.error('Form submission error:', error);
-      
-      if (error instanceof TypeError && error.message.includes('fetch')) {
+      console.error("Form submission error:", error);
+
+      if (error instanceof TypeError && error.message.includes("fetch")) {
         setSubmitStatus({
-          type: 'error',
-          message: 'Network error. Please check your connection and try again.',
+          type: "error",
+          message: "Network error. Please check your connection and try again.",
         });
       } else {
         setSubmitStatus({
-          type: 'error',
-          message: 'Something went wrong. Please try again later.',
+          type: "error",
+          message: "Something went wrong. Please try again later.",
         });
       }
     } finally {
@@ -214,7 +260,7 @@ export const useContactForm = () => {
   };
 
   const clearStatus = () => {
-    setSubmitStatus({ type: null, message: '' });
+    setSubmitStatus({ type: null, message: "" });
   };
 
   return {

@@ -236,7 +236,7 @@ const Testimonials = () => {
                       ? "bg-white scale-125"
                       : "bg-white/50 hover:bg-white/75"
                   }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
+                  aria-label={`Go to testimonial`}
                 />
               ))}
             </div>

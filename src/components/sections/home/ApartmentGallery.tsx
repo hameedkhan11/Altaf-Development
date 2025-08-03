@@ -145,6 +145,7 @@ export const ApartmentGallery = () => {
                   index === currentIndex ? 'bg-white' : 'bg-white/50'
                 }`}
                 onClick={() => handleDotClick(index)}
+                aria-label="Navigation dot"
               />
             ))}
           </div>

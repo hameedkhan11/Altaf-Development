@@ -26,7 +26,7 @@ const Amenities2 = () => {
       setIsMobile(width < 768);
       setIsSmallTablet(width >= 768 && width < 1024);
     };
-    
+
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
@@ -46,40 +46,52 @@ const Amenities2 = () => {
     if (!isMobile && !isSmallTablet) {
       window.addEventListener("mousemove", handleMouseMove);
     }
-    
+
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [isMobile, isSmallTablet]);
 
   // Wrap handleAmenityClick in useCallback to fix dependency warning
-  const handleAmenityClick = useCallback((amenityId: string) => {
-    if (amenityId === activeAmenity) return;
-    setActiveAmenity(amenityId);
-  }, [activeAmenity]);
+  const handleAmenityClick = useCallback(
+    (amenityId: string) => {
+      if (amenityId === activeAmenity) return;
+      setActiveAmenity(amenityId);
+    },
+    [activeAmenity]
+  );
 
   // Navigate to next/previous amenity
-  const navigateAmenity = useCallback((direction: 'next' | 'prev') => {
-    const currentIdx = amenityKeys.indexOf(activeAmenity);
-    let newIndex;
-    
-    if (direction === 'next') {
-      newIndex = currentIdx === amenityKeys.length - 1 ? 0 : currentIdx + 1;
-    } else {
-      newIndex = currentIdx === 0 ? amenityKeys.length - 1 : currentIdx - 1;
-    }
-    
-    handleAmenityClick(amenityKeys[newIndex]);
-  }, [activeAmenity, amenityKeys, handleAmenityClick]);
+  const navigateAmenity = useCallback(
+    (direction: "next" | "prev") => {
+      const currentIdx = amenityKeys.indexOf(activeAmenity);
+      let newIndex;
+
+      if (direction === "next") {
+        newIndex = currentIdx === amenityKeys.length - 1 ? 0 : currentIdx + 1;
+      } else {
+        newIndex = currentIdx === 0 ? amenityKeys.length - 1 : currentIdx - 1;
+      }
+
+      handleAmenityClick(amenityKeys[newIndex]);
+    },
+    [activeAmenity, amenityKeys, handleAmenityClick]
+  );
 
   // Handle swipe gestures with proper typing
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
     const swipeThreshold = 50;
     const swipeVelocityThreshold = 500;
-    
-    if (Math.abs(info.offset.x) > swipeThreshold || Math.abs(info.velocity.x) > swipeVelocityThreshold) {
+
+    if (
+      Math.abs(info.offset.x) > swipeThreshold ||
+      Math.abs(info.velocity.x) > swipeVelocityThreshold
+    ) {
       if (info.offset.x > 0) {
-        navigateAmenity('prev');
+        navigateAmenity("prev");
       } else {
-        navigateAmenity('next');
+        navigateAmenity("next");
       }
     }
   };
@@ -91,19 +103,19 @@ const Amenities2 = () => {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!touchStartX) return;
-    
+
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX - touchEndX;
     const swipeThreshold = 50;
-    
+
     if (Math.abs(diff) > swipeThreshold) {
       if (diff > 0) {
-        navigateAmenity('next');
+        navigateAmenity("next");
       } else {
-        navigateAmenity('prev');
+        navigateAmenity("prev");
       }
     }
-    
+
     setTouchStartX(0);
   };
 
@@ -119,17 +131,17 @@ const Amenities2 = () => {
       </div>
 
       {/* Main Gallery Section - Reduced Heights for Mobile/Tablet */}
-      <section 
+      <section
         ref={containerRef}
         className={`
           relative w-full overflow-hidden
-          ${isMobile ? 'h-[50vh] min-h-[400px]' : ''}
-          ${isSmallTablet ? 'h-[60vh] min-h-[500px]' : ''}
-          ${!isSliderMode ? 'h-[90vh] lg:h-screen min-h-[700px]' : ''}
+          ${isMobile ? "h-[50vh] min-h-[400px]" : ""}
+          ${isSmallTablet ? "h-[60vh] min-h-[500px]" : ""}
+          ${!isSliderMode ? "h-[90vh] lg:h-screen min-h-[700px]" : ""}
         `}
       >
         {/* Animated Background Layers */}
-        <motion.div 
+        <motion.div
           className="absolute inset-0"
           drag={isSliderMode ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
@@ -143,28 +155,35 @@ const Amenities2 = () => {
               <motion.div
                 key={activeAmenity}
                 className="absolute inset-0 w-full h-full"
-                initial={{ 
-                  clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)"
+                initial={{
+                  clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)",
                 }}
                 animate={{
                   clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-                  x: (!isMobile && !isSmallTablet) ? mousePosition.x * 0.3 : 0,
-                  y: (!isMobile && !isSmallTablet) ? mousePosition.y * 0.3 : 0,
+                  x: !isMobile && !isSmallTablet ? mousePosition.x * 0.3 : 0,
+                  y: !isMobile && !isSmallTablet ? mousePosition.y * 0.3 : 0,
                 }}
-                exit={{ 
-                  clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)"
+                exit={{
+                  clipPath: "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
                 }}
                 transition={{
                   clipPath: {
                     duration: 1.2,
-                    ease: [0.76, 0, 0.24, 1]
+                    ease: [0.76, 0, 0.24, 1],
                   },
-                  x: (!isMobile && !isSmallTablet) ? { type: "spring", stiffness: 80, damping: 40 } : {},
-                  y: (!isMobile && !isSmallTablet) ? { type: "spring", stiffness: 80, damping: 40 } : {},
+                  x:
+                    !isMobile && !isSmallTablet
+                      ? { type: "spring", stiffness: 80, damping: 40 }
+                      : {},
+                  y:
+                    !isMobile && !isSmallTablet
+                      ? { type: "spring", stiffness: 80, damping: 40 }
+                      : {},
                 }}
-                style={{ 
-                  transformStyle: (!isMobile && !isSmallTablet) ? "preserve-3d" : "flat",
-                  perspective: (!isMobile && !isSmallTablet) ? "1000px" : "none"
+                style={{
+                  transformStyle:
+                    !isMobile && !isSmallTablet ? "preserve-3d" : "flat",
+                  perspective: !isMobile && !isSmallTablet ? "1000px" : "none",
                 }}
               >
                 <CldImage
@@ -174,7 +193,7 @@ const Amenities2 = () => {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                   priority
-                  aria-label='Amenity image'
+                  aria-label="Amenity image"
                 />
                 {/* Responsive Overlays */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 lg:to-black/50" />
@@ -203,15 +222,15 @@ const Amenities2 = () => {
                         rgba(255,255,255,${0.1 - i * 0.03}) 50%, 
                         transparent 100%
                       )`,
-                      x: "-100%"
+                      x: "-100%",
                     }}
                     animate={{
-                      x: "100%"
+                      x: "100%",
                     }}
                     transition={{
                       duration: 1.5,
                       ease: [0.76, 0, 0.24, 1],
-                      delay: i * 0.1
+                      delay: i * 0.1,
                     }}
                   />
                 ))}
@@ -284,11 +303,13 @@ const Amenities2 = () => {
                           className={`
                             group relative w-full text-left transition-all duration-500 ease-out overflow-hidden
                             py-5 px-6 bg-transparent border-0
-                            ${isActive 
-                              ? "bg-white/8 shadow-lg" 
-                              : "hover:bg-white/5"
+                            ${
+                              isActive
+                                ? "bg-white/8 shadow-lg"
+                                : "hover:bg-white/5"
                             }
                           `}
+                          aria-label="Amenity"
                         >
                           {/* Background Animation */}
                           <motion.div
@@ -298,10 +319,10 @@ const Amenities2 = () => {
                               scaleX: isActive ? 1 : 0,
                               opacity: isActive ? 1 : 0,
                             }}
-                            transition={{ 
-                              duration: 0.6, 
+                            transition={{
+                              duration: 0.6,
                               ease: [0.16, 1, 0.3, 1],
-                              scaleX: { velocity: 0 }
+                              scaleX: { velocity: 0 },
                             }}
                           />
 
@@ -311,9 +332,10 @@ const Amenities2 = () => {
                               className={`
                                 flex items-center justify-center border transition-all duration-500 flex-shrink-0
                                 w-8 h-8
-                                ${isActive
-                                  ? "border-white/60 bg-white/15 text-white shadow-md scale-110"
-                                  : "border-white/25 text-white/50 group-hover:border-white/40 group-hover:text-white/70 group-hover:scale-105"
+                                ${
+                                  isActive
+                                    ? "border-white/60 bg-white/15 text-white shadow-md scale-110"
+                                    : "border-white/25 text-white/50 group-hover:border-white/40 group-hover:text-white/70 group-hover:scale-105"
                                 }
                               `}
                               animate={{
@@ -343,9 +365,10 @@ const Amenities2 = () => {
                                   }}
                                   className={`
                                     font-medium transition-all duration-500 text-lg
-                                    ${isActive
-                                      ? "text-white"
-                                      : "text-white/75 group-hover:text-white/95"
+                                    ${
+                                      isActive
+                                        ? "text-white"
+                                        : "text-white/75 group-hover:text-white/95"
                                     }
                                   `}
                                 >
@@ -419,7 +442,7 @@ const Amenities2 = () => {
                   <h3 className="text-lg sm:text-xl md:text-2xl font-light text-white mb-3">
                     {currentAmenity.name}
                   </h3>
-                 
+
                   {/* Progress Dots */}
                   <div className="flex justify-center gap-2">
                     {amenityKeys.map((key, index) => (
@@ -428,11 +451,13 @@ const Amenities2 = () => {
                         onClick={() => handleAmenityClick(key)}
                         className={`
                           w-2 h-2 rounded-full transition-all duration-300
-                          ${index === currentIndex 
-                            ? 'bg-white scale-125' 
-                            : 'bg-white/30 hover:bg-white/50'
+                          ${
+                            index === currentIndex
+                              ? "bg-white scale-125"
+                              : "bg-white/30 hover:bg-white/50"
                           }
                         `}
+                        aria-label="Amenity"
                       />
                     ))}
                   </div>
@@ -444,13 +469,15 @@ const Amenities2 = () => {
             {isSmallTablet && (
               <>
                 <button
-                  onClick={() => navigateAmenity('prev')}
+                  onClick={() => navigateAmenity("prev")}
+                  aria-label="Previous Amenity"
                   className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/30 border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
                 >
                   <FaArrowLeft className="w-5 h-5" />
                 </button>
                 <button
-                  onClick={() => navigateAmenity('next')}
+                  onClick={() => navigateAmenity("next")}
+                  aria-label="Next Amenity"
                   className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-black/30 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
                 >
                   <FaArrowRight className="w-5 h-5" />

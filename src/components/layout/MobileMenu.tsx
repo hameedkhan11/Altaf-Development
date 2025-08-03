@@ -49,6 +49,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
+              aria-label="Close menu"
             >
               <X className="h-6 w-6 text-gray-600" />
             </button>
@@ -93,6 +94,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 <button
                   onClick={toggleMediaCenter}
                   className="flex items-center justify-between py-3 text-gray-800 hover:text-[rgb(140,46,71)] transition-colors duration-200 group w-full"
+                  aria-label="Toggle Media Center"
                 >
                   <span className="font-medium uppercase tracking-wide">
                     MEDIA CENTER
@@ -161,7 +163,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 }}
               >
                 <Link href="/contact" onClick={onClose}>
-                  <Button className="group relative transition-all duration-500 bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 border-[rgb(140,46,71)] cursor-pointer font-bold overflow-hidden py-5 w-full text-sm tracking-wider uppercase rounded-full">
+                  <Button className="group relative transition-all duration-500 bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 border-[rgb(140,46,71)] cursor-pointer font-bold overflow-hidden py-5 w-full text-sm tracking-wider uppercase rounded-full"
+                  aria-label="Contact Now"
+                  >
                     Contact Now
                   </Button>
                 </Link>

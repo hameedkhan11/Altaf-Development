@@ -139,6 +139,7 @@ const Header = () => {
                       ? "bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border-[rgb(140,46,71)] border-2"
                       : "bg-white text-[rgb(140,46,71)] hover:bg-gray-100"
                   }`}
+                  aria-label="Contact Now"
                 >
                   <div className="flex items-center space-x-2 relative z-10 py-4 xl:py-8">
                     <span className="transition-all duration-300 group-hover:tracking-wider whitespace-nowrap text-sm xl:text-base">

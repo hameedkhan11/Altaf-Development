@@ -71,6 +71,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
         
         <button
           onClick={copyToClipboard}
+          aria-label='Copy Link'
           className="flex items-center space-x-2 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
         >
           {copied ? <Check className="h-4 w-4" /> : <Link className="h-4 w-4" />}
