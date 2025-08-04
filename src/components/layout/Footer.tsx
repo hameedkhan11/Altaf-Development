@@ -1,7 +1,6 @@
 // components/layout/Footer.tsx
 "use client";
 
-import { useState, FormEvent } from "react";
 import { NewsletterSection } from "../footer/Newsletter";
 import { CompanyInfo } from "../footer/CompanyInfo";
 import { QuickLinks } from "../footer/QuickLinks";
@@ -9,14 +8,6 @@ import { ContactInfo } from "../footer/ContactInfo";
 import { FooterBottom } from "../footer/FooterBottom";
 
 const Footer = () => {
-  const [email, setEmail] = useState("");
-
-  const handleNewsletterSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Handle newsletter submission logic here
-    console.log("Newsletter subscription:", email);
-    setEmail(""); // Clear form after submission
-  };
 
   return (
     <footer className="text-white py-8 sm:py-12 lg:py-16 border-t border-gray-200 dark:border-gray-700">
@@ -41,9 +32,6 @@ const Footer = () => {
           {/* Newsletter Section */}
           <div className="w-full sm:col-span-2 lg:col-span-1">
             <NewsletterSection
-              email={email}
-              setEmail={setEmail}
-              onSubmit={handleNewsletterSubmit}
             />
           </div>
         </div>

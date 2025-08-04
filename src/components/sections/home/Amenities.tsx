@@ -23,6 +23,7 @@ const Amenities = () => {
   const [, setActiveAmenity] = useState<string>("location");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [prevIndex, setPrevIndex] = useState<number>(0);
+  const [isGoingForward, setIsGoingForward] = useState<boolean>(true);
 
   // Memoize the combined amenities array to prevent recreation on every render
   const allAmenities: Array<{ key: string; data: AmenityData | SimpleAmenityData }> = useMemo(() => [
@@ -40,6 +41,7 @@ const Amenities = () => {
     setPrevIndex(currentIndex);
     setCurrentIndex(nextIndex);
     setActiveAmenity(allAmenities[nextIndex].key);
+    setIsGoingForward(true);
   }, [currentIndex, allAmenities]);
 
   const prevSlide = useCallback(() => {
@@ -47,12 +49,14 @@ const Amenities = () => {
     setPrevIndex(currentIndex);
     setCurrentIndex(prevIndexValue);
     setActiveAmenity(allAmenities[prevIndexValue].key);
+    setIsGoingForward(false);
   }, [currentIndex, allAmenities]);
 
   const goToSlide = useCallback((index: number) => {
     setPrevIndex(currentIndex);
     setCurrentIndex(index);
     setActiveAmenity(allAmenities[index].key);
+    setIsGoingForward(index > currentIndex);
   }, [currentIndex, allAmenities]);
 
   // Auto slide functionality
@@ -114,7 +118,7 @@ const Amenities = () => {
           >
             <div className="relative w-full h-[500px] xl:h-[580px] rounded-md overflow-hidden shadow-xl">
               {/* Background Images with Progressive Width Transition */}
-              <div className="absolute inset-0 flex">
+              <div className="absolute inset-0 flex" style={{ flexDirection: isGoingForward ? 'row' : 'row-reverse' }}>
                 {/* Previous Image - shrinks during transition */}
                 <motion.div
                   key={`prev-${prevIndex}`}
@@ -206,7 +210,7 @@ const Amenities = () => {
         {/* Mobile Full-Width Image Section - PropertyShowcase Style */}
         <div className="lg:hidden relative w-full overflow-hidden bg-gray-900 aspect-[6/7]">
           {/* Background Images with Progressive Width Transition */}
-          <div className="absolute inset-0 flex">
+          <div className="absolute inset-0 flex" style={{ flexDirection: isGoingForward ? 'row' : 'row-reverse' }}>
             {/* Previous Image - shrinks during transition */}
             <motion.div
               key={`mobile-prev-${prevIndex}`}
@@ -226,7 +230,6 @@ const Amenities = () => {
                 priority
                 aria-label="Amenity Images"
               />
-              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
             </motion.div>
 
             {/* Current Image - grows during transition */}
@@ -248,22 +251,42 @@ const Amenities = () => {
                 priority
                 aria-label="Amenity Images"
               />
-              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
             </motion.div>
           </div>
 
-          {/* Mobile Content Overlay - Only Title */}
-          <div className="absolute bottom-4 sm:bottom-10 left-0 right-0 z-10 text-center">
-            <motion.h1
-              key={`mobile-title-${currentIndex}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-              className="text-lg sm:text-2xl text-white px-4 drop-shadow-lg"
-            >
-              {currentAmenity.data.name}
-            </motion.h1>
-          </div>
+
+        </div>
+
+        {/* Mobile Navigation - Title with Arrows Below Image */}
+        <div className="lg:hidden flex items-center justify-between">
+          {/* Left Arrow */}
+          <button
+            onClick={prevSlide}
+            aria-label="Previous amenity image"
+            className="hover:bg-[rgb(140,46,71)] text-black hover:text-white rounded-full transition-all duration-300 flex-shrink-0"
+          >
+            <FaArrowLeft size={20} />
+          </button>
+
+          {/* Amenity Name */}
+          <motion.h4
+            key={`mobile-title-${currentIndex}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            className="text-xl sm:text-xl text-[rgb(140,46,71)] text-center mt-4 pt-0.5 flex-1"
+          >
+            {currentAmenity.data.name}
+          </motion.h4>
+
+          {/* Right Arrow */}
+          <button
+            onClick={nextSlide}
+            aria-label="Next amenity image"
+            className="hover:bg-[rgb(140,46,71)] text-black hover:text-white rounded-full transition-all duration-300 flex-shrink-0"
+          >
+            <FaArrowRight size={20} />
+          </button>
         </div>
       </div>
     </section>

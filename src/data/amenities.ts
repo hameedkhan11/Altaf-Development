@@ -61,7 +61,7 @@ export const additionalAmenities = [
   {
     key: 'hospital-mosque-parks',
     data: {
-      name: 'Hospital Mosque Parks Playground',
+      name: 'Hospital Parks Playground',
       image: 'ALTAF_DEVELOPMENTS_WEBSITE_IMAGES_FAISAL_HILLS_12_be3pgt'
     }
   },

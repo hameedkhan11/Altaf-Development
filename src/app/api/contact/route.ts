@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // MailerLite Configuration
 const MAILERLITE_API_KEY = process.env.MAILERLITE_API_KEY;
-const MAILERLITE_GROUP_ID = process.env.MAILERLITE_GROUP_ID;
+const MAILERLITE_GROUP_ID = process.env.MAILERLITE_BLOGS_GROUP_ID;
 
 // Email Service Configuration (Resend)
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
