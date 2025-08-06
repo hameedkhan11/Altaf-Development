@@ -18,18 +18,6 @@ interface ExtendedHeroProps extends HeroProps {
   minHeight?: number; // Minimum height in pixels
 }
 
-// Content variants for coordinating animations
-const contentVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.3
-    }
-  }
-};
-
 export const Hero: React.FC<ExtendedHeroProps> = ({
   title,
   isHomePage,
@@ -65,10 +53,8 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
   const contentY = useTransform(smoothProgress, [0, 1], [0, -50]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, 1500);
-    return () => clearTimeout(timer);
+    // Show content immediately
+    setShowContent(true);
   }, []);
 
   const getHeightClass = () => {
@@ -133,13 +119,15 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
       <motion.div
         style={{ y: contentY }}
         className={`relative z-10 h-full flex flex-col px-4 sm:px-6 lg:px-8 ${getContentAlignmentClass()}`}
-        variants={contentVariants}
         initial="hidden"
         animate={showContent ? "visible" : "hidden"}
       >
         <div className={`w-full flex flex-col items-center justify-center mx-auto mt-8 ${isHomePage ? 'max-w-2xl' : ''}`}>
           {title && (
-            <AnimatedH1 className={`text-3xl sm:text-4xl md:text-5xl ${isHomePage ? 'lg:text-6xl' : ''} text-white leading-tight`}>
+            <AnimatedH1 
+              delay={0}
+              className={`text-3xl sm:text-4xl md:text-5xl ${isHomePage ? 'lg:text-6xl' : ''} text-white leading-tight`}
+            >
               {title}
             </AnimatedH1>
           )}
