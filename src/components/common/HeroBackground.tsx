@@ -54,7 +54,7 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   const scale = useTransform(
     smoothY,
     [0, 1],
-    [1 + parallaxSpeed * 0.2, 1 + parallaxSpeed * 0.3]
+    [1, 1]
   );
 
   const getOverlayClass = () => {
@@ -66,7 +66,7 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
     // Default overlay classes
     switch (overlay) {
       case "light":
-        return "bg-black/20";
+        return "bg-black/10";
       case "medium":
         return "bg-black/40";
       case "dark":
@@ -76,7 +76,7 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
       case "none":
         return "";
       default:
-        return "bg-black/40";
+        return "bg-black/25";
     }
   };
 
@@ -101,13 +101,17 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
     <div
       ref={containerRef}
       className={`${className} overflow-hidden bg-gray-900`}
-      style={{ backgroundColor: "#1f2937" }}
+      style={{ backgroundColor: 'var(--background, #111827)' }}
     >
       <motion.div
-        className="absolute inset-0 w-full h-full will-change-transform"
+        className="absolute w-full will-change-transform"
         style={{
           y,
           scale,
+          height: `calc(100% + ${100 * parallaxSpeed}px)`,
+          top: 0,
+          left: 0,
+          right: 0,
         }}
       >
         <ParallaxContent
@@ -362,7 +366,6 @@ const ParallaxContent: React.FC<{
               minWidth: '100%',
               minHeight: '100%',
             }}
-            crop="fill"
           />
         </div>
       )}

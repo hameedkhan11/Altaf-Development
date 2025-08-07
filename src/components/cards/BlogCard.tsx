@@ -28,7 +28,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
         } min-h-[360px] sm:min-h-[400px] md:min-h-[430px] lg:min-h-[460px] w-full`}
       >
         {/* Image Section */}
-        <div className="w-full lg:w-1/2 h-56 sm:h-56 md:h-64 lg:h-auto relative overflow-hidden">
+        <div className="w-full lg:w-1/2 relative overflow-hidden aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[460px]">
           {imageUrl ? (
             <Image
               fill
@@ -58,9 +58,9 @@ export function BlogCard({ post, index }: BlogCardProps) {
 
         {/* Content Section */}
         <div className="w-full lg:w-1/2 p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-center">
-          <AnimatedH1 
-            wordByWord={true} 
-            duration={0.1}  
+          <AnimatedH1
+            wordByWord={true}
+            duration={0.1}
             className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 sm:mb-4 line-clamp-2 transition-colors"
           >
             {post?.title || "Untitled Post"}

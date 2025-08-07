@@ -49,7 +49,7 @@ const PropertyDetailContent: React.FC = () => {
         backgroundSrc="Featured_Properties_ldygh0"
         fallbackImage="luxury-apartment-hero-gallery"
         height="three-quarter"
-        overlay="medium"
+        overlay="light"
         contentAlignment="center"
         title="Featured Properties"
         breadcrumbs={[

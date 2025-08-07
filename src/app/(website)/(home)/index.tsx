@@ -21,8 +21,8 @@ const HomePage = async () => {
         title="Designing the future of living"
         isHomePage={true}
         backgroundType="video"
+        overlay="light"
         backgroundSrc="REVEAL_VIDEO_LANDSCAPE_-_WEBSITE_HEADER_xn2ehd"
-        fallbackImage=""
         ariaLabel="Altaf Development Home Section"
         contentAlignment="center"
       />
