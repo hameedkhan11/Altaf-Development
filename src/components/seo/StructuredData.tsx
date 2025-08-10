@@ -34,7 +34,7 @@ const corporationData = {
     height: 100,
     caption: "Altaf Developments Logo"
   },
-  images: [
+  image: [
     "https://res.cloudinary.com/dqv6swyul/image/upload/v1750140482/Booking1_rg1bhs.jpg",
     "https://res.cloudinary.com/dqv6swyul/image/upload/v1753876189/Altaf_website_image_landscape_2_fxo3d3.jpg",
     "https://res.cloudinary.com/dqv6swyul/image/upload/v1753816245/FINAL_IMAGE_FOR_WEBSITE_SQUARE_1X1_ji4fnn.jpg"
@@ -182,7 +182,7 @@ const websiteSchema = {
   }
 };
 
-// Enhanced FAQ Schema with better error handling
+// Enhanced FAQ Schema with better error handling and unique ID
 const getFAQSchema = () => {
   if (!faqData || !Array.isArray(faqData) || faqData.length === 0) {
     return null;
@@ -191,7 +191,7 @@ const getFAQSchema = () => {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": "https://altafdevelopments.com/#faq",
+    "@id": "https://altafdevelopments.com/faq", // Changed from /#faq to /faq
     name: "Frequently Asked Questions - Altaf Developments",
     description: "Common questions about Altaf Developments luxury apartments in Faisal Hills, Islamabad",
     mainEntity: faqData.map((faq, index) => {
@@ -201,7 +201,7 @@ const getFAQSchema = () => {
       
       return {
         "@type": "Question",
-        "@id": `https://altafdevelopments.com/#faq-${index + 1}`,
+        "@id": `https://altafdevelopments.com/faq#question-${index + 1}`, // More specific ID
         name: faq.question,
         acceptedAnswer: {
           "@type": "Answer",
@@ -328,34 +328,51 @@ const StructuredData = ({
   propertyData 
 }: Omit<StructuredDataProps, 'blogData'>) => {
   
+  // Create a Set to track schema types and prevent duplicates
+  const addedSchemaTypes = new Set();
+  const schemas: any[] = [];
+
   // Always include these core schemas
-  const schemas: any[] = [corporationData, websiteSchema];
+  if (!addedSchemaTypes.has('organization')) {
+    schemas.push(corporationData);
+    addedSchemaTypes.add('organization');
+  }
+  
+  if (!addedSchemaTypes.has('website')) {
+    schemas.push(websiteSchema);
+    addedSchemaTypes.add('website');
+  }
 
   // Add conditional schemas
   const breadcrumbSchema = getBreadcrumbSchema(pageType);
-  if (breadcrumbSchema) schemas.push(breadcrumbSchema);
+  if (breadcrumbSchema && !addedSchemaTypes.has(`breadcrumb-${pageType}`)) {
+    schemas.push(breadcrumbSchema);
+    addedSchemaTypes.add(`breadcrumb-${pageType}`);
+  }
 
-  // Add FAQ schema if requested
-  if (includeFAQ) {
+  // Add FAQ schema if requested (only once)
+  if (includeFAQ && !addedSchemaTypes.has('faq')) {
     const faqSchema = getFAQSchema();
     if (faqSchema) {
       schemas.push(faqSchema);
-    } else {
-      console.warn('FAQ schema was null, not added to schemas'); // Debug log
+      addedSchemaTypes.add('faq');
     }
   }
 
   // Add property schema if provided
   const propertySchema = getPropertySchema(propertyData);
-  if (propertySchema) schemas.push(propertySchema);
+  if (propertySchema && !addedSchemaTypes.has('property')) {
+    schemas.push(propertySchema);
+    addedSchemaTypes.add('property');
+  }
 
   return (
     <>
       {/* Render each schema as a separate script tag */}
       {schemas.map((schema, index) => (
         <Script
-          key={`schema-${index}`}
-          id={`structured-data-${index}`}
+          key={`schema-${schema['@type']}-${index}`} // More unique key
+          id={`structured-data-${schema['@type']}-${index}`} // More unique ID
           type="application/ld+json"
           dangerouslySetInnerHTML={{ 
             __html: JSON.stringify(schema, null, 0)
