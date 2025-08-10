@@ -26,20 +26,6 @@ export interface CompanyValue {
   description: string;
 }
 
-export interface AboutPageData {
-  hero: {
-    title: string;
-    subtitle: string;
-    backgroundImage: string;
-  };
-  missionVision: MissionVision[];
-  team: TeamMember[];
-  company: {
-    foundedYear: string;
-    description: string;
-    values: CompanyValue[];
-  };
-}
 export interface CompanyStat {
   title: string;
   value: string;

@@ -10,7 +10,7 @@ import {
   easingPresets
 } from "@/lib/constants";
 import FeatureCard from "@/components/cards/FeatureCard";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const FeaturesGrid = () => {
@@ -20,10 +20,13 @@ const FeaturesGrid = () => {
   const [, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
+  
+  // Memoize features length to avoid dependency warnings
+  const featuresLength = useMemo(() => features.length, []);
   
   // Animation controls
   const controls = useAnimationControls();
-  // const animationRef = useRef<any>(null);
   const startTimeRef = useRef<number>(0);
   const pausedProgressRef = useRef<number>(0);
 
@@ -32,13 +35,13 @@ const FeaturesGrid = () => {
     const updateVisibleCards = () => {
       const width = window.innerWidth;
       if (width < 640) {
-        setVisibleCards(1); // Mobile: 1 card
+        setVisibleCards(1);
         setIsMobile(true);
       } else if (width < 1024) {
-        setVisibleCards(2); // Tablet: 2 cards
+        setVisibleCards(2);
         setIsMobile(false);
       } else {
-        setVisibleCards(3); // Desktop: 3 cards
+        setVisibleCards(3);
         setIsMobile(false);
       }
     };
@@ -60,34 +63,34 @@ const FeaturesGrid = () => {
   } : quickFade;
 
   // Duplicate features array for seamless loop
-  const duplicatedFeatures = [...features, ...features, ...features]; // Triple for smooth infinite scroll
+  const duplicatedFeatures = [...features, ...features, ...features];
 
   // Calculate responsive values
   const cardWidthPercentage = 100 / visibleCards;
-  const gapRem = visibleCards === 1 ? 0 : 1; // No gap on mobile for better spacing
+  const gapRem = visibleCards === 1 ? 0 : 1;
   
   // Calculate move distance for one card width
   const moveDistancePercentage = cardWidthPercentage;
   
   // Animation duration
-  const animationDuration = features.length * (visibleCards === 1 ? 3 : 4);
+  const animationDuration = featuresLength * (visibleCards === 1 ? 3 : 4);
 
   // Mobile navigation functions
-  const goToNext = () => {
-    if (isMobile) {
+  const goToNext = useCallback(() => {
+    if (isMobile && isInitialized) {
       setCurrentIndex((prev) => prev + 1);
     }
-  };
+  }, [isMobile, isInitialized]);
 
-  const goToPrev = () => {
-    if (isMobile) {
+  const goToPrev = useCallback(() => {
+    if (isMobile && isInitialized) {
       setCurrentIndex((prev) => prev - 1);
     }
-  };
+  }, [isMobile, isInitialized]);
 
   // Start animation (only for non-mobile)
   const startAnimation = useCallback((fromProgress: number = 0) => {
-    if (isMobile) return;
+    if (isMobile || !canAnimate) return;
     
     const remainingProgress = 1 - fromProgress;
     const remainingDuration = animationDuration * remainingProgress;
@@ -95,7 +98,7 @@ const FeaturesGrid = () => {
     startTimeRef.current = Date.now() - (animationDuration * fromProgress * 1000);
     
     controls.start({
-      x: [`${-moveDistancePercentage * features.length * fromProgress}%`, `-${moveDistancePercentage * features.length}%`],
+      x: [`${-moveDistancePercentage * featuresLength * fromProgress}%`, `-${moveDistancePercentage * featuresLength}%`],
       transition: {
         duration: remainingDuration,
         ease: "linear",
@@ -103,11 +106,11 @@ const FeaturesGrid = () => {
         repeatDelay: 0,
       }
     });
-  }, [isMobile, animationDuration, moveDistancePercentage, controls]);
+  }, [isMobile, canAnimate, animationDuration, moveDistancePercentage, controls, featuresLength]);
 
   // Handle hover start (only for non-mobile)
-  const handleHoverStart = () => {
-    if (isMobile) return;
+  const handleHoverStart = useCallback(() => {
+    if (isMobile || !canAnimate) return;
     
     setIsHovered(true);
     
@@ -119,30 +122,42 @@ const FeaturesGrid = () => {
     
     // Stop animation
     controls.stop();
-  };
+  }, [isMobile, canAnimate, animationDuration, controls]);
 
   // Handle hover end (only for non-mobile)
-  const handleHoverEnd = () => {
-    if (isMobile) return;
+  const handleHoverEnd = useCallback(() => {
+    if (isMobile || !canAnimate) return;
     
     setIsHovered(false);
     
     // Resume animation from paused position
     startAnimation(pausedProgressRef.current);
-  };
+  }, [isMobile, canAnimate, startAnimation]);
+
+  // Initialize mobile position
+  useEffect(() => {
+    if (isMobile) {
+      // Start from the middle set (index 0 of middle set)
+      controls.set({ x: `-${featuresLength * 100}%` });
+      setCurrentIndex(0);
+      setIsInitialized(true);
+    } else {
+      setIsInitialized(true);
+    }
+  }, [isMobile, controls, featuresLength]);
 
   // Initialize animation on mount (only for non-mobile)
   useEffect(() => {
-    if (canAnimate && !isMobile) {
+    if (canAnimate && !isMobile && isInitialized) {
       startAnimation(0);
     }
-  }, [visibleCards, canAnimate, isMobile, startAnimation]);
+  }, [canAnimate, isMobile, isInitialized, startAnimation]);
 
   // Handle mobile slide animation
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile && isInitialized) {
       // Start from the middle set of cards (features.length)
-      const actualIndex = currentIndex + features.length;
+      const actualIndex = currentIndex + featuresLength;
       
       controls.start({
         x: `-${actualIndex * 100}%`,
@@ -152,27 +167,33 @@ const FeaturesGrid = () => {
         }
       }).then(() => {
         // Reset position without animation when at boundaries
-        if (currentIndex >= features.length) {
+        if (currentIndex >= featuresLength) {
           // Reset to beginning
-          setCurrentIndex(currentIndex - features.length);
-          controls.set({ x: `-${(currentIndex - features.length + features.length) * 100}%` });
+          const newIndex = currentIndex - featuresLength;
+          setCurrentIndex(newIndex);
+          controls.set({ x: `-${(newIndex + featuresLength) * 100}%` });
         } else if (currentIndex < 0) {
           // Reset to end
-          setCurrentIndex(currentIndex + features.length);
-          controls.set({ x: `-${(currentIndex + features.length + features.length) * 100}%` });
+          const newIndex = currentIndex + featuresLength;
+          setCurrentIndex(newIndex);
+          controls.set({ x: `-${(newIndex + featuresLength) * 100}%` });
         }
+      }).catch(() => {
+        // Handle any animation errors silently
       });
     }
-  }, [currentIndex, isMobile, controls]);
+  }, [currentIndex, isMobile, isInitialized, controls, featuresLength]);
 
-  // Initialize mobile position
+  // Cleanup animation on unmount
   useEffect(() => {
-    if (isMobile) {
-      // Start from the middle set (index 0 of middle set)
-      controls.set({ x: `-${features.length * 100}%` });
-      setCurrentIndex(0);
-    }
-  }, [isMobile, controls]);
+    return () => {
+      controls.stop();
+    };
+  }, [controls]);
+
+  if (!isInitialized) {
+    return null; // or a loading skeleton
+  }
 
   return (
     <section className="relative overflow-hidden">
@@ -187,14 +208,14 @@ const FeaturesGrid = () => {
             <>
               <button
                 onClick={goToPrev}
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10  rounded-full flex items-center justify-center text-[rgb(140,46,71)] transition-all duration-200 hover:scale-110"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-[rgb(140,46,71)] transition-all duration-200 hover:scale-110"
                 aria-label="Previous slide"
               >
                 <FaArrowLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={goToNext}
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10  rounded-full flex items-center justify-center text-[rgb(140,46,71)] transition-all duration-200 hover:scale-110"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-[rgb(140,46,71)] transition-all duration-200 hover:scale-110"
                 aria-label="Next slide"
               >
                 <FaArrowRight className="w-4 h-4" />
@@ -212,19 +233,24 @@ const FeaturesGrid = () => {
               className={`flex ${visibleCards === 1 ? 'gap-0' : 'gap-4'}`}
               animate={controls}
               initial={{ x: "0%" }}
+              style={{
+                willChange: 'transform',
+                backfaceVisibility: 'hidden',
+              }}
             >
               {duplicatedFeatures.map((item, index) => (
                 <div
-                  key={`${index}-${index >= features.length ? 'duplicate' : 'original'}`}
+                  key={`${item.title}-${index}-${Math.floor(index / featuresLength)}`}
                   className="flex-shrink-0"
                   style={{
-                     width: isMobile ? '100%' : `calc(${cardWidthPercentage}% - ${gapRem * 0.5}rem)`
-                   }}
+                    width: isMobile ? '100%' : `calc(${cardWidthPercentage}% - ${gapRem * 0.5}rem)`,
+                    transform: 'translateZ(0)', // Force GPU acceleration
+                  }}
                 >
                   <FeatureCard
                     title={item.title}
                     description={item.desc}
-                    index={index % features.length}
+                    index={index % featuresLength}
                   />
                 </div>
               ))}

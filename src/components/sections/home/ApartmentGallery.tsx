@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export const ApartmentGallery = () => {
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -17,7 +16,7 @@ export const ApartmentGallery = () => {
 
   // Auto-scroll functionality for mobile - infinite forward scroll
   useEffect(() => {
-    if (!isAutoScrolling || isTransitioning) return;
+    if (isTransitioning) return;
 
     const interval = setInterval(() => {
       const container = scrollContainerRef.current;
@@ -43,9 +42,6 @@ export const ApartmentGallery = () => {
           setCurrentIndex(0);
           setIsTransitioning(false);
         }, 500); // Wait for smooth scroll to complete
-        
-        // Update visual indicator immediately
-        setCurrentIndex(0);
       } else {
         setCurrentIndex(nextScrollIndex);
         setTimeout(() => setIsTransitioning(false), 500);
@@ -53,7 +49,7 @@ export const ApartmentGallery = () => {
     }, 3000); // Scroll every 3 seconds
 
     return () => clearInterval(interval);
-  }, [isAutoScrolling, currentIndex, isTransitioning]);
+  }, [currentIndex, isTransitioning]);
 
   // Handle manual scroll events to update current index
   const handleScroll = () => {
@@ -66,33 +62,12 @@ export const ApartmentGallery = () => {
     const scrollLeft = container.scrollLeft;
     const scrollIndex = Math.round(scrollLeft / cardWidth);
     
-    // Map the scroll index to the visual index (for dots)
+    // Map the scroll index to the visual index
     const visualIndex = scrollIndex % propertySections.length;
     
     if (visualIndex !== currentIndex) {
       setCurrentIndex(visualIndex);
     }
-  };
-
-  // Handle manual dot navigation
-  const handleDotClick = (index: number) => {
-    setIsAutoScrolling(false);
-    setIsTransitioning(true);
-    
-    const container = scrollContainerRef.current;
-    if (container) {
-      const cardWidth = container.clientWidth;
-      container.scrollTo({
-        left: index * cardWidth,
-        behavior: 'smooth'
-      });
-      setCurrentIndex(index);
-    }
-    
-    setTimeout(() => {
-      setIsTransitioning(false);
-      setIsAutoScrolling(true);
-    }, 10000);
   };
 
   return (
@@ -133,20 +108,6 @@ export const ApartmentGallery = () => {
                   <PropertyCard2 section={section} index={index % propertySections.length} />
                 </div>
               </div>
-            ))}
-          </div>
-          
-          {/* Navigation dots - only show original sections count */}
-          <div className="flex justify-center mt-4 space-x-2">
-            {propertySections.map((_, index) => (
-              <button
-                key={index}
-                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  index === currentIndex ? 'bg-white' : 'bg-white/50'
-                }`}
-                onClick={() => handleDotClick(index)}
-                aria-label="Navigation dot"
-              />
             ))}
           </div>
         </div>

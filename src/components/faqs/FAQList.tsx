@@ -1,4 +1,5 @@
 // FAQList.tsx
+"use client";
 import React, { useState } from "react";
 import FAQItem from "./FAQitem";
 import { faqData } from "@/data/faqs/data";

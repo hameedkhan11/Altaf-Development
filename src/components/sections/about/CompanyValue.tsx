@@ -1,15 +1,7 @@
-"use client";
-// import { CompanyValueCard } from "@/components/cards/CompanyValueCard";
-import { CompanyValue } from "@/lib/about-us/types";
 import React from "react";
 import FeaturesGrid from "./FeaturesGrid";
 
-interface CompanyValuesSectionProps {
-  values: CompanyValue[];
-  description: string;
-}
-
-export const CompanyValuesSection: React.FC<CompanyValuesSectionProps> = () => {
+export const CompanyValuesSection: React.FC = () => {
   return (
     <section className="py-12 sm:py-16 lg:py-24 relative overflow-hidden">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

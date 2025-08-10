@@ -11,12 +11,14 @@ import { ApartmentGallery } from "@/components/sections/home/ApartmentGallery";
 import sanityService from "@/lib/sanityService";
 import { FeaturedPostsSection } from "@/components/sections/home/Blogs";
 import Amenities from "@/components/sections/home/Amenities";
+import StructuredData from "@/components/seo/StructuredData";
 
 const HomePage = async () => {
   const featuredPosts = await sanityService.getFeaturedPosts(3);
   
   return (
-    <div>
+    <>
+    <StructuredData pageType="home" includeFAQ={true}/>
       <Hero
         title="Designing the future of living"
         isHomePage={true}
@@ -39,7 +41,7 @@ const HomePage = async () => {
         <LuxuryRealEstateFAQ />
         <RegisterHero />
       </div>
-    </div>
+    </>
   );
 };
 

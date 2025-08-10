@@ -7,7 +7,6 @@ import LenisProvider from "@/hooks/lenis";
 import WhatsAppButton from "@/components/whatsapp/Whatsapp";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
 import AnalyticsProvider from "@/components/ui/analytics-provider";
-import StructuredData from "@/components/seo/StructuredData";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -63,9 +62,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <StructuredData />
-      </head>
       <body className={`${poppins.variable} antialiased font-light`}>
         <GoogleAnalytics />
         <AnalyticsProvider>

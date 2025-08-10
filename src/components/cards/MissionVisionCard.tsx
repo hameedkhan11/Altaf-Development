@@ -1,4 +1,5 @@
 // components/MissionVisionCards.tsx
+"use client";
 import { motion } from "framer-motion";
 import { AnimatedH3, AnimatedP } from "@/components/ui/text-animations";
 import { HiPlus } from "react-icons/hi2";

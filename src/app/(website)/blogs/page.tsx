@@ -6,6 +6,7 @@ import { generateBlogMetadata } from '@/components/sections/blogs/BlogMetadata'
 import { generateBlogJsonLd } from '@/components/sections/blogs/BlogJsonLd'
 import { BlogHero } from '@/components/sections/blogs/BlogHero'
 import { BlogContent } from '@/components/sections/blogs/BlogContent'
+import StructuredData from '@/components/seo/StructuredData'
 
 // Generate comprehensive metadata for SEO
 export async function generateMetadata(props: {
@@ -62,7 +63,10 @@ export default async function BlogPage(props: {
 
   return (
     <>
-      {/* SEO JSON-LD structured data */}
+      {/* Base structured data (organization, website, breadcrumbs) */}
+      <StructuredData pageType="blogs" />
+
+      {/* SEO JSON-LD structured data for blog listing */}
       {generateBlogJsonLd(posts, categories, locations, authors)}
       
       <div className="min-h-screen">

@@ -1,4 +1,5 @@
 // FAQCTA.tsx
+"use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Phone } from "lucide-react";
 import { AnimatedH3, AnimatedP } from "../ui/text-animations";

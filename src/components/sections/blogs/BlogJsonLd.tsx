@@ -1,17 +1,18 @@
 // components/blog/BlogJsonLd.tsx
 import { urlFor } from '@/lib/sanityService'
 import type { PostPreview, Category, Location, Author } from '@/lib/sanity/sanity'
+import Script from 'next/script'
 
 export function generateBlogJsonLd(posts: PostPreview[], categories: Category[], locations: Location[], authors: Author[]) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
-    name: 'Real Estate Blog',
-    description: 'Expert insights, market trends, and property advice',
-    url: '/blog',
+    name: 'Altaf Developments Blog',
+    description: 'Latest news, insights, and updates from Altaf Developments - Your premier luxury real estate partner in Pakistan.',
+    url: '/blogs',
     publisher: {
       '@type': 'Organization',
-      name: 'Real Estate Company',
+      name: 'Altaf Developments',
     },
     blogPost: posts?.map(post => ({
       '@type': 'BlogPosting',
@@ -24,7 +25,7 @@ export function generateBlogJsonLd(posts: PostPreview[], categories: Category[],
         name: post?.author?.name,
       },
       image: post?.featuredImage ? urlFor(post.featuredImage).width(1200).height(630).url() : null,
-      url: `/blog/${post?.slug?.current}`,
+      url: `/blogs/${post?.slug?.current}`,
       articleSection: post?.categories?.map(cat => cat?.title),
       keywords: post?.categories?.map(cat => cat?.title)?.join(', '),
     })),
@@ -32,7 +33,7 @@ export function generateBlogJsonLd(posts: PostPreview[], categories: Category[],
     about: categories?.map(category => ({
       '@type': 'Thing',
       name: category?.title,
-      url: `/blog?category=${category?.slug?.current}`,
+      url: `/blogs?category=${category?.slug?.current}`,
     })),
     // SEO locations taxonomy
     spatialCoverage: locations?.map(location => ({
@@ -41,7 +42,7 @@ export function generateBlogJsonLd(posts: PostPreview[], categories: Category[],
       address: {
         '@type': 'PostalAddress',
         addressRegion: location?.state,
-        addressCountry: 'pk',
+        addressCountry: 'PK',
       },
     })),
     // SEO authors
@@ -53,7 +54,8 @@ export function generateBlogJsonLd(posts: PostPreview[], categories: Category[],
   }
 
   return (
-    <script
+    <Script
+      id="blog-listing-structured-data"
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />

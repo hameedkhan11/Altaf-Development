@@ -155,7 +155,7 @@ const Header = () => {
             <div
               // variant="ghost"
               // size="lg"
-              className={`lg:hidden absolute left-2 top-1/2 transform -translate-y-1/2 transition-all duration-500 ${
+              className={`lg:hidden absolute top-1/2 transform -translate-y-1/2 transition-all duration-500 ${
                 scrolled
                   ? "text-foreground hover:bg-gray-100"
                   : "text-white hover:bg-white/20"

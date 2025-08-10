@@ -1,5 +1,4 @@
 // LuxuryRealEstateFAQ.tsx
-"use client";
 import FAQCTA from "@/components/faqs/FAQcta";
 import FAQHeader from "@/components/faqs/FAQheader";
 import FAQList from "@/components/faqs/FAQList";

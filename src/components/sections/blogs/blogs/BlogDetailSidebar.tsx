@@ -258,7 +258,7 @@ export function SocialSharing({
 }) {
   const encodedTitle = encodeURIComponent(title);
   const encodedUrl = encodeURIComponent(
-    `https://altafdevelopments.com${url}`
+    `${url}`
   );
   const encodedExcerpt = encodeURIComponent(excerpt || title);
 

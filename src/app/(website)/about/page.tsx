@@ -1,13 +1,14 @@
-import AboutPage from '@/components/sections/about/About-us'
-// import sanityService from '@/lib/sanityService';
+import AboutPage from "@/components/sections/about/About-us";
+import StructuredData from "@/components/seo/StructuredData";
 
-const page = () => {
-
+export default function Page() {
   return (
     <>
-        <AboutPage />
+      {/* Use centralized StructuredData component */}
+      <StructuredData pageType="about" />
+      
+      {/* Visual Page */}
+      <AboutPage />
     </>
-  )
+  );
 }
-
-export default page

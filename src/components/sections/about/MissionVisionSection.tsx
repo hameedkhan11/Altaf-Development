@@ -75,10 +75,14 @@ const MissionVisionSection = () => {
           initial={canAnimate ? { scale: 1.1 } : { scale: 1 }}
           whileInView={canAnimate ? { scale: 1 } : undefined}
           viewport={canAnimate ? { once: true, amount: 0.3 } : undefined}
-          transition={canAnimate ? {
-            duration: performanceMode === "fast" ? 1.2 : 1.8,
-            ease: easingPresets.smooth,
-          } : undefined}
+          transition={
+            canAnimate
+              ? {
+                  duration: performanceMode === "fast" ? 1.2 : 1.8,
+                  ease: easingPresets.smooth,
+                }
+              : undefined
+          }
           className="w-full h-full"
         >
           <CldImage
@@ -99,7 +103,10 @@ const MissionVisionSection = () => {
         {/* Content Container */}
         <div className="absolute inset-0 flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           {/* Header Section */}
-          <motion.div {...titleAnimation} className="text-center mb-8 sm:mb-12 md:mb-16">
+          <motion.div
+            {...titleAnimation}
+            className="text-center mb-8 sm:mb-12 md:mb-16"
+          >
             <AnimatedP className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 mb-2 sm:mb-3 md:mb-4 tracking-wider">
               BUILDING TRUST, DELIVERING EXCELLENCE
             </AnimatedP>
@@ -113,7 +120,7 @@ const MissionVisionSection = () => {
           </motion.div>
 
           {/* Values Grid */}
-          <div className="w-full max-w-7xl mx-auto">
+          <div className="w-full mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12">
               {values.map((value, index) => {
                 const Icon = value.icon;

@@ -9,6 +9,7 @@ import { ImageGallery } from "@/components/property-detail/ImageDetailGallery";
 import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailInfo";
 import PropertyDetailAmenities  from "@/components/property-detail/PropertyDetailAmenities";
 import { PropertyKey } from "@/lib/types";
+import StructuredData from "@/components/seo/StructuredData";
 // import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
 
 // Separate component that uses useSearchParams
@@ -44,6 +45,7 @@ const PropertyDetailContent: React.FC = () => {
 
   return (
     <>
+    <StructuredData pageType="property-detail" />
       <Hero
         backgroundType="image"
         backgroundSrc="Featured_Properties_ldygh0"
@@ -105,7 +107,7 @@ const PropertyDetailLoading: React.FC = () => (
       title="Featured Properties"
       breadcrumbs={[
         { label: "Home", href: "/" },
-        { label: "Properties", href: "/properties" },
+        { label: "Property-Detail", href: "/property-detail" },
       ]}
     />
     <div className="mx-auto mt-24 px-8 md:px-12 lg:px-16">

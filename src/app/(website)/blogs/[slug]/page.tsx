@@ -6,6 +6,8 @@ import BlogDetailHero from "@/components/sections/blogs/blogs/BlogDetailHero";
 import { generateBlogStructuredData, generateBreadcrumbStructuredData } from "@/components/sections/blogs/PostStructuredData";
 import { BlogPostContent } from "@/components/sections/blogs/BlogPostContent";
 import { RelatedPostsSection } from "@/components/sections/blogs/RelatedPostsSection";
+import StructuredData from "@/components/seo/StructuredData";
+import Script from "next/script";
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
@@ -115,9 +117,13 @@ export default async function BlogPostPage(props: {
 
   return (
     <>
-      {/* Structured Data - only render if data exists */}
+      {/* Base structured data (organization, website, breadcrumbs) */}
+      <StructuredData pageType="blog-post" />
+
+      {/* Blog-specific structured data with proper IDs */}
       {structuredData && (
-        <script
+        <Script
+          id={`blog-structured-data-${params.slug}`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(structuredData),
@@ -125,7 +131,8 @@ export default async function BlogPostPage(props: {
         />
       )}
       {breadcrumbStructuredData && (
-        <script
+        <Script
+          id={`blog-breadcrumb-data-${params.slug}`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(breadcrumbStructuredData),
