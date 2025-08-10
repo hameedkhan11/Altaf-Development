@@ -180,8 +180,6 @@ const websiteSchema = {
   }
 };
 
-// FAQ Schema moved to separate component
-
 const getBreadcrumbSchema = (pageType: string) => {
   const breadcrumbMap = {
     home: [
