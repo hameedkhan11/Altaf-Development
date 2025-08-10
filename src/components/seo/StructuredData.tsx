@@ -2,12 +2,10 @@
 /*
 eslint-disable @typescript-eslint/no-explicit-any
 */
-import { faqData } from "@/data/faqs/data";
 import Script from "next/script";
 
 interface StructuredDataProps {
   pageType: 'home' | 'about' | 'contact' | 'blogs' | 'blog-post' | 'property-detail' | 'media';
-  includeFAQ?: boolean;
   propertyData?: {
     name: string;
     description: string;
@@ -21,7 +19,7 @@ interface StructuredDataProps {
 // Enhanced Corporation Schema with proper @type array
 const corporationData = {
   "@context": "https://schema.org",
-  "@type": ["Corporation", "RealEstateAgent", "Organization"],
+  "@type": ["RealEstateAgent", "Organization"],
   "@id": "https://altafdevelopments.com/#organization",
   name: "Altaf Developments",
   legalName: "Altaf Developments (Private) Limited",
@@ -182,38 +180,7 @@ const websiteSchema = {
   }
 };
 
-// Enhanced FAQ Schema with better error handling and unique ID
-const getFAQSchema = () => {
-  if (!faqData || !Array.isArray(faqData) || faqData.length === 0) {
-    return null;
-  }
-  
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "@id": "https://altafdevelopments.com/faq", // Changed from /#faq to /faq
-    name: "Frequently Asked Questions - Altaf Developments",
-    description: "Common questions about Altaf Developments luxury apartments in Faisal Hills, Islamabad",
-    mainEntity: faqData.map((faq, index) => {
-      if (!faq.question || !faq.answer) {
-        return null;
-      }
-      
-      return {
-        "@type": "Question",
-        "@id": `https://altafdevelopments.com/faq#question-${index + 1}`, // More specific ID
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer.replace(/<[^>]+>/g, ""),
-          author: {
-            "@id": "https://altafdevelopments.com/#organization"
-          }
-        }
-      };
-    }).filter(Boolean)
-  };
-};
+// FAQ Schema moved to separate component
 
 const getBreadcrumbSchema = (pageType: string) => {
   const breadcrumbMap = {
@@ -324,9 +291,8 @@ const getPropertySchema = (propertyData: StructuredDataProps["propertyData"]) =>
 
 const StructuredData = ({ 
   pageType, 
-  includeFAQ = false, 
   propertyData 
-}: Omit<StructuredDataProps, 'blogData'>) => {
+}: StructuredDataProps) => {
   
   // Create a Set to track schema types and prevent duplicates
   const addedSchemaTypes = new Set();
@@ -348,15 +314,6 @@ const StructuredData = ({
   if (breadcrumbSchema && !addedSchemaTypes.has(`breadcrumb-${pageType}`)) {
     schemas.push(breadcrumbSchema);
     addedSchemaTypes.add(`breadcrumb-${pageType}`);
-  }
-
-  // Add FAQ schema if requested (only once)
-  if (includeFAQ && !addedSchemaTypes.has('faq')) {
-    const faqSchema = getFAQSchema();
-    if (faqSchema) {
-      schemas.push(faqSchema);
-      addedSchemaTypes.add('faq');
-    }
   }
 
   // Add property schema if provided

@@ -12,13 +12,15 @@ import sanityService from "@/lib/sanityService";
 import { FeaturedPostsSection } from "@/components/sections/home/Blogs";
 import Amenities from "@/components/sections/home/Amenities";
 import StructuredData from "@/components/seo/StructuredData";
+import FAQSchema from "@/components/seo/FAQSchema";
 
 const HomePage = async () => {
   const featuredPosts = await sanityService.getFeaturedPosts(3);
   
   return (
     <>
-    <StructuredData pageType="home" includeFAQ={true}/>
+    <StructuredData pageType="home"/>
+    <FAQSchema />
       <Hero
         title="Designing the future of living"
         isHomePage={true}
