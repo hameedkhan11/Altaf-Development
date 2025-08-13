@@ -1,17 +1,17 @@
-// components/ui/animation-provider.tsx
-'use client';
+// // components/ui/animation-provider.tsx
+// 'use client';
 
-import { LazyMotion, domAnimation } from 'framer-motion';
-import { ReactNode } from 'react';
+// import { LazyMotion, domAnimation } from 'framer-motion';
+// import { ReactNode } from 'react';
 
-interface AnimationProviderProps {
-  children: ReactNode;
-}
+// interface AnimationProviderProps {
+//   children: ReactNode;
+// }
 
-export default function AnimationProvider({ children }: AnimationProviderProps) {
-  return (
-    <LazyMotion features={domAnimation}>
-      {children}
-    </LazyMotion>
-  );
-}
+// export default function AnimationProvider({ children }: AnimationProviderProps) {
+//   return (
+//     <LazyMotion features={domAnimation}>
+//       {children}
+//     </LazyMotion>
+//   );
+// }
