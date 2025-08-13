@@ -58,11 +58,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
 
         {/* Content Section */}
         <div className="w-full lg:w-1/2 p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-center">
-          <AnimatedH1
-            wordByWord={true}
-            duration={0.1}
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 sm:mb-4 line-clamp-2 transition-colors"
-          >
+          <AnimatedH1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-3 sm:mb-4 line-clamp-2 transition-colors">
             {post?.title || "Untitled Post"}
           </AnimatedH1>
 
@@ -72,8 +68,9 @@ export function BlogCard({ post, index }: BlogCardProps) {
 
           <div className="flex items-center justify-between">
             <Link href={`/blogs/${post?.slug?.current}`}>
-              <button className="bg-[rgb(140,46,71)] text-white px-4 py-2 rounded-full sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base font-medium hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] cursor-pointer ease-in duration-300 transition-colors"
-              aria-label="Read more"
+              <button
+                className="bg-[rgb(140,46,71)] text-white px-4 py-2 rounded-full sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base font-medium hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] cursor-pointer ease-in duration-300 transition-colors"
+                aria-label="Read more"
               >
                 READ MORE
               </button>

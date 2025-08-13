@@ -20,16 +20,21 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://altafdevelopments.com"
   ),
   title: {
-    default: "Altaf Developments",
+    default: "Altaf Developments - Luxury Apartments in Faisal Hills Islamabad",
     template: "%s | Altaf Developments",
   },
-  description: "Premium property listings and real estate services in Pakistan",
+  description: "Altaf Developments builds with purpose—creating luxury one and two bedroom apartments in Faisal Hills, Islamabad. We specialize in exceptional spaces that meet real needs, uplift communities, and inspire lasting change.",
   keywords: [
+    "Altaf Developments",
+    "luxury apartments",
+    "Faisal Hills",
+    "Islamabad",
+    "one bedroom apartments",
+    "two bedroom apartments",
     "real estate",
-    "property",
-    "development",
-    "Pakistan",
-    "premium properties",
+    "property development",
+    "premium residential",
+    "Pakistan property",
   ],
   icons: {
     icon: "/favicon.png",
@@ -40,19 +45,53 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://altafdevelopments.com",
     siteName: "Altaf Developments",
-    title: "Altaf Developments - Premium Real Estate",
-    description:
-      "Premium property listings and real estate services in Pakistan",
+    title: "Altaf Developments - Luxury Apartments in Faisal Hills Islamabad",
+    description: "Premium one and two bedroom apartments in Faisal Hills, Islamabad. Exceptional luxury living spaces by Altaf Developments with modern amenities and contemporary design.",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_1200,h_800/v1750140482/Booking1_rg1bhs.jpg",
+        width: 1200,
+        height: 800,
+        alt: "Altaf Developments office exterior building",
+      },
+      {
+        url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_1200,h_675/v1753876189/Altaf_website_image_landscape_2_fxo3d3.jpg",
+        width: 1200,
+        height: 675,
+        alt: "Altaf Developments company owner portrait",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@altaf_developments",
-    creator: "@altaf_developments",
+    site: "@Altafdevelpmnts",
+    creator: "@Altafdevelpmnts",
+    title: "Altaf Developments - Luxury Apartments in Faisal Hills Islamabad",
+    description: "Premium one and two bedroom apartments in Faisal Hills, Islamabad. Exceptional luxury living spaces with modern amenities.",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_1200,h_630/v1753816245/FINAL_IMAGE_FOR_WEBSITE_SQUARE_1X1_ji4fnn.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Altaf Developments owner profile photo",
+      },
+    ],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
+  verification: {
+    google: "your-google-verification-code", // Replace with your actual verification code
+  },
+  category: "Real Estate Development",
 };
 
 export default function RootLayout({
