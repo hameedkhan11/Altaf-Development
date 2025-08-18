@@ -7,7 +7,7 @@ import { properties } from "@/data/properties";
 import { PropertySelector } from "@/components/property-detail/PropertySelector";
 import { ImageGallery } from "@/components/property-detail/ImageDetailGallery";
 import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailInfo";
-import PropertyDetailAmenities  from "@/components/property-detail/PropertyDetailAmenities";
+import PropertyDetailAmenities from "@/components/property-detail/PropertyDetailAmenities";
 import { PropertyKey } from "@/lib/types";
 import StructuredData from "@/components/seo/StructuredData";
 // import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
@@ -16,24 +16,27 @@ import StructuredData from "@/components/seo/StructuredData";
 const PropertyDetailContent: React.FC = () => {
   const searchParams = useSearchParams();
   const propertyParam = searchParams.get("property") as PropertyKey;
-  
+
   // Set initial state based on URL parameter, fallback to "1bed"
   const [selectedProperty, setSelectedProperty] = useState<PropertyKey>(
-    propertyParam && (propertyParam === "1bed" || propertyParam === "2bed") 
-      ? propertyParam 
+    propertyParam && (propertyParam === "1bed" || propertyParam === "2bed")
+      ? propertyParam
       : "1bed"
   );
 
   // Update state when URL parameter changes
   useEffect(() => {
-    if (propertyParam && (propertyParam === "1bed" || propertyParam === "2bed")) {
+    if (
+      propertyParam &&
+      (propertyParam === "1bed" || propertyParam === "2bed")
+    ) {
       setSelectedProperty(propertyParam);
     }
   }, [propertyParam]);
 
   // Now this will work correctly with PropertyDetail type
-  const currentProperty = properties[selectedProperty as keyof typeof properties];
-  
+  const currentProperty =
+    properties[selectedProperty as keyof typeof properties];
   // Add error handling in case property doesn't exist
   if (!currentProperty) {
     return (
@@ -45,7 +48,21 @@ const PropertyDetailContent: React.FC = () => {
 
   return (
     <>
-    <StructuredData pageType="property-detail" />
+      <StructuredData
+        pageType="property-detail"
+        propertyData={{
+          name: currentProperty.name,
+          description: `${currentProperty.name} in Faisal Hills, Islamabad - ${currentProperty.size} sq ft luxury apartment with ${currentProperty.bedrooms} bedroom(s) and ${currentProperty.bathrooms} bathroom(s).`,
+          propertyType: selectedProperty === "1bed" ? "one-bed" : "two-bed",
+          location: "Faisal Hills, Islamabad",
+          features: [
+            "Premium Finishes",
+            "Modern Design",
+            "Secure Building",
+            "Prime Location",
+          ],
+        }}
+      />
       <Hero
         backgroundType="image"
         backgroundSrc="Featured_Properties_ldygh0"
@@ -59,20 +76,19 @@ const PropertyDetailContent: React.FC = () => {
           { label: "Properties", href: "/properties" },
         ]}
       />
-      
       <div className="mx-auto mt-24 px-2 md:px-12 lg:px-16">
         <PropertySelector
           selectedProperty={selectedProperty}
           onPropertyChange={setSelectedProperty}
         />
-                
+
         {/* Main Layout: Image Gallery Left, Property Stats Right */}
         <div className="flex flex-col lg:flex-row mt-8 gap-8">
           {/* Left Side - Image Gallery */}
           <div className="flex-1">
             <ImageGallery propertyType={selectedProperty} />
           </div>
-          
+
           {/* Right Side - Property Stats */}
           <div className="flex-1">
             <PropertyDetailInfo property={currentProperty} />
@@ -88,8 +104,7 @@ const PropertyDetailContent: React.FC = () => {
         <PropertyDetailAmenities />
       </div>
       {/* <Amenities /> */}
-      <RegisterHero /> 
-      
+      <RegisterHero />
     </>
   );
 };

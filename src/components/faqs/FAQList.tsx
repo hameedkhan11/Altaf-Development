@@ -12,7 +12,7 @@ const FAQList: React.FC = () => {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 sm:ml-8 md:ml-12 lg:ml-20" itemScope itemType="https://schema.org/FAQPage">
+    <div className="px-4 sm:px-6 lg:px-8 sm:ml-8 md:ml-12 lg:ml-20">
       {faqData.map((item, index) => (
         <FAQItem
           key={item.id}

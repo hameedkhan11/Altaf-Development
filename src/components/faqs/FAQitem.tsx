@@ -13,7 +13,7 @@ interface FAQItemProps {
 
 const FAQItem: React.FC<FAQItemProps> = ({ item, isOpen, onToggle }) => {
   return (
-    <div className={`group`} itemScope itemType="https://schema.org/Question">
+    <div className={`group`}>
       <button
         onClick={() => onToggle(item.id)}
         className="w-full py-4 sm:py-5 md:py-6 text-left hover:bg-gray-50/50 transition-colors duration-200 focus:outline-none group border-b border-black"
@@ -40,8 +40,6 @@ const FAQItem: React.FC<FAQItemProps> = ({ item, isOpen, onToggle }) => {
           isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         }`}
         id={`faq-answer-${item.id}`}
-        itemScope
-        itemType="https://schema.org/Answer"
       >
         <div className="pb-6 sm:pb-7 md:pb-8 lg:pb-10 pr-8 sm:pr-10 md:pr-12 pt-4">
           <p className="leading-relaxed font-light text-sm sm:text-base">

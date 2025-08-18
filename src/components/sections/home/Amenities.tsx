@@ -116,7 +116,7 @@ const Amenities = () => {
             viewport={viewportOnce}
             transition={{ duration: 0.6, delay: delays.medium }}
           >
-            <div className="relative w-full h-[500px] xl:h-[580px] rounded-md overflow-hidden shadow-xl">
+            <div className="relative w-full h-[500px] xl:h-[600px] rounded-md overflow-hidden">
               {/* Background Images with Progressive Width Transition */}
               <div className="absolute inset-0 flex" style={{ flexDirection: isGoingForward ? 'row' : 'row-reverse' }}>
                 {/* Previous Image - shrinks during transition */}
