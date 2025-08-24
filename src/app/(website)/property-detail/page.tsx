@@ -10,6 +10,7 @@ import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailI
 import PropertyDetailAmenities from "@/components/property-detail/PropertyDetailAmenities";
 import { PropertyKey } from "@/lib/types";
 import StructuredData from "@/components/seo/StructuredData";
+import PropertyDetail from "@/components/property-detail/PropertyDetail";
 // import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
 
 // Separate component that uses useSearchParams
@@ -76,7 +77,8 @@ const PropertyDetailContent: React.FC = () => {
           { label: "Properties", href: "/properties" },
         ]}
       />
-      <div className="mx-auto mt-24 px-2 md:px-12 lg:px-16">
+      <div className="mx-auto px-2 md:px-12 lg:px-16">
+        <PropertyDetail />
         <PropertySelector
           selectedProperty={selectedProperty}
           onPropertyChange={setSelectedProperty}

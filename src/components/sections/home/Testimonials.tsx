@@ -131,7 +131,7 @@ const Testimonials = () => {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <CldImage
-            src="testimonialImage_etg2ca"
+            src="imgi_23_1-1_rpzgj3"
             alt="Modern living room interior"
             fill
             className="object-cover"
@@ -142,7 +142,7 @@ const Testimonials = () => {
             aria-label="Modern living room interior"
           />
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/60 to-black/40" />
+          <div className="absolute inset-0 bg-black/10" />
         </div>
 
         {/* Curtain Effect - Opens from both sides - Perfect scroll timing */}
@@ -201,7 +201,7 @@ const Testimonials = () => {
 
                   {/* Profile */}
                   <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-                    <div className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 xl:w-22 xl:h-22 rounded-full overflow-hidden border-2 border-white/20 shadow-lg flex-shrink-0">
+                    <div className="w-8 h-8 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 shadow-lg flex-shrink-0">
                       <Image
                         src={currentTestimonial?.image || "default-avatar"}
                         alt={currentTestimonial?.name}
@@ -231,7 +231,7 @@ const Testimonials = () => {
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 lg:w-3 lg:h-3 xl:w-3 xl:h-3 2xl:w-3 2xl:h-3 rounded-full transition-all duration-300 ${
+                  className={`w-1 h-1 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 lg:w-2 lg:h-2 rounded-full transition-all duration-300 ${
                     index === currentIndex
                       ? "bg-white scale-125"
                       : "bg-white/50 hover:bg-white/75"
