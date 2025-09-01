@@ -9,7 +9,7 @@ interface LeadershipImageProps {
 
 const LeadershipImage = ({ imageSrc, imageAlt }: LeadershipImageProps) => {
   return (
-    <div className="relative aspect-[5/4] w-full overflow-hidden shadow-lg rounded-sm group">
+    <div className="relative aspect-[5/4] w-full overflow-hidden rounded-sm group">
       <div className="w-full h-full transition-transform duration-400 ease-out group-hover:scale-[1.02]">
         <CldImage
           src={imageSrc}

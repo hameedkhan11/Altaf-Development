@@ -41,7 +41,7 @@ const ResidenceAmenities: React.FC = () => {
     { name: "Indoor pool", icon: <FaSwimmingPool /> },
     { name: "Barber shop", icon: <FaCut /> },
     { name: "Grocery store", icon: <FaShoppingCart /> },
-    { name: "Cafe shop", icon: <FaCoffee /> },
+    { name: "Coffee shop", icon: <FaCoffee /> },
     { name: "Tuition centre", icon: <FaBook /> },
     { name: "Mosque", icon: <FaMosque /> },
     { name: "Cinema", icon: <FaFilm /> },

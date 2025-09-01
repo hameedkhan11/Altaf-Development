@@ -29,7 +29,7 @@ const LeadershipSection = ({
         <div className="grid grid-cols-1 lg:grid-cols-2  lg:gap-x-12 xl:gap-x-16 items-start">
                             
           {/* Image Section */}
-          <div className={`relative ${isImageLeft ? 'order-1' : 'order-1 lg:order-2'}`}>
+          <div className={`relative ${isImageLeft ? 'order-1' : 'order-1 lg:order-2 mb-4'}`}>
             <LeadershipImage imageSrc={imageSrc} imageAlt={imageAlt} />
           </div>
                     
@@ -37,7 +37,7 @@ const LeadershipSection = ({
           <div className={`space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6 flex flex-col justify-center h-full ${isImageLeft ? 'order-2' : 'order-2 lg:order-1'}`}>
                                     
             {/* Title */}
-            <div className="text-left">
+            <div className="text-left mt-4">
               <h3 className="text-xl sm:text-2xl md:text-3xl mb-0 leading-tight">
                 {title}
               </h3>
