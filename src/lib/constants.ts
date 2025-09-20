@@ -18,6 +18,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   // { name: "CAREERS", href: "/careers" },
   { name: "BLOGS", href: "/blogs" },
   { name: "MEDIA CENTER", href: "/media" },
+  { name: "CAREERS", href: "/careers" },
   // Removed "Contact Us" as it's now a separate button
 ];
 
