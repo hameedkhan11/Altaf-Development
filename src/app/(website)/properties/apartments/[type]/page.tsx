@@ -13,9 +13,9 @@ import { notFound } from "next/navigation";
 const validTypes: ApartmentType[] = ["studio", "1 bed", "2 bed"];
 
 interface PageProps {
-  params: {
+  params: Promise<{
     type: string;
-  };
+  }>;
 }
 
 // For static generation (optional)
@@ -27,7 +27,8 @@ export async function generateStaticParams() {
 
 // For metadata (optional)
 export async function generateMetadata({ params }: PageProps) {
-  const decodedType = decodeURIComponent(params.type);
+  const { type } = await params;
+  const decodedType = decodeURIComponent(type);
 
   // Check if type is valid
   if (!validTypes.includes(decodedType as ApartmentType)) {
@@ -42,9 +43,12 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-const Page = ({ params }: PageProps) => {
+const Page = async ({ params }: PageProps) => {
+  // Await params to get the actual values
+  const { type } = await params;
+  
   // Decode the URL parameter (handles spaces in "1 bed" and "2 bed")
-  const decodedType = decodeURIComponent(params.type);
+  const decodedType = decodeURIComponent(type);
 
   // Validate the apartment type
   if (!validTypes.includes(decodedType as ApartmentType)) {
@@ -61,7 +65,7 @@ const Page = ({ params }: PageProps) => {
       />
       <AltafDevelopmentsShowcase
         title="Trust-Driven Real Estate Excellence"
-        description="Transform your investment dreams into reality with Islamabads trusted real estate partner. We specialize in premium developments in Faisal Hills, offering verified projects, dedicated support, and transparent dealings. Whether you're a local investor or overseas Pakistani, we provide secure investment processes, long-term guidance, and after-sales support that extends beyond the sale."
+        description="Transform your investment dreams into reality with Islamabad's trusted real estate partner. We specialize in premium developments in Faisal Hills, offering verified projects, dedicated support, and transparent dealings. Whether you're a local investor or overseas Pakistani, we provide secure investment processes, long-term guidance, and after-sales support that extends beyond the sale."
       />
       <ApartmentDetailPage type={decodedType as ApartmentType} />
       <FloorPlanComponent type={decodedType as ApartmentType} />
