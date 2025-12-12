@@ -14,24 +14,12 @@ import { FaSnapchatGhost } from "react-icons/fa";
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   { name: "ABOUT", href: "/about" },
-  { name: "PROPERTIES", href: "/property-detail" },
+  { name: "PROPERTIES", href: "/properties" },
   // { name: "CAREERS", href: "/careers" },
-  { name: "BLOGS", href: "/blogs" },
-  { name: "MEDIA CENTER", href: "/media" },
+  { name: "MEDIA CENTER", href: "/media/blogs" },
   { name: "CAREERS", href: "/careers" },
   // Removed "Contact Us" as it's now a separate button
 ];
-
-export const COMPANY_INFO = {
-  name: "ALTAF BUILDER",
-  tagline: "Redefining Luxury Living in Prime Locations",
-  description:
-    "Discover exceptional properties crafted with precision and designed for those who appreciate the finest details in life.",
-  address: "Sheikh Zayed Road, Dubai, UAE",
-  phone: "+971 4 123 4567",
-  email: "info@altafbuilder.com",
-  hours: "Sun - Thu: 9AM - 6PM",
-};
 
 export const quickLinks = [
   {
@@ -40,15 +28,15 @@ export const quickLinks = [
   },
   {
     name: "Properties",
-    href: '/property-detail'
+    href: '/properties'
   },
   {
     name: "Blogs",
-    href: '/blogs'
+    href: '/media/blogs'
   },
   {
     name: "Media Center",
-    href: '/media'
+    href: '/media/blogs'
   },
   {
     name: "Contact Us",
@@ -67,12 +55,6 @@ export const socialMediaLinks = [
   { name: "Snapchat", href: "https://www.snapchat.com/add/altafdevelopmnt" },
 ];
 
-export const contactInfo = {
-  address: "Sheikh Zayed Road, Dubai, UAE",
-  phone: "+971 4 123 4567",
-  email: "info@altafbuilder.com",
-  workingHours: "Sun - Thu: 9AM - 6PM",
-};
 
 export const footerLinks = {
   privacy: "#",

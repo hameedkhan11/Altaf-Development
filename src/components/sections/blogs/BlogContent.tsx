@@ -15,7 +15,7 @@ export function BlogContent({ posts, totalPages, currentPage, searchParams }: Bl
     <section className="w-full mx-auto">
       {posts?.length > 0 ? (
         <>
-          <div className="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12 mb-8 sm:mb-12 md:mb-16">
+          <div className="">
             {posts?.map((post, index) => (
               <BlogCard key={post?._id} post={post} index={index} />
             ))}
@@ -34,10 +34,10 @@ export function BlogContent({ posts, totalPages, currentPage, searchParams }: Bl
         </>
       ) : (
         <div className="text-center py-12 sm:py-16 md:py-20 px-4">
-          <div className="text-gray-500 text-lg sm:text-xl mb-3 sm:mb-4">
+          <div className="text-lg sm:text-xl mb-3 sm:mb-4">
             {searchParams?.search ? 'No articles found for your search.' : 'No articles found.'}
           </div>
-          <p className="text-gray-400 text-sm sm:text-base">
+          <p className=" text-sm sm:text-base">
             Try adjusting your search terms.
           </p>
         </div>

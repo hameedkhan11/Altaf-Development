@@ -1,5 +1,4 @@
 // app/layout.tsx
-import React from "react";
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import { Metadata } from "next";
@@ -93,9 +92,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code", // Replace with your actual verification code
-  },
   category: "Real Estate Development",
 };
 
@@ -107,7 +103,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* All tracking scripts in head - these don't affect SSR */}
         <GoogleAnalytics />
         <FacebookPixel />
         <FAQSchema />

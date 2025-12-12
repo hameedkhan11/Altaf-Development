@@ -157,7 +157,7 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
 
         {/* Large Desktop - 3 Column Grid */}
         <div className="hidden lg:block xl:hidden">
-          <div className="grid grid-cols-3 gap-4 auto-rows-fr">
+          <div className="grid grid-cols-3 gap-2 auto-rows-fr">
             {posts.map((post) => (
               <div key={post._id} className="h-full">
                 <FeaturedPostCard post={post} />
@@ -188,10 +188,10 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
           </div>
         </div>
 
-        <div className="flex justify-center mt-6 sm:mt-7 md:mt-8">
-          <Link href="/blogs">
+        <div className="relative flex justify-center mt-6 sm:mt-7 md:mt-28">
+          <Link href="/media/blogs">
             <Button
-              className={`relative px-4 sm:px-5 bg-[rgb(140,46,71)] hover:bg-transparent hover:text-[rgb(140,46,71)] hover:border-2 hover:border-[rgb(140,46,71)] cursor-pointer rounded-full font-bold overflow-hidden py-4 sm:py-5 md:py-6 text-sm sm:text-base`}
+              className={`px-4 sm:px-5 bg-[rgb(140,46,71)] hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 hover:border-[rgb(140,46,71)] cursor-pointer rounded-full font-bold overflow-hidden py-4 sm:py-5 md:py-6 text-sm sm:text-base`}
               aria-label="View All Blogs"
             >
               <div className="flex items-center">

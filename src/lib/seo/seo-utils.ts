@@ -97,7 +97,7 @@ export const generateBreadcrumbSchema = (post: BlogPost, currentUrl: string) => 
         "@type": "ListItem",
         "position": 2,
         "name": "Blogs",
-        "item": "https://altafdevelopment.com/blogs"
+        "item": "https://altafdevelopment.com//media/blogs"
       },
       {
         "@type": "ListItem",

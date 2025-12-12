@@ -4,13 +4,19 @@ import { useSearchParams } from "next/navigation";
 import { Hero } from "@/components/common/Hero";
 import { RegisterHero } from "@/components/register-form/hero-section";
 import { properties } from "@/data/properties";
-import { PropertySelector } from "@/components/property-detail/PropertySelector";
-import { ImageGallery } from "@/components/property-detail/ImageDetailGallery";
-import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailInfo";
-import PropertyDetailAmenities from "@/components/property-detail/PropertyDetailAmenities";
+// import { PropertySelector } from "@/components/property-detail/PropertySelector";
+// import { ImageGallery } from "@/components/property-detail/ImageDetailGallery";
+// import { PropertyDetailInfo } from "@/components/property-detail/PropertyDetailInfo";
+// import PropertyDetailAmenities from "@/components/property-detail/PropertyDetailAmenities";
 import { PropertyKey } from "@/lib/types";
 import StructuredData from "@/components/seo/StructuredData";
 import PropertyDetail from "@/components/property-detail/PropertyDetail";
+// import ApartmentFloorPlan from "@/components/property-detail/ApartmentFloorPlans";
+// import DemoGallery from "@/components/property-detail/Gallery";
+import AtAGlance from "@/components/property-detail/Residences";
+import ApartmentShowcase from "@/components/property-detail/ApartmentShowcase";
+import VideoShowcase from "@/components/property-detail/VideoShowcase";
+import AltafDevelopmentsShowcase from "@/components/cards/ReusableTitleDescCard";
 // import { PricingAndLayoutSection } from "@/components/property-detail/PricingAndLayout";
 
 // Separate component that uses useSearchParams
@@ -50,7 +56,7 @@ const PropertyDetailContent: React.FC = () => {
   return (
     <>
       <StructuredData
-        pageType="property-detail"
+        pageType="properties"
         propertyData={{
           name: currentProperty.name,
           description: `${currentProperty.name} in Faisal Hills, Islamabad - ${currentProperty.size} sq ft luxury apartment with ${currentProperty.bedrooms} bedroom(s) and ${currentProperty.bathrooms} bathroom(s).`,
@@ -77,35 +83,14 @@ const PropertyDetailContent: React.FC = () => {
           { label: "Properties", href: "/properties" },
         ]}
       />
-      <div className="mx-auto px-2 md:px-12 lg:px-16">
-        <PropertyDetail />
-        <PropertySelector
-          selectedProperty={selectedProperty}
-          onPropertyChange={setSelectedProperty}
-        />
-
-        {/* Main Layout: Image Gallery Left, Property Stats Right */}
-        <div className="flex flex-col lg:flex-row mt-8 gap-8">
-          {/* Left Side - Image Gallery */}
-          <div className="flex-1">
-            <ImageGallery propertyType={selectedProperty} />
-          </div>
-
-          {/* Right Side - Property Stats */}
-          <div className="flex-1">
-            <PropertyDetailInfo property={currentProperty} />
-          </div>
-        </div>
-
-        {/* New Pricing and 3D Layout Section */}
-        {/* <PricingAndLayoutSection 
-          property={currentProperty} 
-          selectedProperty={selectedProperty}
-        /> */}
-
-        <PropertyDetailAmenities />
-      </div>
-      {/* <Amenities /> */}
+      <AltafDevelopmentsShowcase
+        title="The Art of Strategic Investment"
+        description=" ALTAF Developments pioneers innovative real estate solutions that deliver luxury lifestyles through meticulous design and precision craftsmanship LinkedIn. Our projects in Faisal Hills represent more than residences—they are curated experiences featuring state-of-the-art amenities, world-class security, and modern facilities designed to provide a healthy and quality lifestyle"
+      />
+      <AtAGlance />
+      <ApartmentShowcase />
+      <VideoShowcase />
+      <PropertyDetail />
       <RegisterHero />
     </>
   );

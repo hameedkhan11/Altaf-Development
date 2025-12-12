@@ -19,7 +19,7 @@ export function BlogHero({
 }: BlogHeroProps) {
   // Create breadcrumb items for blog
   const breadcrumbs: BreadcrumbItem[] = [
-    { label: "Home", href: "/" },
+    { label: "Media", href: "/" },
     { label: "Blog", href: "/blogs" }
   ];
 

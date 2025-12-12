@@ -12,7 +12,6 @@ import { amenitiesData, additionalAmenities, SimpleAmenityData } from "@/data/am
 import { AmenityData } from "@/lib/types";
 import { CldImage } from "next-cloudinary";
 import {
-  AnimatedH1,
   AnimatedH2,
   AnimatedP,
 } from "@/components/ui/text-animations";
@@ -76,12 +75,12 @@ const Amenities = () => {
           className="w-full flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 mb-8 sm:mb-10 lg:mb-12"
           {...fadeInUp}
         >
-          <AnimatedH1
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center uppercase w-full leading-tight"
+          <AnimatedH2
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center uppercase w-full leading-tight"
             {...fadeInLeft}
           >
-              Comfort, Connectivity & Community
-          </AnimatedH1>
+              Your Gateway to Elevated Living
+          </AnimatedH2>
         </div>
 
         {/* Desktop Content Section */}
@@ -116,7 +115,7 @@ const Amenities = () => {
             viewport={viewportOnce}
             transition={{ duration: 0.6, delay: delays.medium }}
           >
-            <div className="relative w-full h-[500px] xl:h-[600px] rounded-md overflow-hidden">
+            <div className="relative w-full h-[500px] xl:h-[600px] overflow-hidden">
               {/* Background Images with Progressive Width Transition */}
               <div className="absolute inset-0 flex" style={{ flexDirection: isGoingForward ? 'row' : 'row-reverse' }}>
                 {/* Previous Image - shrinks during transition */}

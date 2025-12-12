@@ -86,7 +86,7 @@ export function ContactForm() {
             type="text"
             name="name"
             placeholder="Your name*"
-            className="rounded-sm bg-neutral-600 placeholder:text-white/90"
+            className="rounded-xs bg-white placeholder:text-black"
             value={formData.name}
             onChange={handleInputChange}
             required
@@ -95,7 +95,7 @@ export function ContactForm() {
             type="email"
             name="email"
             placeholder="E-mail address*"
-            className="rounded-sm bg-neutral-600 placeholder:text-white/90"
+            className="rounded-xs bg-white placeholder:text-black"
             value={formData.email}
             onChange={handleInputChange}
             required
@@ -109,7 +109,7 @@ export function ContactForm() {
               name="countryCode"
               value={formData.countryCode}
               onChange={handleInputChange}
-              className="bg-transparent text-white pl-1 xs:pl-2 pr-4 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none appearance-none bg-no-repeat bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27m6 8 4 4 4-4%27/%3e%3c/svg%3e')] bg-[length:0.75rem_0.75rem] bg-[right_0.25rem_center]"
+              className="rounded-xs bg-white text-black pl-1 xs:pl-2 pr-4 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none appearance-none bg-no-repeat bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27m6 8 4 4 4-4%27/%3e%3c/svg%3e')] bg-[length:0.75rem_0.75rem] bg-[right_0.25rem_center]"
             >
               {countries.map((country) => (
                 <option key={country.code} value={country.code} className="bg-neutral-700">
@@ -124,11 +124,11 @@ export function ContactForm() {
               value={formData.phone}
               onChange={handleInputChange}
               required
-              className="flex-1 bg-transparent text-white placeholder-gray-400 px-2 xs:px-3 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none"
+              className="flex-1 rounded-xs bg-white placeholder:text-black px-2 xs:px-3 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none"
             />
           </div>
-          <div className="rounded-sm bg-neutral-600 px-2 xs:px-3 py-2 sm:py-3">
-            <p className="text-white text-xs xs:text-sm mb-1 xs:mb-2">Preferred mode of contact</p>
+          <div className="rounded-xs bg-white px-2 xs:px-3 py-2 sm:py-3">
+            <p className="text-black text-xs xs:text-sm mb-1 xs:mb-2">Preferred mode of contact</p>
             <div className="flex xs:flex-row flex-wrap items-start xs:items-center gap-1 xs:gap-x-2">
               {contactModes.map((mode) => (
                 <label key={mode.value} className="flex items-center space-x-1 cursor-pointer">
@@ -138,9 +138,9 @@ export function ContactForm() {
                     value={mode.value}
                     checked={formData.preferredContact === mode.value}
                     onChange={handleInputChange}
-                    className="w-3 h-3 xs:w-4 xs:h-4 text-white border border-white/20 focus:ring-white/40 focus:ring-2"
+                    className="w-3 h-3 xs:w-4 xs:h-4 text-black border border-white/20 focus:ring-white/40 focus:ring-2"
                   />
-                  <span className="text-white text-xs">{mode.label}</span>
+                  <span className="text-black text-xs">{mode.label}</span>
                 </label>
               ))}
             </div>
@@ -152,7 +152,7 @@ export function ContactForm() {
           type="textarea"
           name="message"
           placeholder="Message*"
-          className="rounded-sm bg-neutral-600 placeholder:text-white/90"
+          className="rounded-xs bg-white placeholder:text-black"
           value={formData.message}
           onChange={handleInputChange}
           required

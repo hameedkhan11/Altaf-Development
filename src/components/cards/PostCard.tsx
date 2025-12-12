@@ -1,3 +1,5 @@
+
+
 // components/sections/blogs/PostCard.tsx
 import Image from "next/image";
 import Link from "next/link";
@@ -17,19 +19,19 @@ export function PostCard({
   badgeText = "Featured"
 }: PostCardProps) {
   const imageUrl = post.featuredImage
-    ? urlFor(post.featuredImage).width(800).height(600).crop("focalpoint").url()
+    ? urlFor(post.featuredImage).width(1800).height(1600).crop("focalpoint").url()
     : null;
 
   return (
     <article className="group cursor-pointer h-full flex flex-col w-full">
-      <Link href={`/blogs/${post.slug?.current}`} className="block w-full h-full">
-        <div className="relative aspect-[4/3] w-full overflow-hidden mb-2 xs:mb-3 sm:mb-4 rounded-sm shadow-sm hover:shadow-md transition-shadow duration-300">
+      <Link href={`/media/blogs/${post.slug?.current}`} className="block w-full max-w-[480px] mx-auto">
+        <div className="relative aspect-[23/22] w-full overflow-hidden mb-2 xs:mb-3 sm:mb-4 shadow-sm hover:shadow-md transition-shadow duration-300">
           {imageUrl ? (
             <Image
               src={imageUrl}
               alt={post.featuredImage?.alt || post.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover group-hover:scale-105 transition-transform duration-300 overflow-hidden"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
             />
           ) : (
@@ -68,14 +70,16 @@ export function PostCard({
 }
 
 // Convenience components for specific use cases
-export const RelatedPostCard = ({ post }: { post: PostPreview }) => (
-  <PostCard post={post} />
-);
+export function RelatedPostCard({ post }: { post: PostPreview }) {
+  return <PostCard post={post} />;
+}
 
-export const FeaturedPostCard = ({ post }: { post: PostPreview }) => (
-  <PostCard 
-    post={post} 
-    showBadge={true}
-    badgeText="Featured"
-  />
-);
+export function FeaturedPostCard({ post }: { post: PostPreview }) {
+  return (
+    <PostCard 
+      post={post} 
+      showBadge={true}
+      badgeText="Featured"
+    />
+  );
+}

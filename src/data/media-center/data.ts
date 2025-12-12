@@ -4,6 +4,16 @@ import {  ChevronRight } from "lucide-react";
 
 export const MEDIA_ITEMS: MediaItem[] = [
   {
+    name: "Blogs",
+    href: "/media/blogs",
+    icon: ChevronRight,
+  },
+  {
+    name: "Events",
+    href: "/media/events",
+    icon: ChevronRight,
+  },
+  {
     name: "Photo Gallery",
     href: "/media/photos",
     icon: ChevronRight,
@@ -16,16 +26,6 @@ export const MEDIA_ITEMS: MediaItem[] = [
   {
     name: "Virtual Tours",
     href: "/media/virtual-tours",
-    icon: ChevronRight,
-  },
-  {
-    name: "Floor Plans",
-    href: "/media/floor-plans",
-    icon: ChevronRight,
-  },
-  {
-    name: "Brochures",
-    href: "/media/brochures",
     icon: ChevronRight,
   },
   // {

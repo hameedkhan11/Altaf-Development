@@ -17,7 +17,7 @@ export function FeaturedBlogCard({
 }: FeaturedBlogCardProps) {
   return (
     <article className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-      <Link href={`/blogs/${post?.slug?.current}`} className="block">
+      <Link href={`/media/blogs/${post?.slug?.current}`} className="block">
         <div className="relative h-48 overflow-hidden">
           {post?.featuredImage ? (
             <CldImage

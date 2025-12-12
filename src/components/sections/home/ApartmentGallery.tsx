@@ -1,9 +1,7 @@
 "use client";
 
 import { PropertyCard2 } from "@/components/cards/PropertyCard2";
-import { AnimatedH2 } from "@/components/ui/text-animations";
 import { propertySections } from "@/data/properties";
-import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export const ApartmentGallery = () => {
@@ -71,8 +69,8 @@ export const ApartmentGallery = () => {
   };
 
   return (
-    <section className="py-24 px-4 sm:px-8 lg:px-16">
-      <motion.div
+    <section className="px-4 sm:px-8 lg:px-16">
+      {/* <motion.div
         className="mb-12 text-center"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -88,7 +86,7 @@ export const ApartmentGallery = () => {
           Luxury Living Spaces
         </AnimatedH2>
       </motion.div>
-      
+       */}
       <div className="relative overflow-hidden">
         {/* Mobile/Tablet Horizontal Slider */}
         <div className="block md:hidden">
@@ -114,7 +112,7 @@ export const ApartmentGallery = () => {
 
         {/* Desktop Layout */}
         <div className="hidden md:block overflow-hidden">
-          <div className="h-[60vh] sm:h-[70vh] lg:h-[80vh] flex gap-1">
+          <div className="h-[60vh] sm:h-[70vh] lg:h-[80vh] flex gap-1 mb-10 sm:mb-12">
             {propertySections.map((section, index) => (
               <PropertyCard2 key={section.id} section={section} index={index} />
             ))}

@@ -11,7 +11,7 @@ interface StructuredDataProps {
     | "contact"
     | "blogs"
     | "blog-post"
-    | "property-detail"
+    | "properties"
     | "media";
   propertyData?: {
     name: string;
@@ -213,8 +213,11 @@ const websiteSchema = {
   },
 };
 
-const getBreadcrumbSchema = (pageType: string, propertyData?: StructuredDataProps["propertyData"]) => {
-  const breadcrumbMap: Record<string, Array<{name: string, url: string}>> = {
+const getBreadcrumbSchema = (
+  pageType: string,
+  propertyData?: StructuredDataProps["propertyData"]
+) => {
+  const breadcrumbMap: Record<string, Array<{ name: string; url: string }>> = {
     home: [{ name: "Home", url: "https://altafdevelopments.com/" }],
     about: [
       { name: "Home", url: "https://altafdevelopments.com/" },
@@ -226,7 +229,7 @@ const getBreadcrumbSchema = (pageType: string, propertyData?: StructuredDataProp
     ],
     blogs: [
       { name: "Home", url: "https://altafdevelopments.com/" },
-      { name: "Blogs", url: "https://altafdevelopments.com/blogs" },
+      { name: "Blogs", url: "https://altafdevelopments.com/media/blogs" },
     ],
     media: [
       { name: "Home", url: "https://altafdevelopments.com/" },
@@ -234,9 +237,19 @@ const getBreadcrumbSchema = (pageType: string, propertyData?: StructuredDataProp
     ],
     "property-detail": [
       { name: "Home", url: "https://altafdevelopments.com/" },
-      { name: "Properties", url: "https://altafdevelopments.com/property-detail" },
+      {
+        name: "Properties",
+        url: "https://altafdevelopments.com/property-detail",
+      },
       // Add specific property name if available
-      ...(propertyData ? [{ name: propertyData.name, url: "https://altafdevelopments.com/property-detail" }] : []),
+      ...(propertyData
+        ? [
+            {
+              name: propertyData.name,
+              url: "https://altafdevelopments.com/property-detail",
+            },
+          ]
+        : []),
     ],
   };
 
@@ -270,7 +283,7 @@ const getPropertySchema = (
   const estimatedOccupancy = propertyData.propertyType === "one-bed" ? 2 : 4;
 
   // Use provided images if available, otherwise use curated default images based on property type
-  const propertyImages = 
+  const propertyImages =
     propertyData.images && propertyData.images.length > 0
       ? propertyData.images.map((imageUrl, index) => ({
           "@type": "ImageObject",
@@ -281,48 +294,56 @@ const getPropertySchema = (
           description: `Interior view of ${propertyData.name} showing premium finishes and modern design`,
         }))
       : propertyData.propertyType === "one-bed"
-      ? [
-          {
-            "@type": "ImageObject",
-            url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518957/One_Bed_Bathroom_sxuabb.jpg",
-            width: 800,
-            height: 600,
-            caption: "One bedroom apartment - Premium bathroom with modern fixtures",
-            description: "Luxury bathroom featuring contemporary design, quality fixtures, and elegant tiling",
-          },
-          {
-            "@type": "ImageObject",
-            url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518957/One_Bed_Feature_bdk9at.jpg",
-            width: 800,
-            height: 600,
-            caption: "One bedroom apartment - Modern living space with premium amenities",
-            description: "Spacious one bedroom apartment interior showcasing open-plan living and modern furnishings",
-          },
-        ]
-      : [
-          {
-            "@type": "ImageObject",
-            url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518989/two_bed_Tv_Lounge_ihucwo.jpg",
-            width: 800,
-            height: 600,
-            caption: "Two bedroom apartment - Spacious TV lounge with comfortable seating",
-            description: "Comfortable living room space in two bedroom luxury apartment with entertainment area",
-          },
-          {
-            "@type": "ImageObject",
-            url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518985/Two_Bed_Kitchen_ptkuis.jpg",
-            width: 800,
-            height: 600,
-            caption: "Two bedroom apartment - Modern kitchen with premium appliances",
-            description: "Fully equipped kitchen featuring high-end appliances, ample storage, and contemporary design",
-          },
-        ];
+        ? [
+            {
+              "@type": "ImageObject",
+              url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518957/One_Bed_Bathroom_sxuabb.jpg",
+              width: 800,
+              height: 600,
+              caption:
+                "One bedroom apartment - Premium bathroom with modern fixtures",
+              description:
+                "Luxury bathroom featuring contemporary design, quality fixtures, and elegant tiling",
+            },
+            {
+              "@type": "ImageObject",
+              url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518957/One_Bed_Feature_bdk9at.jpg",
+              width: 800,
+              height: 600,
+              caption:
+                "One bedroom apartment - Modern living space with premium amenities",
+              description:
+                "Spacious one bedroom apartment interior showcasing open-plan living and modern furnishings",
+            },
+          ]
+        : [
+            {
+              "@type": "ImageObject",
+              url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518989/two_bed_Tv_Lounge_ihucwo.jpg",
+              width: 800,
+              height: 600,
+              caption:
+                "Two bedroom apartment - Spacious TV lounge with comfortable seating",
+              description:
+                "Comfortable living room space in two bedroom luxury apartment with entertainment area",
+            },
+            {
+              "@type": "ImageObject",
+              url: "https://res.cloudinary.com/dqv6swyul/image/upload/f_auto,q_auto,w_800,h_600/v1753518985/Two_Bed_Kitchen_ptkuis.jpg",
+              width: 800,
+              height: 600,
+              caption:
+                "Two bedroom apartment - Modern kitchen with premium appliances",
+              description:
+                "Fully equipped kitchen featuring high-end appliances, ample storage, and contemporary design",
+            },
+          ];
 
   // FIXED: Use single @type instead of array to avoid confusion
   return {
     "@context": "https://schema.org",
     "@type": "Accommodation", // Single type instead of array
-    "@id": `https://altafdevelopments.com/property-detail/${encodeURIComponent(propertyData.name.toLowerCase().replace(/\s+/g, '-'))}#accommodation`,
+    "@id": `https://altafdevelopments.com/property-detail/${encodeURIComponent(propertyData.name.toLowerCase().replace(/\s+/g, "-"))}#accommodation`,
     name: propertyData.name,
     description: propertyData.description,
     image: propertyImages,
@@ -365,8 +386,12 @@ const getPropertySchema = (
 
 // FIXED: Better unique key generation function
 const getUniqueSchemaKey = (schema: any, index: number): string => {
-  const type = Array.isArray(schema["@type"]) ? schema["@type"][0] : schema["@type"];
-  const id = schema["@id"] ? schema["@id"].split("#")[1] || schema["@id"].split("/").pop() : "";
+  const type = Array.isArray(schema["@type"])
+    ? schema["@type"][0]
+    : schema["@type"];
+  const id = schema["@id"]
+    ? schema["@id"].split("#")[1] || schema["@id"].split("/").pop()
+    : "";
   return `${type}-${id}-${index}`.replace(/[^a-zA-Z0-9-]/g, "-");
 };
 

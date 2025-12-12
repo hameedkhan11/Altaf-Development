@@ -22,8 +22,8 @@ interface BlogDetailHeroProps {
 
 const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post }) => {
   const breadcrumbs = [
-    { label: "Home", href: "/" },
-    { label: "Blogs", href: "/blogs" },
+    { label: "Media", href: "/" },
+    { label: "Blogs", href: "/media/blogs" },
     { label: post.title, href: "#" }
   ];
 

@@ -60,7 +60,7 @@ const PropertyImageGalleryComponent: React.FC<PropertyImageGalleryProps> = ({
           return (
             <motion.div
               key={image.id}
-              className={`group relative bg-white dark:bg-gray-800 rounded-sm overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer ${
+              className={`group relative overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer ${
                 isFullWidth ? "col-span-2" : ""
               }`}
               onClick={() => setSelectedImage(index)}
@@ -70,12 +70,11 @@ const PropertyImageGalleryComponent: React.FC<PropertyImageGalleryProps> = ({
               whileHover={{ y: -4 }}
             >
               {/* Image */}
-              <div className=" relative overflow-hidden">
+              <div className={`relative overflow-hidden ${isFullWidth ? "aspect-[16/9]" : "aspect-[4/3]"}`}>
                 <CldImage
                   src={image.cloudinaryId}
                   alt={image.alt}
-                  width={isFullWidth ? 1900 : 800} // Full-width images are larger
-                  height={isFullWidth ? 600 : 560} // Maintain 4:3 aspect ratio
+                  fill // Maintain 4:3 aspect ratio
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   crop="fill"
                   gravity="auto"

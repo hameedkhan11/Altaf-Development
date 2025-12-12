@@ -6,12 +6,12 @@ import { CldImage } from "next-cloudinary";
 
 const PropertyDetail: React.FC = () => {
   return (
-    <section className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen px-8 md:px-12 lg:px-16">
+      <div className="mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center min-h-screen py-8 sm:py-12 lg:py-16">
           {/* Left Side - Images */}
-          <div className="lg:col-span-6 xl:col-span-5 order-2 lg:order-1">
-            <div className="relative max-w-sm sm:max-w-md lg:max-w-lg mx-auto lg:mx-0">
+          <div className="lg:col-span-7 order-2 lg:order-1">
+            <div className="relative max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto lg:mx-0">
               {/* Main Large Image */}
               <div className="relative aspect-[4/3]">
                 <CldImage
@@ -19,7 +19,7 @@ const PropertyDetail: React.FC = () => {
                   alt="Modern Luxury Bedroom Interior"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 640px) 90vw, (max-width: 768px) 80vw, 50vw"
+                  sizes="(max-width: 640px) 90vw, (max-width: 768px) 80vw, 60vw"
                 />
               </div>
               
@@ -39,12 +39,12 @@ const PropertyDetail: React.FC = () => {
           </div>
           
           {/* Right Side - Content */}
-          <div className="lg:col-span-6 xl:col-span-6 xl:col-start-7 order-1 lg:order-2">
-            <div className="max-w-lg mx-auto lg:mx-0 lg:ml-4 xl:ml-16 px-4 sm:px-0">
+          <div className="lg:col-span-5 xl:col-span-5 order-1 lg:order-2">
+            <div className="max-w-lg mx-auto lg:mx-0 lg:ml-4 xl:ml-8 px-4 sm:px-0">
               {/* Main Heading */}
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-light leading-[1.1] mb-6 sm:mb-8 lg:mb-12">
-                Your Comfort, Our Commitment
-              </h1>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-light leading-[1.1] mb-6 sm:mb-8 lg:mb-12">
+                Architectural Excellence, Elevated Living
+              </h2>
               
               {/* Description */}
               <div className="space-y-4 sm:space-y-6">

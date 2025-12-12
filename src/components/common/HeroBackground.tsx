@@ -1,12 +1,12 @@
 // common/components/HeroBackground.tsx
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { CldImage } from "next-cloudinary";
 
 interface HeroBackgroundProps {
   type?: "video" | "image";
-  src?: string; // This will be the public ID for images, or a video source
+  src?: string;
   fallbackImage?: string;
   overlay?: "light" | "medium" | "dark" | "gradient" | "none";
   className?: string;
@@ -17,12 +17,8 @@ interface HeroBackgroundProps {
     opacity?: number;
   };
   videoOptimization?: {
-    quality?: "auto" | "auto:low" | "auto:good" | "auto:best" | number;
-    format?: "auto" | "mp4" | "webm";
-    width?: number;
-    height?: number;
-    bitrate?: string;
-    fps?: number;
+    quality?: "auto" | "auto:low" | "auto:good" | "auto:best" | "auto:eco";
+    streaming?: boolean; // Use adaptive bitrate streaming for long videos
   };
 }
 
@@ -51,19 +47,13 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   });
   
   const y = useTransform(smoothY, [0, 1], [0, -(100 * parallaxSpeed)]);
-  const scale = useTransform(
-    smoothY,
-    [0, 1],
-    [1, 1]
-  );
+  const scale = useTransform(smoothY, [0, 1], [1, 1]);
 
   const getOverlayClass = () => {
-    // Check for custom overlay first
     if (customOverlay) {
-      return ""; // Will use inline styles instead
+      return "";
     }
     
-    // Default overlay classes
     switch (overlay) {
       case "light":
         return "bg-black/10";
@@ -92,7 +82,6 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
     return undefined;
   };
 
-  // Return null if there is no source for either image or video
   if (!src) {
     return null;
   }
@@ -133,7 +122,6 @@ export const HeroBackground: React.FC<HeroBackgroundProps> = ({
   );
 };
 
-// ParallaxContent component for rendering image or video content
 const ParallaxContent: React.FC<{
   type: "video" | "image";
   publicId: string;
@@ -141,184 +129,31 @@ const ParallaxContent: React.FC<{
   fallbackImage?: string;
   videoOptimization: HeroBackgroundProps["videoOptimization"];
 }> = ({ type, publicId, altText, fallbackImage, videoOptimization }) => {
-  const [screenSize, setScreenSize] = useState<{
-    width: number;
-    height: number;
-    devicePixelRatio: number;
-  }>({ width: 1920, height: 1080, devicePixelRatio: 1 });
-
-  useEffect(() => {
-    const updateScreenSize = () => {
-      if (typeof window !== 'undefined') {
-        setScreenSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
-          devicePixelRatio: window.devicePixelRatio || 1,
-        });
-      }
-    };
-
-    updateScreenSize();
-    window.addEventListener('resize', updateScreenSize);
-    return () => window.removeEventListener('resize', updateScreenSize);
-  }, []);
-
-  const getOptimalDimensions = () => {
-    const { width, devicePixelRatio } = screenSize;
+  
+  const buildOptimizedVideoUrl = () => {
+    const { quality = "auto:good", streaming = false } = videoOptimization ?? {};
     
-    // Account for device pixel ratio for sharp images on high-DPI screens
-    const pixelRatio = Math.min(devicePixelRatio, 2); // Cap at 2x to avoid huge files
-    
-    // Mobile-first responsive breakpoints with proper scaling
-    if (width <= 480) {
-      return { 
-        width: Math.ceil(480 * pixelRatio), 
-        height: Math.ceil(854 * pixelRatio) // 16:9 aspect ratio
-      };
-    }
-    if (width <= 768) {
-      return { 
-        width: Math.ceil(768 * pixelRatio), 
-        height: Math.ceil(1366 * pixelRatio) 
-      };
-    }
-    if (width <= 1024) {
-      return { 
-        width: Math.ceil(1024 * pixelRatio), 
-        height: Math.ceil(768 * pixelRatio) 
-      };
-    }
-    if (width <= 1440) {
-      return { 
-        width: Math.ceil(1440 * pixelRatio), 
-        height: Math.ceil(900 * pixelRatio) 
-      };
-    }
-    if (width <= 1920) {
-      return { 
-        width: Math.ceil(1920 * pixelRatio), 
-        height: Math.ceil(1080 * pixelRatio) 
-      };
+    // For streaming (long videos), use adaptive bitrate
+    if (streaming) {
+      // Use m3u8 format for HLS adaptive streaming
+      return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/f_auto,q_${quality},vc_auto/${publicId}.m3u8`;
     }
     
-    // 4K and above
-    return { 
-      width: Math.ceil(2560 * Math.min(pixelRatio, 1.5)), 
-      height: Math.ceil(1440 * Math.min(pixelRatio, 1.5)) 
-    };
-  };
-
-  const buildVideoUrl = () => {
-    const { 
-      quality = "auto:good", 
-      format = "auto",
-      bitrate,
-      fps = 30 
-    } = videoOptimization ?? {};
-    
-    const { width, height } = getOptimalDimensions();
-    const { width: screenWidth } = screenSize;
-    
-    // Use higher quality for mobile to compensate for compression
-    let videoQuality = quality;
-    if (screenWidth <= 768) {
-      videoQuality = quality === "auto:good" ? "auto:best" : quality;
-    }
-    
+    // For progressive download (short videos like hero backgrounds)
+    // Let Cloudinary handle all optimizations automatically
     const transformations = [
-      `q_${videoQuality}`,
-      `f_${format}`,
-      `w_${width}`,
-      `h_${height}`,
-      `c_fill`,
-      `g_center`,
-      `ac_none`,
-      `fps_${fps}`
-    ];
-    
-    // Add bitrate control for mobile
-    if (bitrate && screenWidth <= 768) {
-      transformations.push(`br_${bitrate}`);
-    }
-    
-    const transformString = transformations.join(',');
-    
-    return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformString}/${publicId}`;
-  };
-
-  const buildPosterUrl = () => {
-    const { width, height } = getOptimalDimensions();
-    
-    return fallbackImage
-      ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_${width},h_${height},f_auto,q_auto:best,g_center/${fallbackImage}`
-      : undefined;
-  };
-
-  // Generate multiple video sources for different screen sizes and connection speeds
-  const generateVideoSources = () => {
-    const sources = [];
-    const { devicePixelRatio } = screenSize;
-    
-    // High-end mobile (iPhone Pro, Samsung S-series, etc.)
-    sources.push({
-      src: buildVideoUrlForSize(480 * Math.min(devicePixelRatio, 2), 854 * Math.min(devicePixelRatio, 2), "auto:best"),
-      media: "(max-width: 480px) and (-webkit-min-device-pixel-ratio: 2)",
-      type: "video/mp4"
-    });
-    
-    // Standard mobile
-    sources.push({
-      src: buildVideoUrlForSize(480, 854, "auto:good"),
-      media: "(max-width: 480px)",
-      type: "video/mp4"
-    });
-    
-    // Tablet portrait
-    sources.push({
-      src: buildVideoUrlForSize(768 * Math.min(devicePixelRatio, 1.5), 1024 * Math.min(devicePixelRatio, 1.5), "auto:good"),
-      media: "(max-width: 768px)",
-      type: "video/mp4"
-    });
-    
-    // Tablet landscape / Small desktop
-    sources.push({
-      src: buildVideoUrlForSize(1024, 768, "auto:good"),
-      media: "(max-width: 1024px)",
-      type: "video/mp4"
-    });
-    
-    // Desktop
-    sources.push({
-      src: buildVideoUrlForSize(1920, 1080, "auto:good"),
-      media: "(max-width: 1920px)",
-      type: "video/mp4"
-    });
-    
-    // 4K
-    sources.push({
-      src: buildVideoUrlForSize(2560, 1440, "auto:good"),
-      media: "(min-width: 1921px)",
-      type: "video/mp4"
-    });
-    
-    return sources;
-  };
-
-  const buildVideoUrlForSize = (width: number, height: number, quality = "auto:good") => {
-    const { format = "auto", fps = 30 } = videoOptimization ?? {};
-    
-    const transformations = [
-      `q_${quality}`,
-      `f_${format}`,
-      `w_${width}`,
-      `h_${height}`,
-      `c_fill`,
-      `g_center`,
-      `ac_none`,
-      `fps_${fps}`
+      `f_auto`,        // Auto format (WebM/MP4/AV1 based on browser)
+      `q_${quality}`,  // Auto quality with content-aware compression
+      `vc_auto`        // Auto codec selection
     ].join(',');
     
     return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${transformations}/${publicId}`;
+  };
+
+  const buildPosterUrl = () => {
+    // Use Cloudinary's automatic optimization for poster image
+    const posterSrc = fallbackImage || publicId;
+    return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto:good,c_fill,g_center,ar_16:9/${posterSrc}`;
   };
 
   return (
@@ -338,16 +173,13 @@ const ParallaxContent: React.FC<{
             }}
             poster={buildPosterUrl()}
           >
-            {generateVideoSources().map((source, index) => (
-              <source 
-                key={index}
-                src={source.src} 
-                type={source.type} 
-                media={source.media} 
-              />
-            ))}
-            {/* Fallback source */}
-            <source src={buildVideoUrl()} type="video/mp4" />
+            {/* Single optimized source - Cloudinary handles all device/browser optimization */}
+            <source 
+              src={buildOptimizedVideoUrl()} 
+              type={videoOptimization?.streaming ? "application/vnd.apple.mpegurl" : "video/mp4"}
+            />
+            {/* Fallback message for browsers that don't support video */}
+            Your browser does not support the video tag.
           </video>
         </div>
       ) : (
@@ -355,17 +187,14 @@ const ParallaxContent: React.FC<{
           <CldImage
             src={publicId}
             alt={altText}
-            width={getOptimalDimensions().width}
-            height={getOptimalDimensions().height}
-            sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, (max-width: 1440px) 1440px, (max-width: 1920px) 1920px, 2560px"
+            fill
+            sizes="100vw"
             priority
+            crop="fill"
             gravity="center"
-            quality="auto:best"
+            format="auto"
+            quality="auto:good"
             className="w-full h-full object-cover"
-            style={{
-              minWidth: '100%',
-              minHeight: '100%',
-            }}
           />
         </div>
       )}

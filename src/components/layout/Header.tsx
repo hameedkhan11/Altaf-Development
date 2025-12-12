@@ -6,16 +6,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 // import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import {
-  X,
-  ArrowRight,
-} from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
 import Link from "next/link";
 import MediaCenterDropdown from "../ui/media-center-dropdown";
 
 // Import SVG as React component
-import AltafLogo from "../../../public/logos/ALTAF-LOGO2.svg"
+import AltafLogo from "../../../public/logos/ALTAF-LOGO2.svg";
 import MobileMenu from "./MobileMenu";
 import { Animate } from "../ui/animate";
 
@@ -25,11 +22,13 @@ const Header = () => {
   const [showBackgroundOverlay] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     // Set client-side rendering flag
     setIsClient(true);
-    
+
     // Check if device is mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -49,7 +48,20 @@ const Header = () => {
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
+
+      // Update scrolled state
       setScrolled(scrollPosition > 100);
+
+      // Show/hide header based on scroll direction
+      if (scrollPosition > lastScrollY && scrollPosition > 100) {
+        // Scrolling down & past threshold
+        setIsVisible(false);
+      } else {
+        // Scrolling up
+        setIsVisible(true);
+      }
+
+      setLastScrollY(scrollPosition);
     };
 
     const handleResize = () => {
@@ -58,22 +70,22 @@ const Header = () => {
 
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [lastScrollY]);
 
   return (
     <>
       <Animate
-      type="stagger"
+        type="stagger"
         className={`fixed w-full h-20 transition-all duration-500 ease-in-out font-avenir ${
-          scrolled
-            ? "z-30 backdrop-blur-lg bg-white shadow-lg"
-            : "z-30 mt-5"
-        } ${showBackgroundOverlay ? "opacity-0" : "opacity-100"}`}
+          scrolled ? "z-30 backdrop-blur-lg bg-white shadow-lg" : "z-30 mt-5"
+        } ${showBackgroundOverlay ? "opacity-0" : "opacity-100"} ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
       >
         {/* Background image overlay for initial state */}
         {!scrolled && (
@@ -83,9 +95,11 @@ const Header = () => {
         <div className="container mx-auto px-4 xl:px-6 h-full relative z-10">
           <div className="flex items-center justify-between h-full relative">
             {/* Left Navigation - Adjusted positioning and spacing */}
-            <nav className={`hidden lg:flex items-center space-x-6 xl:space-x-8 2xl:space-x-12 absolute left-0 xl:left-12 top-1/2 transform -translate-y-1/2 transition-opacity duration-500 ${
-              showBackgroundOverlay ? "opacity-0" : "opacity-100"
-            }`}>
+            <nav
+              className={`hidden lg:flex items-center space-x-6 xl:space-x-8 2xl:space-x-12 absolute left-0 xl:left-12 top-1/2 transform -translate-y-1/2 transition-opacity duration-500 ${
+                showBackgroundOverlay ? "opacity-0" : "opacity-100"
+              }`}
+            >
               {NAVIGATION_ITEMS.map((item) => (
                 <React.Fragment key={item.name}>
                   {item.name === "MEDIA CENTER" ? (
@@ -99,10 +113,16 @@ const Header = () => {
                           : "text-white  hover:text-[rgb(255,167,186)] hover:font-bold space-x-4"
                       }`}
                     >
-                      <span className={`tracking-widest ${scrolled ? "text-xs" : "text-sm"}`}>{item.name}</span>
-                   { scrolled &&  <span
-                        className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full bg-[rgb(140,46,71)]`}
-                      /> }
+                      <span
+                        className={`tracking-widest ${scrolled ? "text-xs" : "text-sm"}`}
+                      >
+                        {item.name}
+                      </span>
+                      {scrolled && (
+                        <span
+                          className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full bg-[rgb(140,46,71)]`}
+                        />
+                      )}
                     </Link>
                   )}
                 </React.Fragment>
@@ -116,13 +136,13 @@ const Header = () => {
                 className="cursor-pointer flex items-center relative"
               >
                 {/* Logo using SVGR */}
-                <AltafLogo 
+                <AltafLogo
                   className={`cursor-pointer transition-all duration-500 ${
-                    isClient && isMobile 
-                      ? 'w-[130px] h-[90px] mt-4' 
-                      : 'lg:w-[130px] lg:h-[88px] xl:w-[140px] xl:h-[100px]'
+                    isClient && isMobile
+                      ? "w-[130px] h-[90px] mt-4"
+                      : "lg:w-[130px] lg:h-[88px] xl:w-[140px] xl:h-[100px]"
                   } ${
-                    !scrolled 
+                    !scrolled
                       ? "text-white" // White when not scrolled
                       : "text-[#8c2e47]" // Brand color when scrolled
                   }`}

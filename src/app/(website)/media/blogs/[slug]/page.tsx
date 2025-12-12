@@ -51,7 +51,7 @@ export async function generateMetadata(props: {
       publishedTime: post?.publishedAt,
       modifiedTime: post?.updatedAt,
       authors: ["Altaf Developments"],
-      url: `/blogs/${post?.slug?.current}`,
+      url: `/media/blogs/${post?.slug?.current}`,
       images: ogImageUrl
         ? [
             {
@@ -72,7 +72,7 @@ export async function generateMetadata(props: {
       creator: "@AltafDevelopments",
     },
     alternates: {
-      canonical: post?.canonicalUrl || `/blogs/${post?.slug?.current}`,
+      canonical: post?.canonicalUrl || `/media/blogs/${post?.slug?.current}`,
     },
     robots: {
       index: !post?.noIndex,

@@ -28,7 +28,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
         } min-h-[360px] sm:min-h-[400px] md:min-h-[430px] lg:min-h-[460px] w-full`}
       >
         {/* Image Section */}
-        <div className="w-full lg:w-1/2 relative overflow-hidden aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[460px]">
+        <div className="w-full lg:w-1/2 relative overflow-hidden aspect-[4/3] sm:aspect-[16/10]">
           {imageUrl ? (
             <Image
               fill
@@ -67,7 +67,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
           </AnimatedP>
 
           <div className="flex items-center justify-between">
-            <Link href={`/blogs/${post?.slug?.current}`}>
+            <Link href={`/media/blogs/${post?.slug?.current}`}>
               <button
                 className="bg-[rgb(140,46,71)] text-white px-4 py-2 rounded-full sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base font-medium hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] cursor-pointer ease-in duration-300 transition-colors"
                 aria-label="Read more"
