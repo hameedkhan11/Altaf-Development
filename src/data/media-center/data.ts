@@ -19,11 +19,6 @@ export const MEDIA_ITEMS: MediaItem[] = [
     icon: ChevronRight,
   },
   {
-    name: "Video Tours",
-    href: "/media/videos",
-    icon: ChevronRight,
-  },
-  {
     name: "Virtual Tours",
     href: "/media/virtual-tours",
     icon: ChevronRight,

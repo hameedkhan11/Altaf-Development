@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import { Hero } from "@/components/common/Hero";
 import MissionVisionSection from "./MissionVisionSection";
