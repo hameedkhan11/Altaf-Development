@@ -18,7 +18,7 @@ interface InputProps {
 }
 
 const Input = ({ type = 'text', name, placeholder, value, onChange, onFocus, required = false, rows, className = "" }: InputProps) => {
-  const baseClasses = "w-full border border-white/20 rounded-lg px-2 xs:px-3 py-2 sm:py-3 text-white placeholder-gray-400 focus:outline-none focus:border-white/40 transition-all duration-200 text-xs xs:text-sm sm:text-base";
+  const baseClasses = "w-full border border-white/20 rounded-lg px-2 xs:px-3 py-2 sm:py-3 text-black placeholder-gray-400 focus:outline-none focus:border-white/40 transition-all duration-200 text-xs xs:text-sm sm:text-base";
   
   if (type === 'textarea') {
     return (
