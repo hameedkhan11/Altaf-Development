@@ -15,16 +15,17 @@ import Link from "next/link";
 import MediaCenterDropdown from "../ui/media-center-dropdown";
 
 // Import SVG as React component
-import AltafLogo from "../../../public/logos/ALTAF-LOGO2.svg"
+// import AltafLogo from "@/assets/ALTAF-LOGO2.svg";
 import MobileMenu from "./MobileMenu";
 import { Animate } from "../ui/animate";
+import AltafLogoSvg from "./AltafLogo";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showBackgroundOverlay] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const [, setIsMobile] = useState(false);
+  const [, setIsClient] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -132,18 +133,7 @@ const Header = () => {
                 href={"/"}
                 className="cursor-pointer flex items-center relative"
               >
-                {/* Logo using SVGR */}
-                <AltafLogo 
-                  className={`cursor-pointer transition-all duration-500 ${
-                    isClient && isMobile 
-                      ? 'w-[130px] h-[90px] mt-4' 
-                      : 'lg:w-[130px] lg:h-[88px] xl:w-[140px] xl:h-[100px]'
-                  } ${
-                    !scrolled 
-                      ? "text-white" // White when not scrolled
-                      : "text-[#8c2e47]" // Brand color when scrolled
-                  }`}
-                />
+               <AltafLogoSvg className={`mt-4 w-[170px] h-[170px] sm:w-[140px] sm:h-[140px] md:w-[160px] md:h-[160px] lg:w-[180px] lg:h-[180px] ${!scrolled ? "text-white" : "text-[rgb(140,46,71)]"}`}/>
               </Link>
             </div>
 

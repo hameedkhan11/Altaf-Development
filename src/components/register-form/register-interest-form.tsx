@@ -124,7 +124,7 @@ export function ContactForm() {
               value={formData.phone}
               onChange={handleInputChange}
               required
-              className="flex-1 rounded-xs bg-white placeholder:text-black px-2 xs:px-3 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none"
+              className="flex-1 rounded-xs text-black bg-white placeholder:text-black px-2 xs:px-3 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none"
             />
           </div>
           <div className="rounded-xs bg-white px-2 xs:px-3 py-2 sm:py-3">

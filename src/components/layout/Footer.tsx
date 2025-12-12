@@ -2,9 +2,9 @@
 import {
   HiArrowDown,
 } from "react-icons/hi2";
-import AltafLogo from "../../../public/logos/ALTAF-LOGO2.svg";
 import Link from "next/link";
 import { socialMediaConfig } from "@/lib/constants";
+import Image from "next/image";
 
 const quickLinks = [
   { name: "Home", href: "/" },
@@ -20,7 +20,7 @@ const quickLinks = [
 const CompanyInfo = () => (
   <div className="w-full space-y-4 sm:space-y-6">
     <Link href="/" className="inline-block">
-      <AltafLogo className="w-[140px] sm:w-[170px] md:w-[190px] h-auto text-[rgb(140,46,71)]" />
+    <Image src={"/logos/altaf_logo.svg"} alt="Altaf Developments Logo" width={200} height={200} />
     </Link>
     <div>
       <div className="space-y-2 text-base sm:text-lg mt-6 sm:mt-8 md:mt-12">
