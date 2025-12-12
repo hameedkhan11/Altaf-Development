@@ -45,7 +45,7 @@ const HomePage = async () => {
         {/* <PropertyShowcase /> */}
         {/* <ProjectsSection /> */}
         <div className="flex flex-col items-center py-20 sm:py-24 md:py-32">
-          <h2 className="max-w-2xl font-light text-4xl text-center mb-4 sm:mb-6 md:mb-8">
+          <h2 className="max-w-2xl font-light text-2xl sm:text-3xl lg:text-4xl text-center mb-4 sm:mb-6 md:mb-8">
             DISCOVER OUR RESIDENTIAL BUILDING IN FAISAL HILLS
           </h2>
           <Link href={"/properties"} className="text-white font-medium bg-[rgb(140,46,71)] cursor-pointer transition duration-300 ease-in-out hover:scale-110 px-6 py-2.5 rounded-full hover:bg-transparent border border-[rgb(140,46,71)] hover:text-[rgb(140,46,71)]">
