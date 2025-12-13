@@ -30,7 +30,7 @@ const HomePage = async () => {
         isHomePage={true}
         backgroundType="video"
         overlay="light"
-        backgroundSrc="output_100mb_best_mg8ffe"
+        backgroundSrc="output_50mb_rnp539"
         ariaLabel="Altaf Development Home Section"
         contentAlignment="center"
       />

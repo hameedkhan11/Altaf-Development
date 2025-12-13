@@ -29,7 +29,7 @@ function EventCard({ event }: { event: Event }) {
 
   return (
     <Link href={`/media/events/${event.slug.current}`} className="group block">
-      <div className="bg-white overflow-hidden transition-transform duration-300">
+      <div className="overflow-hidden transition-transform duration-300">
         <div className="relative aspect-[5/4] w-full">
           <Image
             src={urlFor(event.image).width(2400).height(1600).url()}
@@ -37,23 +37,23 @@ function EventCard({ event }: { event: Event }) {
             fill
             className="object-cover"
           />
-            <div className="absolute top-4 left-4 bg-gray-100 text-[#51301F] px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-4 left-4 bg-gray-100 text-[rgb(140,46,71)] px-3 py-1 rounded-full text-sm font-semibold">
               Event
             </div>
         </div>
         
         <div className="p-6">
-          <h3 className="text-2xl font-normal text-[#51301F] mb-2 transition-colors">
+          <h3 className="text-2xl font-normal text-[rgb(140,46,71)] mb-2 transition-colors">
             {event.title}
           </h3>
           
-          <p className="text-gray-600 mb-4 line-clamp-2">
+          <p className="mb-4 line-clamp-2">
             {event.description}
           </p>
           
-          <div className="space-y-2 text-sm text-gray-500">
+          <div className="space-y-2 text-sm">
             <div className="flex items-center">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 mr-2 text-[rgb(140,46,71)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               {eventDate.toLocaleDateString('en-US', {
@@ -67,7 +67,7 @@ function EventCard({ event }: { event: Event }) {
             </div>
             
             <div className="flex items-center">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 mr-2 text-[rgb(140,46,71)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>

@@ -69,9 +69,9 @@ export async function generateMetadata({
         description: event.description,
         images: [
           {
-            url: urlFor(event.image).width(1200).height(630).url(),
-            width: 1200,
-            height: 630,
+            url: urlFor(event.image).width(1920).height(1080).url(),
+            width: 1920,
+            height: 1080,
             alt: event.title,
           },
         ],
@@ -90,21 +90,18 @@ function EventGallery({ gallery }: { gallery: Event["gallery"] }) {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Event Gallery</h2>
+      <h4 className="text-2xl font-bold text-[rgb(140,46,71] mb-6">Event Gallery</h4>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {gallery.map((image, index) => (
           <div key={index} className="group cursor-pointer">
-            <div className="relative aspect-square overflow-hidden">
+            <div className="relative aspect-[16/9] overflow-hidden">
               <Image
-                src={urlFor(image).width(400).height(400).url()}
+                src={urlFor(image).width(1920).height(1080).url()}
                 alt={image.alt || `Gallery image ${index + 1}`}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
-            {image.caption && (
-              <p className="text-sm text-gray-600 mt-2">{image.caption}</p>
-            )}
           </div>
         ))}
       </div>
@@ -116,9 +113,9 @@ function RelatedEvents({ events }: { events: Event[] }) {
   if (!events || events.length === 0) return null;
 
   return (
-    <section className="bg-gray-50 py-12 mt-12">
-      <div className="mx-auto px-4 sm:px-6 lg:px-16">
-        <h2 className="text-3xl font-bold text-[#51301F] mb-8 text-center">
+    <section className="py-12 mt-12">
+      <div className="mx-auto px-4 sm:px-8 lg:px-12">
+        <h2 className="text-3xl font-bold text-[rgb(140,46,71] mb-8 text-center">
           Related Events
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -130,7 +127,7 @@ function RelatedEvents({ events }: { events: Event[] }) {
             >
               <div className="relative h-48">
                 <Image
-                  src={urlFor(event.image).width(300).height(192).url()}
+                  src={urlFor(event.image).width(1200).height(800).url()}
                   alt={event.title}
                   fill
                   className="object-cover"
@@ -143,7 +140,7 @@ function RelatedEvents({ events }: { events: Event[] }) {
                 )}
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors mb-2">
+                <h3 className="font-semibold transition-colors mb-2">
                   {event.title}
                 </h3>
                 <div className="flex items-center text-sm text-gray-500">
@@ -296,15 +293,15 @@ async function EventDetail({ slug }: { slug: string }) {
       overlay="medium"
 
       />
-      <div className="mx-auto px-4 sm:px-6 lg:px-16">
+      <div className="mx-auto px-4 sm:px-6 lg:px-16 py-8 sm:py-12 md:py-16 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-24">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <div className="prose prose-lg max-w-none mb-12">
-              <h2 className="text-4xl font-normal text-[#51301F] mb-4">
-                About This Event
+            <div className="prose prose-lg max-w-none">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[rgb(140,46,71)] mb-4">
+                {event.title}
               </h2>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="leading-relaxed">
                 {event.description}
               </p>
             </div>
@@ -314,17 +311,17 @@ async function EventDetail({ slug }: { slug: string }) {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg p-6 shadow-sm border sticky top-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
+              <h4 className="text-xl font-bold text-[rgb(140,46,71] mb-6">
                 Event Details
-              </h3>
+              </h4>
 
               <div className="space-y-6">
                 {/* Date & Time */}
                 <div className="flex items-start">
-                  <FiCalendar className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
+                  <FiCalendar className="w-5 h-5 text-[rgb(140,46,71)] mr-3 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-gray-900">Date & Time</p>
-                    <p className="text-gray-600">
+                    <p className="font-medium text-[rgb(140,46,71)]">Date & Time</p>
+                    <p className="">
                       {eventDate.toLocaleDateString("en-US", {
                         weekday: "long",
                         year: "numeric",
@@ -332,7 +329,7 @@ async function EventDetail({ slug }: { slug: string }) {
                         day: "numeric",
                       })}
                     </p>
-                    <p className="text-gray-600">
+                    <p className="">
                       {eventDate.toLocaleTimeString("en-US", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -343,18 +340,18 @@ async function EventDetail({ slug }: { slug: string }) {
 
                 {/* Location */}
                 <div className="flex items-start">
-                  <FiMapPin className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
+                  <FiMapPin className="w-5 h-5 text-[rgb(140,46,71)] mr-3 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-gray-900">Location</p>
-                    <p className="text-gray-600">{event.location}</p>
+                    <p className="font-medium text-[rgb(140,46,71)]">Location</p>
+                    <p>{event.location}</p>
                   </div>
                 </div>
 
                 {/* Status */}
                 <div className="flex items-start">
-                  <FiCheckCircle className="w-5 h-5 text-blue-600 mr-3 mt-1 flex-shrink-0" />
+                  <FiCheckCircle className="w-5 h-5 text-[rgb(140,46,71)] mr-3 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-gray-900">Status</p>
+                    <p className="font-medium text-[rgb(140,46,71)]">Status</p>
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
                         isUpcoming
@@ -370,11 +367,11 @@ async function EventDetail({ slug }: { slug: string }) {
                 {/* Registration Button */}
                 {isUpcoming && (
                   <div className="pt-4 border-t">
-                    <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center">
+                    <button className="w-full bg-[rgb(140,46,71)] text-white py-3 px-6 rounded-lg font-semibold hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] transition-colors flex items-center justify-center">
                       <FiUsers className="w-5 h-5 mr-2" />
                       Register for Event
                     </button>
-                    <p className="text-xs text-gray-500 mt-2 text-center">
+                    <p className="text-xs mt-2 text-center">
                       Click to register or get more information
                     </p>
                   </div>
@@ -412,7 +409,7 @@ export default async function EventDetailPage({
         <div className="mx-auto px-4 sm:px-6 lg:px-16 py-6">
           <Link
             href="/media/events"
-            className="inline-flex items-center text-[#51301F] font-medium transition-colors"
+            className="inline-flex items-center text-[rgb(140,46,71)] font-medium transition-colors"
           >
             <FiArrowLeft className="w-4 h-4 mr-2" />
             Back to all events
