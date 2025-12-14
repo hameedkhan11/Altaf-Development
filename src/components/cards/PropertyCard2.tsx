@@ -24,8 +24,8 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
         <CldImage
           src={section.image}
           alt={section.alt}
-          width={800}
-          height={600}
+          width={1700}
+          height={1400}
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={index === 0}

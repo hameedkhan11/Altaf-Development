@@ -18,19 +18,19 @@ export const propertySections: PropertySection[] = [
    {
     id: 'transactions',
     title: 'Grand Lobby',
-    image: 'grand-lobby_awpfkg',
+    image: 'grand-lobby_lmivty',
     alt: 'Modern room with fireplace and large windows'
   },
   {
     id: 'connect',
     title: "Dream suite",
-    image: 'dream-suite_ez3xq0',
+    image: 'dream-suite_lm0kb4',
     alt: 'Elegant dining area with natural lighting'
   },
    {
     id: 'properties',
     title: 'Suite Bath',
-    image: 'powder-room_akquqb',
+    image: 'powder-room_tzvupl',
     alt: 'Luxury living room with modern furniture'
   }
 ];
