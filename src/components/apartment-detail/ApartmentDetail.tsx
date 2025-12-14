@@ -1,7 +1,7 @@
 "use client";
 
+import { Image } from "@imagekit/next";
 import React, { useState } from "react";
-import { CldImage } from "next-cloudinary";
 
 // Type definitions
 interface ApartmentDetails {
@@ -40,11 +40,11 @@ const apartmentData: ApartmentDataMap = {
     paymentPlan: "4 years",
     balcony: "Yes",
     facingCharges: "10% corner, 5% facing views",
-    mainImage: "imgi_4465_75695c101476497.5f1fdce588c62_ouxylj",
+    mainImage: "/interior/interior (4).jpeg",
     thumbnails: [
-      "imgi_4465_75695c101476497.5f1fdce588c62_ouxylj",
-      "imgi_4462_6eaff2101476497.5f1fdce589b13_alar4b",
-      "imgi_4459_b753ad101476497.5f1fdce58ae62_mej60a",
+      "interior/interior (4).jpeg",
+      "interior/interior (6).jpeg",
+      "interior/interior (8).jpeg",
     ],
   },
   "1 bed": {
@@ -60,11 +60,11 @@ const apartmentData: ApartmentDataMap = {
     paymentPlan: "4 years",
     balcony: "Yes",
     facingCharges: "10% corner, 5% facing views",
-    mainImage: "imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk",
+    mainImage: "interior/interior (5).jpeg",
     thumbnails: [
-      "imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk",
-      "imgi_4462_6eaff2101476497.5f1fdce589b13_alar4b",
-      "imgi_4459_b753ad101476497.5f1fdce58ae62_mej60a",
+      "interior/interior (5).jpeg",
+      "interior/interior (1).jpeg",
+      "interior/interior (7).jpeg",
     ],
   },
   "2 bed": {
@@ -80,11 +80,11 @@ const apartmentData: ApartmentDataMap = {
     paymentPlan: "4 years",
     balcony: "Yes",
     facingCharges: "10% corner, 5% facing views",
-    mainImage: "imgi_4465_75695c101476497.5f1fdce588c62_ouxylj",
+    mainImage: "interior/interior (8).jpeg",
     thumbnails: [
-      "imgi_4465_75695c101476497.5f1fdce588c62_ouxylj",
-      "imgi_4462_6eaff2101476497.5f1fdce589b13_alar4b",
-      "imgi_4459_b753ad101476497.5f1fdce58ae62_mej60a",
+      "interior/interior (8).jpeg",
+      "interior/interior (6).jpeg",
+      "interior/interior (5).jpeg",
     ],
   },
 };
@@ -94,9 +94,7 @@ interface ApartmentDetailPageProps {
   showNavigation?: boolean;
 }
 
-const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
-  type,
-}) => {
+const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({ type }) => {
   const [selectedImage, setSelectedImage] = useState<number>(0);
 
   // Validate the type and get apartment data
@@ -124,8 +122,9 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
           {/* Left Side - Images */}
           <div className="space-y-3 sm:space-y-4 lg:col-span-3">
             {/* Main Image */}
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <CldImage
+            <div className="relative aspect-[16/9] overflow-hidden">
+              <Image
+                urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                 fill
                 src={apartment.thumbnails[selectedImage]}
                 alt={apartment.title}
@@ -133,17 +132,18 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
               />
             </div>
 
-            {/* Thumbnail Images */}
+            {/* Thumbnail Images - FIXED: Removed min-h-[800px] */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
               {apartment.thumbnails.map((thumb: string, index: number) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`relative aspect-[4/3] overflow-hidden ${
-                    selectedImage === index ? "ring-2 ring-black" : ""
+                  className={`relative aspect-[16/9] overflow-hidden transition-all duration-200 ${
+                    selectedImage === index ? "ring-2 ring-black" : "hover:opacity-80"
                   }`}
                 >
-                  <CldImage
+                  <Image
+                    urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     fill
                     src={thumb}
                     alt={`View ${index + 1}`}
@@ -155,25 +155,24 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
           </div>
 
           {/* Right Side - Details */}
-          <div className="space-y-4 sm:space-y-6 lg:col-span-2">
+          <div className="lg:col-span-2">
             {/* Header */}
-            <div>
-              <div className="flex items-start justify-between">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-light">
-                  {apartment.title}
-                </h3>
-              </div>
+            <div className="mb-6">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-light">
+                {apartment.title}
+              </h3>
               <p className="text-sm sm:text-sm md:text-base mt-1">
                 {apartment.subtitle}
               </p>
             </div>
 
             {/* Apartment Specifications */}
-            <div className="bg-white space-y-4 sm:space-y-6">
+            <div className="bg-white">
+              {/* Basic Details */}
               <div className="grid grid-cols-1">
                 {/* Area */}
                 <div
-                  className="flex items-center justify-between py-3 sm:py-4 border-b"
+                  className="flex items-center justify-between py-3 border-b"
                   style={{ borderColor: "rgb(140,46,71)" }}
                 >
                   <span
@@ -189,7 +188,7 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
 
                 {/* Floor */}
                 <div
-                  className="flex items-center justify-between py-3 sm:py-4 border-b"
+                  className="flex items-center justify-between py-3 border-b"
                   style={{ borderColor: "rgb(140,46,71)" }}
                 >
                   <span
@@ -205,7 +204,7 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
 
                 {/* Rate per sqft */}
                 <div
-                  className="flex items-center justify-between py-3 sm:py-4 border-b"
+                  className="flex items-center justify-between py-3 border-b"
                   style={{ borderColor: "rgb(140,46,71)" }}
                 >
                   <span
@@ -221,7 +220,7 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
 
                 {/* Balcony */}
                 <div
-                  className="flex items-center justify-between py-3 sm:py-4 border-b"
+                  className="flex items-center justify-between py-3 border-b"
                   style={{ borderColor: "rgb(140,46,71)" }}
                 >
                   <span
@@ -236,107 +235,105 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({
                 </div>
               </div>
 
-              <div className="">
-                <div className="grid grid-cols-1">
-                  {/* Total Amount */}
-                  <div
-                    className="flex items-center justify-between py-3 sm:py-4 border-b"
-                    style={{ borderColor: "rgb(140,46,71)" }}
+              {/* Payment Details */}
+              <div className="grid grid-cols-1">
+                {/* Total Amount */}
+                <div
+                  className="flex items-center justify-between py-3 border-b"
+                  style={{ borderColor: "rgb(140,46,71)" }}
+                >
+                  <span
+                    className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
+                    style={{ color: "rgb(140, 46, 71)" }}
                   >
-                    <span
-                      className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
-                      style={{ color: "rgb(140, 46, 71)" }}
-                    >
-                      Total Amount
-                    </span>
-                    <span className="text-sm sm:text-base md:text-base">
-                      PKR {apartment.totalPrice}
-                    </span>
-                  </div>
+                    Total Amount
+                  </span>
+                  <span className="text-sm sm:text-base md:text-base">
+                    PKR {apartment.totalPrice}
+                  </span>
+                </div>
 
-                  {/* Down Payment */}
-                  <div
-                    className="flex items-center justify-between py-3 sm:py-4 border-b"
-                    style={{ borderColor: "rgb(140,46,71)" }}
+                {/* Down Payment */}
+                <div
+                  className="flex items-center justify-between py-3 border-b"
+                  style={{ borderColor: "rgb(140,46,71)" }}
+                >
+                  <span
+                    className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
+                    style={{ color: "rgb(140, 46, 71)" }}
                   >
-                    <span
-                      className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
-                      style={{ color: "rgb(140, 46, 71)" }}
-                    >
-                      Down Payment (25%)
-                    </span>
-                    <span className="text-sm sm:text-base md:text-base">
-                      PKR {apartment.downPayment}
-                    </span>
-                  </div>
+                    Down Payment (25%)
+                  </span>
+                  <span className="text-sm sm:text-base md:text-base">
+                    PKR {apartment.downPayment}
+                  </span>
+                </div>
 
-                  {/* Remaining Amount */}
-                  <div
-                    className="flex items-center justify-between py-3 sm:py-4 border-b"
-                    style={{ borderColor: "rgb(140,46,71)" }}
+                {/* Remaining Amount */}
+                <div
+                  className="flex items-center justify-between py-3 border-b"
+                  style={{ borderColor: "rgb(140,46,71)" }}
+                >
+                  <span
+                    className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
+                    style={{ color: "rgb(140, 46, 71)" }}
                   >
-                    <span
-                      className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
-                      style={{ color: "rgb(140, 46, 71)" }}
-                    >
-                      Remaining Amount (75%)
-                    </span>
-                    <span className="text-sm sm:text-base md:text-base">
-                      PKR {apartment.remainingAmount}
-                    </span>
-                  </div>
+                    Remaining Amount (75%)
+                  </span>
+                  <span className="text-sm sm:text-base md:text-base">
+                    PKR {apartment.remainingAmount}
+                  </span>
+                </div>
 
-                  {/* Quarterly Installments */}
-                  <div
-                    className="flex items-center justify-between py-3 sm:py-4 border-b"
-                    style={{ borderColor: "rgb(140,46,71)" }}
+                {/* Quarterly Installments */}
+                <div
+                  className="flex items-center justify-between py-3 border-b"
+                  style={{ borderColor: "rgb(140,46,71)" }}
+                >
+                  <span
+                    className="text-sm sm:text-sm md:text-base lg:text-lg font-medium tracking-wide"
+                    style={{ color: "rgb(140, 46, 71)" }}
                   >
-                    <span
-                      className="text-sm sm:text-sm md:text-base lg:text-lg font-medium tracking-wide"
-                      style={{ color: "rgb(140, 46, 71)" }}
-                    >
-                      16 Quarterly Installments
-                    </span>
-                    <span className="text-sm sm:text-sm md:text-base">
-                      PKR {apartment.quarterlyInstallment}
-                    </span>
-                  </div>
+                    16 Quarterly Installments
+                  </span>
+                  <span className="text-sm sm:text-sm md:text-base">
+                    PKR {apartment.quarterlyInstallment}
+                  </span>
                 </div>
               </div>
 
-              <div className="">
-                <div className="grid grid-cols-1">
-                  {/* Payment Plan */}
-                  <div
-                    className="flex items-center justify-between py-3 sm:py-4 border-b"
-                    style={{ borderColor: "rgb(140,46,71)" }}
+              {/* Additional Details */}
+              <div className="grid grid-cols-1">
+                {/* Payment Plan */}
+                <div
+                  className="flex items-center justify-between py-3 border-b"
+                  style={{ borderColor: "rgb(140,46,71)" }}
+                >
+                  <span
+                    className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
+                    style={{ color: "rgb(140, 46, 71)" }}
                   >
-                    <span
-                      className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
-                      style={{ color: "rgb(140, 46, 71)" }}
-                    >
-                      Payment Plan
-                    </span>
-                    <span className="text-sm sm:text-base md:text-base">
-                      {apartment.paymentPlan}
-                    </span>
-                  </div>
+                    Payment Plan
+                  </span>
+                  <span className="text-sm sm:text-base md:text-base">
+                    {apartment.paymentPlan}
+                  </span>
+                </div>
 
-                  {/* Facing Charges */}
-                  <div
-                    className="flex items-center justify-between py-3 sm:py-4 border-b"
-                    style={{ borderColor: "rgb(140,46,71)" }}
+                {/* Facing Charges */}
+                <div
+                  className="flex items-center justify-between py-3 border-b"
+                  style={{ borderColor: "rgb(140,46,71)" }}
+                >
+                  <span
+                    className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
+                    style={{ color: "rgb(140, 46, 71)" }}
                   >
-                    <span
-                      className="text-sm sm:text-base md:text-base lg:text-lg font-medium tracking-wide"
-                      style={{ color: "rgb(140, 46, 71)" }}
-                    >
-                      Facing Charges
-                    </span>
-                    <span className="text-sm sm:text-sm md:text-base">
-                      {apartment.facingCharges}
-                    </span>
-                  </div>
+                    Facing Charges
+                  </span>
+                  <span className="text-sm sm:text-sm md:text-base">
+                    {apartment.facingCharges}
+                  </span>
                 </div>
               </div>
             </div>

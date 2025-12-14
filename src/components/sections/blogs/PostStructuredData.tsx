@@ -55,7 +55,7 @@ export function generateBlogStructuredData(post: BlogPost) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `/blogs/${post.slug?.current}`,
+      "@id": `/media/blogs/${post.slug?.current}`,
     },
     articleSection: post.categories?.[0]?.title || "Real Estate",
     keywords: post.targetKeywords?.join(", "),
@@ -76,7 +76,7 @@ export function generateBlogStructuredData(post: BlogPost) {
     isPartOf: {
       "@type": "Blog",
       name: "Altaf Developments Blog",
-      url: "/blogs",
+      url: "/media/blogs",
     },
   };
 }
@@ -96,13 +96,13 @@ export function generateBreadcrumbStructuredData(post: BlogPost) {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "/blogs",
+        item: "/media/blogs",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: post.title,
-        item: `/blogs/${post.slug?.current}`,
+        item: `/media/blogs/${post.slug?.current}`,
       },
     ],
   };

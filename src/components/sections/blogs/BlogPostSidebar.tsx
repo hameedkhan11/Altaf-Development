@@ -18,7 +18,7 @@ export function BlogPostSidebar({ post }: BlogPostSidebarProps) {
       {/* Social Sharing */}
       <SocialSharing
         title={post.title}
-        url={`https://altafdevelopments.com/blogs/${post.slug?.current}`}
+        url={`https://altafdevelopments.com/media/blogs/${post.slug?.current}`}
         excerpt={post.excerpt}
       />
     </div>

@@ -196,7 +196,7 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
             >
               <div className="flex items-center">
                 <span className="transition-all duration-300 ease-in font-bold px-6 sm:px-7 md:px-8">
-                  VIEW ALL
+                  VIEW ALL ARTICLES
                 </span>
                 <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300" />
               </div>

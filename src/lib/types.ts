@@ -1,37 +1,36 @@
-import { Author, Category, Post, PropertyType } from "./sanity/sanity"
+import { Author, Category, Post, PropertyType } from "./sanity/sanity";
 
 export interface Testimonial {
-  id: number
-  name: string
-  role: string
-  content: string
-  image: string
+  id: number;
+  name: string;
+  role: string;
+  content: string;
+  image: string;
 }
 
 export interface Project {
-  id: number
-  price: string
-  bedrooms: number
-  bathrooms: number
-  title: string
-  image: string
-  
+  id: number;
+  price: string;
+  bedrooms: number;
+  bathrooms: number;
+  title: string;
+  image: string;
 }
 
 export interface NavigationItem {
-  name: string
-  href: string
+  name: string;
+  href: string;
 }
 
 export interface Features {
-  title: string
-  desc: string
+  title: string;
+  desc: string;
 }
 
 export interface NewsItem {
-  title: string
-  description: string
-  date: string
+  title: string;
+  description: string;
+  date: string;
 }
 
 // lib/types/index.ts
@@ -64,7 +63,7 @@ export interface NewsItem {
 export interface PropertyCardProps {
   property: Property;
   index: number;
-  variant?: 'default' | 'compact' | 'featured';
+  variant?: "default" | "compact" | "featured";
   showStats?: boolean;
 }
 
@@ -73,7 +72,7 @@ export interface PropertySectionProps {
   subtitle?: string;
   showViewAll?: boolean;
   maxItems?: number;
-  variant?: 'grid' | 'carousel' | 'list';
+  variant?: "grid" | "carousel" | "list";
 }
 
 export interface AnimationConfig {
@@ -86,7 +85,7 @@ export interface AnimationConfig {
 export interface BadgeConfig {
   text: string;
   color: string;
-  variant?: 'solid' | 'outline' | 'soft';
+  variant?: "solid" | "outline" | "soft";
 }
 
 export interface PropertyFilters {
@@ -134,7 +133,7 @@ export interface PropertyInquiryForm {
   phone: string;
   message: string;
   propertyId: string;
-  interestedIn: 'buying' | 'renting' | 'investment';
+  interestedIn: "buying" | "renting" | "investment";
 }
 
 export interface PropertySearchForm {
@@ -143,7 +142,7 @@ export interface PropertySearchForm {
   bedrooms: number;
   minPrice: number;
   maxPrice: number;
-  sortBy: 'price_asc' | 'price_desc' | 'date_new' | 'date_old';
+  sortBy: "price_asc" | "price_desc" | "date_new" | "date_old";
 }
 
 export interface Agent {
@@ -193,7 +192,7 @@ export interface BlogPost {
   excerpt: string;
   image: string;
   date: string;
-  category: 'NEWS' | 'BLOG';
+  category: "NEWS" | "BLOG";
   slug: string;
   readTime?: string;
 }
@@ -206,7 +205,7 @@ export interface BlogSectionProps {
 
 export interface BlogCardProps {
   post: BlogPost;
-  variant?: 'default' | 'large' | 'small';
+  variant?: "default" | "large" | "small";
 }
 
 export interface CEOMessageProps {
@@ -237,8 +236,8 @@ export interface RegisterInterestFormData {
   email: string;
   phone: string;
   countryCode: string;
-  apartmentType: 'one-bed' | 'two-bed';
-  apartmentSize: 'compact' | 'standard' | 'premium';
+  apartmentType: "one-bed" | "two-bed";
+  apartmentSize: "compact" | "standard" | "premium";
   message?: string;
 }
 
@@ -259,53 +258,29 @@ export interface HeroProps {
   // Content
   title?: string;
   subtitle?: string;
-  
+
   // Background
-  backgroundType: 'video' | 'image';
+  backgroundType: "video" | "image";
   backgroundSrc: string;
   fallbackImage?: string;
-  
+
   // Layout & Styling
-  height?: 'screen' | 'half' | 'three-quarter' | 'custom' | 'auto';
-  overlay?: 'light' | 'medium' | 'dark' | 'gradient' | 'none';
-  contentAlignment?: 'left' | 'center' | 'right';
-  
+  height?: "screen" | "half" | "three-quarter" | "custom" | "auto";
+  overlay?: "light" | "medium" | "dark" | "gradient" | "none";
+  contentAlignment?: "left" | "center" | "right";
+
   // Navigation
   breadcrumbs?: BreadcrumbItem[];
   showScrollIndicator?: boolean;
-  
+
   // Animation
   enableAnimations?: boolean;
-  
+
   // Custom content
   children?: React.ReactNode;
-  
+
   // Accessibility
   ariaLabel?: string;
-}
-
-// Property detail interface - for detailed property information
-export interface PropertyDetail {
-  name: string;
-  size: number;
-  rate: number;
-  totalPrice: string;
-  downPayment: number;
-  quarterlyInstallment: number;
-  bedrooms: number;
-  bathrooms: number;
-  type: string;
-}
-
-// Project card interface - for project listings
-export interface Project {
-  id: number;
-  title: string;
-  image: string;
-  price: string;
-  bedrooms: number;
-  bathrooms: number;
-  propertyType: PropertyKey;
 }
 
 // Other existing interfaces
@@ -326,7 +301,6 @@ export interface PropertySection {
   alt: string;
 }
 
-export type PropertyKey = "1bed" | "2bed";
 
 export interface PropertyImage {
   cloudinaryUrl: string;
@@ -334,69 +308,8 @@ export interface PropertyImage {
   isFeatured: boolean;
 }
 
-// For individual property data from Sanity (used in ProjectsSection)
-export interface PropertyData {
-  _id: string;
-  title: string;
-  price: string;
-  bedrooms: number;
-  bathrooms: number;
-  location?: string;
-  propertyType: "1bed" | "2bed";
-  featuredImage: string;
-  allImages: string[];
-}
-
-// For detailed property information (used in PropertyDetailInfo)
-export interface PropertyDetail {
-  _id?: string;
-  name: string;
-  type: string;
-  size: number;
-  bedrooms: number;
-  bathrooms: number;
-  rate: number;
-  totalPrice: string;
-  downPayment: number;
-  quarterlyInstallment: number;
-  location?: string;
-  propertyType?: "1bed" | "2bed";
-  featuredImage?: string;
-  allImages?: string[];
-}
-
-// For projects/listings data
-export interface Project {
-  id: number;
-  title: string;
-  image: string;
-  price: string;
-  bedrooms: number;
-  bathrooms: number;
-  propertyType: "1bed" | "2bed";
-}
-
-// Type for the properties object structure
-export type PropertiesData = Record<PropertyKey, PropertyDetail>;
-
-export interface PropertyDetailInfoProps {
-  property: PropertyDetail;
-}
-
-export interface ProjectCardProps {
-  image: string;
-  title: string;
-  price?: string;
-  bedrooms?: number;
-  bathrooms?: number;
-  location?: string;
-  propertyType?: "1bed" | "2bed";
-}
-
-export interface ImageGalleryProps {
-  propertyType: "1bed" | "2bed";
-}
-export interface PopulatedPost extends Omit<Post, 'author' | 'categories' | 'locations' | 'propertyTypes'> {
+export interface PopulatedPost
+  extends Omit<Post, "author" | "categories" | "locations" | "propertyTypes"> {
   author: Author; // Populated author instead of reference
   categories: Category[]; // Populated categories
   locations?: Location[]; // Populated locations

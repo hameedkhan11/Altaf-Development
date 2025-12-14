@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CompanyValue } from "@/lib/about-us/types";

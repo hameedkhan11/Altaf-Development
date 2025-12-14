@@ -15,7 +15,7 @@ import { Hero } from '@/components/common/Hero'
 import { client } from '@/lib/sanity'
 
 export const metadata: Metadata = {
-  title: 'Events | Your Company',
+  title: 'Events | Altaf Developments',
   description: 'Discover our upcoming property launches, open houses, and investment seminars.',
 }
 
@@ -32,7 +32,7 @@ function EventCard({ event }: { event: Event }) {
       <div className="overflow-hidden transition-transform duration-300">
         <div className="relative aspect-[5/4] w-full">
           <Image
-            src={urlFor(event.image).width(2400).height(1600).url()}
+            src={urlFor(event.image).width(800).height(800).url()}
             alt={event.title}
             fill
             className="object-cover"
@@ -151,7 +151,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   return (
     <div className="min-h-screen">
   <Hero 
-  backgroundSrc='Booking1_rg1bhs'
+  backgroundSrc='Booking1_rg1bhs_1_krrcq5'
   backgroundType='image'
   overlay='medium'
   ariaLabel='Events Hero section'

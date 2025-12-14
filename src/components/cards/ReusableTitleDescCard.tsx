@@ -34,7 +34,7 @@ const AltafDevelopmentsShowcase: React.FC<TitleDescriptionSectionProps> = ({
           {title}
         </AnimatedH1>
         <div className="space-y-6 md:space-y-8">
-          <p className={`text-base  font-medium leading-relaxed text-center mt-8 sm:mt-12`}>
+          <p className={` text-sm sm:text-base  font-medium leading-relaxed text-center mt-8 sm:mt-12`}>
             {description}
           </p>
 

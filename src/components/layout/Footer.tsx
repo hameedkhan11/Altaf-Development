@@ -25,7 +25,7 @@ const CompanyInfo = () => (
     <div>
       <div className="space-y-2 text-base sm:text-lg mt-6 sm:mt-8 md:mt-12">
         <h3 className="text-xl sm:text-2xl md:text-2xl text-[rgb(140,46,71)]">
-          +92 333 0777775
+          +92 337 1114448
         </h3>
         <h3 className="text-xl sm:text-2xl md:text-2xl text-[rgb(140,46,71)]">
           +92 333 0777776
@@ -56,9 +56,9 @@ const QuickLinks = () => (
       Property Location
     </h3>
     <p className="text-sm sm:text-base md:text-base leading-relaxed font-medium text-[rgb(140,46,71)]">
-      Main Boulevard Plot #1
+      Main Boulevard Plot #11
       <br />
-      Block B Faisal Hills, Islamabad
+      Block A Faisal Hills, Islamabad
     </p>
   </div>
 );

@@ -16,17 +16,25 @@ interface AtAGlanceProps {
 const AtAGlance: React.FC<AtAGlanceProps> = ({
   title = "The Residences by Altaf Development",
   details = [
-    { label: "Location", value: "Main Boulevard Plot #1 Block B Faisal Hills, Islamabad" },
+    {
+      label: "Location",
+      value: "Main civic Center plot#11 block A faisal hills",
+    },
     { label: "Project Type", value: "Residential" },
     {
-      label: "Height of the Building",
-      value:
-        "24 Storied ( G + Mezzanine + Apartment Floors)",
+      label: "Floor Stories",
+      value: "24",
     },
-    { label: "Number of Units", value: "400+ (1 Bed, 2 Bed and Studio)" },
-    { label: "Basement", value: "yes" },
-    { label: "Unit Sizes", value: "4705 sft ( 4 BHK)" },
-    { label: "Parking", value: "18" },
+    { label: "Number of Units", value: "450+" },
+    { label: "Basement", value: "3" },
+    {
+      label: "Unit Sizes",
+      value: "798 Sq Ft(Studio) / 945 Sq Ft(1 Bed) / 1641 Sq Ft(2 Bed)",
+    },
+    {
+      label: "Parking",
+      value: "450+",
+    }
   ],
   imageAlt = "Modern Residential Building",
 }) => {

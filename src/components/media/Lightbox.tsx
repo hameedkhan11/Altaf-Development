@@ -3,9 +3,9 @@
 
 import React, { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, } from "lucide-react";
-import { CldImage } from "next-cloudinary";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Image } from "@imagekit/next";
 
 interface LightboxImage {
   id: string;
@@ -32,13 +32,14 @@ const Lightbox: React.FC<LightboxProps> = ({
   onNext,
   onPrev,
 }) => {
-  const currentImage = selectedImage !== null ? filteredImages[selectedImage] : null;
+  const currentImage =
+    selectedImage !== null ? filteredImages[selectedImage] : null;
 
   // Keyboard navigation
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (selectedImage === null) return;
-      
+
       switch (e.key) {
         case "Escape":
           onClose();
@@ -70,7 +71,6 @@ const Lightbox: React.FC<LightboxProps> = ({
   }, [selectedImage, handleKeyDown]);
 
   if (selectedImage === null || !currentImage) return null;
-
 
   return (
     <AnimatePresence>
@@ -122,7 +122,7 @@ const Lightbox: React.FC<LightboxProps> = ({
           </>
         )}
         {/* Main image display */}
-        <div 
+        <div
           className="flex items-center justify-center h-full w-full"
           onClick={(e) => e.stopPropagation()}
         >
@@ -134,16 +134,13 @@ const Lightbox: React.FC<LightboxProps> = ({
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
-            <CldImage
+            <Image
+              urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
               src={currentImage.src}
               alt={currentImage.alt}
               width={1920}
               height={1080}
               className="max-h-[90vh] max-w-full object-contain rounded-lg md:max-h-[80vh]"
-              crop="fill"
-              gravity="auto"
-              quality="auto"
-              format="auto"
               aria-label="Lightbox image"
             />
           </motion.div>

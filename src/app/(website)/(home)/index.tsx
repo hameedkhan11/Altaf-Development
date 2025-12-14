@@ -26,7 +26,7 @@ const HomePage = async () => {
       <StructuredData pageType="home" />
       <FAQSchema />
       <Hero
-        title="Designing the future of living"
+        title=""
         isHomePage={true}
         backgroundType="video"
         overlay="light"

@@ -8,15 +8,16 @@ import {
   viewportOnce,
   delays,
 } from "@/lib/constants";
-import { amenitiesData, additionalAmenities, SimpleAmenityData } from "@/data/amenities";
-import { AmenityData } from "@/lib/types";
-import { CldImage } from "next-cloudinary";
 import {
-  AnimatedH2,
-  AnimatedP,
-} from "@/components/ui/text-animations";
+  amenitiesData,
+  additionalAmenities,
+  SimpleAmenityData,
+} from "@/data/amenities";
+import { AmenityData } from "@/lib/types";
+import { AnimatedH2, AnimatedP } from "@/components/ui/text-animations";
 
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import { Image } from "@imagekit/next";
 
 const Amenities = () => {
   const [, setActiveAmenity] = useState<string>("location");
@@ -25,10 +26,16 @@ const Amenities = () => {
   const [isGoingForward, setIsGoingForward] = useState<boolean>(true);
 
   // Memoize the combined amenities array to prevent recreation on every render
-  const allAmenities: Array<{ key: string; data: AmenityData | SimpleAmenityData }> = useMemo(() => [
-    { key: 'location', data: amenitiesData.location },
-    ...additionalAmenities
-  ], []);
+  const allAmenities: Array<{
+    key: string;
+    data: AmenityData | SimpleAmenityData;
+  }> = useMemo(
+    () => [
+      { key: "location", data: amenitiesData.location },
+      ...additionalAmenities,
+    ],
+    []
+  );
 
   const currentAmenity = allAmenities[currentIndex];
 
@@ -44,19 +51,23 @@ const Amenities = () => {
   }, [currentIndex, allAmenities]);
 
   const prevSlide = useCallback(() => {
-    const prevIndexValue = currentIndex === 0 ? allAmenities.length - 1 : currentIndex - 1;
+    const prevIndexValue =
+      currentIndex === 0 ? allAmenities.length - 1 : currentIndex - 1;
     setPrevIndex(currentIndex);
     setCurrentIndex(prevIndexValue);
     setActiveAmenity(allAmenities[prevIndexValue].key);
     setIsGoingForward(false);
   }, [currentIndex, allAmenities]);
 
-  const goToSlide = useCallback((index: number) => {
-    setPrevIndex(currentIndex);
-    setCurrentIndex(index);
-    setActiveAmenity(allAmenities[index].key);
-    setIsGoingForward(index > currentIndex);
-  }, [currentIndex, allAmenities]);
+  const goToSlide = useCallback(
+    (index: number) => {
+      setPrevIndex(currentIndex);
+      setCurrentIndex(index);
+      setActiveAmenity(allAmenities[index].key);
+      setIsGoingForward(index > currentIndex);
+    },
+    [currentIndex, allAmenities]
+  );
 
   // Auto slide functionality
   useEffect(() => {
@@ -79,15 +90,12 @@ const Amenities = () => {
             className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center uppercase w-full leading-tight"
             {...fadeInLeft}
           >
-              Your Gateway to Elevated Living
+            Your Gateway to Elevated Living
           </AnimatedH2>
         </div>
 
         {/* Desktop Content Section */}
-        <div
-          className="hidden lg:grid grid-cols-2 items-start"
-          {...fadeInUp}
-        >
+        <div className="hidden lg:grid grid-cols-2 items-start" {...fadeInUp}>
           {/* Left Content - Desktop only */}
           <motion.div
             className="space-y-4 sm:space-y-5 md:space-y-6 order-1 max-w-lg"
@@ -101,7 +109,10 @@ const Amenities = () => {
 
             <div className="space-y-3">
               {locationData.description.map((paragraph, index) => (
-                <AnimatedP key={index} className="text-sm leading-relaxed font-light">
+                <AnimatedP
+                  key={index}
+                  className="text-sm leading-relaxed font-light"
+                >
                   {paragraph}
                 </AnimatedP>
               ))}
@@ -117,18 +128,24 @@ const Amenities = () => {
           >
             <div className="relative w-full h-[500px] xl:h-[600px] overflow-hidden">
               {/* Background Images with Progressive Width Transition */}
-              <div className="absolute inset-0 flex" style={{ flexDirection: isGoingForward ? 'row' : 'row-reverse' }}>
+              <div
+                className="absolute inset-0 flex"
+                style={{
+                  flexDirection: isGoingForward ? "row" : "row-reverse",
+                }}
+              >
                 {/* Previous Image - shrinks during transition */}
                 <motion.div
                   key={`prev-${prevIndex}`}
                   className="relative overflow-hidden"
                   initial={{ width: "100%" }}
-                  animate={{ 
+                  animate={{
                     width: currentIndex !== prevIndex ? "0%" : "100%",
-                    transition: { duration: 2, ease: "easeInOut" }
+                    transition: { duration: 2, ease: "easeInOut" },
                   }}
                 >
-                  <CldImage
+                  <Image
+                    urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     src={allAmenities[prevIndex].data.image}
                     alt={allAmenities[prevIndex].data.name}
                     fill
@@ -144,12 +161,13 @@ const Amenities = () => {
                   key={`current-${currentIndex}`}
                   className="relative overflow-hidden"
                   initial={{ width: "0%" }}
-                  animate={{ 
+                  animate={{
                     width: currentIndex !== prevIndex ? "100%" : "0%",
-                    transition: { duration: 2, ease: "easeInOut" }
+                    transition: { duration: 2, ease: "easeInOut" },
                   }}
                 >
-                  <CldImage
+                  <Image
+                    urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     src={currentAmenity.data.image}
                     alt={currentAmenity.data.name}
                     fill
@@ -209,18 +227,22 @@ const Amenities = () => {
         {/* Mobile Full-Width Image Section - PropertyShowcase Style */}
         <div className="lg:hidden relative w-full overflow-hidden bg-gray-900 aspect-[6/7]">
           {/* Background Images with Progressive Width Transition */}
-          <div className="absolute inset-0 flex" style={{ flexDirection: isGoingForward ? 'row' : 'row-reverse' }}>
+          <div
+            className="absolute inset-0 flex"
+            style={{ flexDirection: isGoingForward ? "row" : "row-reverse" }}
+          >
             {/* Previous Image - shrinks during transition */}
             <motion.div
               key={`mobile-prev-${prevIndex}`}
               className="relative overflow-hidden"
               initial={{ width: "100%" }}
-              animate={{ 
+              animate={{
                 width: currentIndex !== prevIndex ? "0%" : "100%",
-                transition: { duration: 2, ease: "easeInOut" }
+                transition: { duration: 2, ease: "easeInOut" },
               }}
             >
-              <CldImage
+              <Image
+                urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                 src={allAmenities[prevIndex].data.image}
                 alt={allAmenities[prevIndex].data.name}
                 fill
@@ -236,12 +258,13 @@ const Amenities = () => {
               key={`mobile-current-${currentIndex}`}
               className="relative overflow-hidden"
               initial={{ width: "0%" }}
-              animate={{ 
+              animate={{
                 width: currentIndex !== prevIndex ? "100%" : "0%",
-                transition: { duration: 2, ease: "easeInOut" }
+                transition: { duration: 2, ease: "easeInOut" },
               }}
             >
-              <CldImage
+              <Image
+                urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                 src={currentAmenity.data.image}
                 alt={currentAmenity.data.name}
                 fill
@@ -252,8 +275,6 @@ const Amenities = () => {
               />
             </motion.div>
           </div>
-
-
         </div>
 
         {/* Mobile Navigation - Title with Arrows Below Image */}

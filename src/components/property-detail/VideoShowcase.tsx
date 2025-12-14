@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { HiPlay } from 'react-icons/hi2';
-import { CldImage, CldVideoPlayer } from 'next-cloudinary';
-import 'next-cloudinary/dist/cld-video-player.css';
+"use client";
+import { useState } from "react";
+import { HiPlay } from "react-icons/hi2";
+import { CldVideoPlayer } from "next-cloudinary";
+import "next-cloudinary/dist/cld-video-player.css";
+import { Image } from "@imagekit/next";
 
-const VideoShowcase = ({ 
-  thumbnailId = "imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk",
-  videoId = "output_compressed_mxrt56"
+const VideoShowcase = ({
+  thumbnailId = "/interior/interior (5).jpeg",
+  videoId = "output_compressed_mxrt56",
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -18,15 +20,16 @@ const VideoShowcase = ({
       {!isPlaying ? (
         <>
           {/* Background Image/Video Thumbnail */}
-          <div className="absolute inset-0">
-            <CldImage
+          <div className="absolute inset-0 aspect-video">
+            <Image
+              urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
               src={thumbnailId}
               alt="Video Thumbnail"
               fill
               className="object-cover opacity-70"
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-black/20"></div>
           </div>
 
           {/* Content Container */}
@@ -39,7 +42,7 @@ const VideoShowcase = ({
             >
               {/* Outer Circle - Animated */}
               <div className="absolute inset-0 w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-56 lg:h-56 mx-auto rounded-full border-2 border-white/30 animate-[pulse_2s_ease-in-out_infinite]"></div>
-     
+
               {/* Inner Circle with Play Icon */}
               <div className="relative w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-56 lg:h-56 mx-auto rounded-full border border-white/30 flex items-center justify-center transition-all duration-300 group-hover:bg-white/20 group-hover:scale-105">
                 <HiPlay className="w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-white ml-1 sm:ml-2" />

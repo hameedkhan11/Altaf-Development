@@ -7,7 +7,7 @@ export const RegisterHero = () => {
     <>
       <Hero
         backgroundType="image"
-        backgroundSrc="Booking3_uieo5a"
+        backgroundSrc="Booking3_uieo5a_1_hkkeu9"
         overlay="dark"
         // enableParallax={true}
         // parallaxSpeed={0.3}

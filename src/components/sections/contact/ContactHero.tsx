@@ -16,7 +16,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({ className = "" }) => {
         title="Get in Touch"
         backgroundType="image"
         breadcrumbs={breadcrumbs}
-        backgroundSrc="Booking1_rg1bhs"
+        backgroundSrc="altaf_fvt_6_1_urwwau"
         fallbackImage="luxury-apartments/hero-contact-fallback"
         height="three-quarter"
         overlay="medium"

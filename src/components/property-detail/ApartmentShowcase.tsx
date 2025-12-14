@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
-import { CldImage } from "next-cloudinary";
 import Link from "next/link";
+import { Image } from "@imagekit/next";
 
 interface ApartmentData {
   title: string;
@@ -20,9 +20,9 @@ const ApartmentShowcase: React.FC = () => {
       title: "STUDIO APARTMENTS",
       projectName: "MODERN STUDIO RESIDENCES",
       description:
-        "Compact luxury living spaces of 450-600 sq. ft. Perfect for young professionals and investors seeking prime location with modern amenities and lifestyle facilities.",
-      mainImage: "imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk",
-      secondaryImage: "imgi_4445_f121a9101476497.5f1fdce58a4da_rrpfmi",
+        "A perfectly sized home that feels open, airy, and naturally bright. Designed to welcome sunlight and offer wide, refreshing views. Smart layouts that create a sense of freedom beyond the square footage. Where simplicity meets comfort, light, and modern living.",
+      mainImage: "interior/interior (4).jpeg",
+      secondaryImage: "interior/interior (3).jpeg",
       highlightText:
         "Your Perfect Studio: Efficient design with premium finishes and smart storage solutions. Located in the heart of the city with easy access to transportation and entertainment.",
       ctaLink: "/properties/apartments/studio",
@@ -32,9 +32,9 @@ const ApartmentShowcase: React.FC = () => {
       title: "ONE BED APARTMENTS",
       projectName: "LUXURY ONE BEDROOM SUITES",
       description:
-        "Spacious one-bedroom apartments ranging from 700-900 sq. ft. Designed for comfort and style with open-plan layouts, modern kitchens, and premium amenities.",
-      mainImage: "imgi_5125_3a9d3e239745899.692ff3af9b67f_lyz9jc",
-      secondaryImage: "imgi_5123_7bfa2c239745899.692ff3af99e54_wlvefe",
+        "A thoughtfully designed home that offers space, comfort, and privacy. Featuring a generous lounge that flows effortlessly into a huge balcony. Open views, fresh air, and natural light create a relaxed living experience. Perfect for those who value everyday comfort with a touch of openness.",
+      mainImage: "interior/interior (5).jpeg",
+      secondaryImage: "interior/interior (7).jpeg",
       highlightText:
         "Your Dream Home: Elegant one-bedroom apartments with spacious balconies and stunning city views. A perfect blend of luxury and functionality at an attractive price point.",
       ctaLink: "/properties/apartments/1 bed",
@@ -44,11 +44,11 @@ const ApartmentShowcase: React.FC = () => {
       title: "TWO BED APARTMENTS",
       projectName: "PREMIUM TWO BEDROOM RESIDENCES",
       description:
-        "Expansive two-bedroom apartments of 1,100-1,400 sq. ft. Ideal for families seeking luxury living with multiple bathrooms, large living areas, and contemporary design.",
-      mainImage: "imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk",
-      secondaryImage: "imgi_4462_6eaff2101476497.5f1fdce589b13_alar4b",
+        "A true living space designed for a perfectly sized family. Balanced layouts that offer comfort, privacy, and room to grow together. A home where everyday moments turn into lasting memories. Thoughtfully planned to be enjoyed today and for many years to come.",
+      mainImage: "interior/interior (8).jpeg",
+      secondaryImage: "interior/interior (2).jpeg",
       highlightText:
-        "Your Family Haven: Spacious two-bedroom apartments with premium finishes, ample storage, and access to world-class amenities including pool, gym, and children's play area.",
+        "Your Family Haven: Spacious two bedroom apartments with premium finishes, ample storage and access to world class amenities including pool, gym, and children's play area.",
       ctaLink: "/properties/apartments/2 bed",
       type: "2 bed",
     },
@@ -86,8 +86,9 @@ const ApartmentShowcase: React.FC = () => {
             // Layout 1 & 3: Large Left, Small Right
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
               {/* Main Large Image with Overlay Text */}
-              <div className="relative h-[400px] md:h-[520px] group overflow-hidden lg:col-span-2">
-                <CldImage
+              <div className="relative h-[400px] md:h-[520px] lg:h-[560px] group overflow-hidden lg:col-span-2">
+                <Image
+                  urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                   fill
                   src={apartment.mainImage}
                   alt={apartment.projectName}
@@ -117,8 +118,9 @@ const ApartmentShowcase: React.FC = () => {
                 </div>
 
                 {/* Secondary Image - Hidden on mobile */}
-                <div className="relative h-[300px] md:h-[350px] lg:flex-1 overflow-hidden hidden lg:block">
-                  <CldImage
+                <div className="relative lg:flex-1 overflow-hidden hidden lg:block">
+                  <Image
+                    urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     fill
                     src={apartment.secondaryImage}
                     alt={`${apartment.projectName} View`}
@@ -140,8 +142,9 @@ const ApartmentShowcase: React.FC = () => {
                 </div>
 
                 {/* Secondary Image - Hidden on mobile */}
-                <div className="relative h-[300px] md:h-[350px] lg:flex-1 overflow-hidden hidden lg:block">
-                  <CldImage
+                <div className="relative lg:flex-1 overflow-hidden hidden lg:block">
+                  <Image
+                    urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     fill
                     src={apartment.secondaryImage}
                     alt={`${apartment.projectName} View`}
@@ -151,8 +154,9 @@ const ApartmentShowcase: React.FC = () => {
               </div>
 
               {/* Main Large Image with Overlay Text */}
-              <div className="relative h-[400px] md:h-[520px] group overflow-hidden lg:col-span-2">
-                <CldImage
+              <div className="relative h-[400px] md:h-[520px] lg:h-[560px] group overflow-hidden lg:col-span-2">
+                <Image
+                  urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                   fill
                   src={apartment.mainImage}
                   alt={apartment.projectName}

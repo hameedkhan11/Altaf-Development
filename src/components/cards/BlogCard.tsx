@@ -16,7 +16,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
   }
 
   const imageUrl = post?.featuredImage
-    ? urlFor(post.featuredImage).width(800).height(500).url()
+    ? urlFor(post.featuredImage).width(1200).height(800).url()
     : null;
   const isEven = index % 2 === 0;
 

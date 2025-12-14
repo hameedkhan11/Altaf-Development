@@ -123,7 +123,7 @@ const Testimonials = () => {
 
       {/* Testimonial Slider with Curtain Effect */}
       <div
-        className="relative h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] xl:h-[75vh] 2xl:h-[80vh] w-full overflow-hidden -mt-12"
+        className="relative h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[70vh] xl:h-[75vh] 2xl:h-[90vh] w-full overflow-hidden -mt-12"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -131,7 +131,7 @@ const Testimonials = () => {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <CldImage
-            src="imgi_23_1-1_rpzgj3"
+            src="imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk"
             alt="Modern living room interior"
             fill
             className="object-cover"
@@ -142,7 +142,7 @@ const Testimonials = () => {
             aria-label="Modern living room interior"
           />
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/10" />
+          <div className="absolute inset-0 bg-black/50" />
         </div>
 
         {/* Curtain Effect - Opens from both sides - Perfect scroll timing */}
@@ -231,10 +231,10 @@ const Testimonials = () => {
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-1 h-1 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 lg:w-2 lg:h-2 rounded-full transition-all duration-300 ${
+                  className={`w-1 h-1 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 lg:w-3 lg:h-3 rounded-full transition-all duration-300 ${
                     index === currentIndex
                       ? "bg-white scale-125"
-                      : "bg-white/50 hover:bg-white/75"
+                      : "border border-white hover:bg-white"
                   }`}
                   aria-label={`Go to testimonial`}
                 />

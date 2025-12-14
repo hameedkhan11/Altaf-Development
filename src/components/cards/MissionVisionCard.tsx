@@ -12,9 +12,9 @@ import {
 } from "@/lib/constants";
 
 const MissionVisionCards = () => {
-  const missionContent = "At Altaf Developments, our mission is to redefine the landscape of modern living by creating architectural landmarks that embody innovation, elegance, and purposeful design. We go beyond building spaces — we shape thriving communities that elevate lifestyles, foster meaningful connections, and contribute to a brighter, more prosperous society.";
+  const missionContent = "At Altaf Developments, our mission is to redefine the landscape of modern living by creating architectural landmarks that embody innovation, elegance, and purposeful design. We go beyond building spaces and we shape thriving communities that elevate lifestyles, foster meaningful connections, and contribute to a brighter, more prosperous society.";
 
-  const visionContent = "At Altaf Developments, we envision a future where real estate is not just about construction — it is a catalyst for transformation. Guided by innovation and inspired by design, we aspire to reshape cities, uplift communities, and enrich lives through spaces that blend functionality with artistic brilliance.";
+  const visionContent = "At Altaf Developments, we envision a future where real estate is not just about construction it is a catalyst for transformation. Guided by innovation and inspired by design, we aspire to reshape cities, uplift communities, and enrich lives through spaces that blend functionality with artistic brilliance.";
 
   return (
     <section className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative overflow-hidden">

@@ -7,6 +7,7 @@ import AltafDevelopmentsShowcase from "@/components/cards/ReusableTitleDescCard"
 import { Hero } from "@/components/common/Hero";
 import FloorPlanComponent from "@/components/property-detail/ApartmentFloorPlans";
 import ResidenceAmenities from "@/components/property-detail/PropertyDetailAmenities";
+import StructuredData from "@/components/seo/StructuredData";
 import { notFound } from "next/navigation";
 
 // Define valid apartment types
@@ -46,22 +47,27 @@ export async function generateMetadata({ params }: PageProps) {
 const Page = async ({ params }: PageProps) => {
   // Await params to get the actual values
   const { type } = await params;
-  
+
   // Decode the URL parameter (handles spaces in "1 bed" and "2 bed")
   const decodedType = decodeURIComponent(type);
 
   // Validate the apartment type
   if (!validTypes.includes(decodedType as ApartmentType)) {
-    notFound(); // This will show your 404 page
+    notFound();
   }
 
   return (
     <div>
+      <StructuredData pageType="apartments" />
       <Hero
         backgroundSrc="imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk"
         backgroundType="image"
         overlay="medium"
         ariaLabel="Apartment Detail Hero Section"
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "Properties/Apartments", href: "/properties/apartments" },
+        ]}
       />
       <AltafDevelopmentsShowcase
         title="Trust-Driven Real Estate Excellence"

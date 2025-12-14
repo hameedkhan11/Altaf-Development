@@ -1,4 +1,3 @@
-// components/contact/contact-form.tsx (Updated to use the hook)
 "use client";
             
 import { useContactForm } from "@/hooks/useForm";
