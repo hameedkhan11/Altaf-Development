@@ -9,7 +9,6 @@ interface ApartmentData {
   description: string;
   mainImage: string;
   secondaryImage: string;
-  highlightText: string;
   ctaLink: string;
   type: "studio" | "1 bed" | "2 bed";
 }
@@ -18,44 +17,38 @@ const ApartmentShowcase: React.FC = () => {
   const apartments: ApartmentData[] = [
     {
       title: "STUDIO APARTMENTS",
-      projectName: "MODERN STUDIO RESIDENCES",
+      projectName: "Modern Studio Suites",
       description:
         "A perfectly sized home that feels open, airy, and naturally bright. Designed to welcome sunlight and offer wide, refreshing views. Smart layouts that create a sense of freedom beyond the square footage. Where simplicity meets comfort, light, and modern living.",
       mainImage: "interior/interior (4).jpeg",
       secondaryImage: "interior/interior (3).jpeg",
-      highlightText:
-        "Your Perfect Studio: Efficient design with premium finishes and smart storage solutions. Located in the heart of the city with easy access to transportation and entertainment.",
       ctaLink: "/properties/apartments/studio",
       type: "studio",
     },
     {
       title: "ONE BED APARTMENTS",
-      projectName: "LUXURY ONE BEDROOM SUITES",
+      projectName: "Luxury One Bedroom Suites",
       description:
         "A thoughtfully designed home that offers space, comfort, and privacy. Featuring a generous lounge that flows effortlessly into a huge balcony. Open views, fresh air, and natural light create a relaxed living experience. Perfect for those who value everyday comfort with a touch of openness.",
       mainImage: "interior/interior (5).jpeg",
       secondaryImage: "interior/interior (7).jpeg",
-      highlightText:
-        "Your Dream Home: Elegant one-bedroom apartments with spacious balconies and stunning city views. A perfect blend of luxury and functionality at an attractive price point.",
       ctaLink: "/properties/apartments/1 bed",
       type: "1 bed",
     },
     {
       title: "TWO BED APARTMENTS",
-      projectName: "PREMIUM TWO BEDROOM RESIDENCES",
+      projectName: "Premium Two Bedroom Suites",
       description:
         "A true living space designed for a perfectly sized family. Balanced layouts that offer comfort, privacy, and room to grow together. A home where everyday moments turn into lasting memories. Thoughtfully planned to be enjoyed today and for many years to come.",
       mainImage: "interior/interior (8).jpeg",
       secondaryImage: "interior/interior (2).jpeg",
-      highlightText:
-        "Your Family Haven: Spacious two bedroom apartments with premium finishes, ample storage and access to world class amenities including pool, gym, and children's play area.",
       ctaLink: "/properties/apartments/2 bed",
       type: "2 bed",
     },
   ];
 
   const renderApartmentSection = (apartment: ApartmentData, index: number) => {
-    const isReversed = index === 1; // Middle section (ONE BED) has reversed layout
+    const isReversed = index === 1; 
 
     return (
       <div key={index} className="mb-20 md:mb-32">
@@ -95,30 +88,26 @@ const ApartmentShowcase: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
                 {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-black/10" />
 
-                {/* Bottom Left Text with Arrow */}
-                <div className="absolute bottom-6 left-6 right-6">
+                {/* Bottom Left Text with Arrow - Aligned */}
+                <div className="absolute bottom-8 left-8">
                   <Link
                     href={apartment.ctaLink}
-                    className="inline-flex items-center gap-2 text-white text-lg md:text-xl font-medium group-hover:gap-4 transition-all duration-300"
+                    className="inline-flex items-center gap-3 text-white group-hover:gap-5 transition-all duration-300"
                   >
-                    <span>{apartment.projectName}</span>
-                    <ArrowUpRight className="w-5 h-5" />
+                    <h4 className="text-lg md:text-xl lg:text-2xl font-medium text-white mt-3">
+                      {apartment.projectName}
+                    </h4>
+                    <ArrowUpRight className="w-6 h-6 flex-shrink-0" strokeWidth={2} />
                   </Link>
                 </div>
               </div>
 
-              {/* Right Column - Text and Secondary Image */}
-              <div className="flex flex-col gap-6 md:gap-8">
-                {/* Highlight Text - Hidden on mobile */}
-                <div className=" p-6 md:p-8 mb-20 hidden lg:block">
-                  <p className="text-sm md:text-base leading-relaxed">
-                    {apartment.highlightText}
-                  </p>
-                </div>
-
-                {/* Secondary Image - Hidden on mobile */}
-                <div className="relative lg:flex-1 overflow-hidden hidden lg:block">
+              {/* Right Column - Secondary Image */}
+              <div className="flex flex-col">
+                {/* Secondary Image - Perfectly Aligned */}
+                <div className="relative h-[400px] md:h-[520px] lg:h-[560px] overflow-hidden hidden lg:block">
                   <Image
                     urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     fill
@@ -132,17 +121,10 @@ const ApartmentShowcase: React.FC = () => {
           ) : (
             // Layout 2: Small Left, Large Right
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-              {/* Left Column - Text and Secondary Image */}
-              <div className="flex flex-col gap-6 md:gap-8">
-                {/* Highlight Text - Hidden on mobile */}
-                <div className="p-6 md:p-8 mb-20 hidden lg:block">
-                  <p className="text-sm md:text-base leading-relaxed">
-                    {apartment.highlightText}
-                  </p>
-                </div>
-
-                {/* Secondary Image - Hidden on mobile */}
-                <div className="relative lg:flex-1 overflow-hidden hidden lg:block">
+              {/* Left Column - Secondary Image */}
+              <div className="flex flex-col">
+                {/* Secondary Image - Perfectly Aligned */}
+                <div className="relative h-[400px] md:h-[520px] lg:h-[560px] overflow-hidden hidden lg:block">
                   <Image
                     urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     fill
@@ -163,14 +145,18 @@ const ApartmentShowcase: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
                 {/* Dark Overlay */}
-                {/* Bottom Left Text with Arrow */}
-                <div className="absolute bottom-6 left-6 right-6">
+                <div className="absolute inset-0 bg-black/10" />
+                
+                {/* Bottom Left Text with Arrow - Aligned */}
+                <div className="absolute bottom-8 left-8">
                   <Link
                     href={apartment.ctaLink}
-                    className="inline-flex items-center gap-2 text-white text-lg md:text-xl font-medium group-hover:gap-4 transition-all duration-300"
+                    className="inline-flex items-center gap-3 text-white group-hover:gap-5 transition-all duration-300"
                   >
-                    <span>{apartment.projectName}</span>
-                    <ArrowUpRight className="w-5 h-5" />
+                    <h4 className="text-lg md:text-xl lg:text-2xl font-medium text-white mt-3">
+                      {apartment.projectName}
+                    </h4>
+                    <ArrowUpRight className="w-6 h-6 flex-shrink-0" strokeWidth={2} />
                   </Link>
                 </div>
               </div>

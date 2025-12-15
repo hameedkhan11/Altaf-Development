@@ -1,6 +1,6 @@
 // data/AboutUs.ts
 export const ceoData = {
-  name: "Altaf Khan", // Replace with actual CEO name from visionData
+  name: "Chairman, Altaf Khan", // Replace with actual CEO name from visionData
   title: "Chief Executive Officer",
   image: "Altaf_website_image_landscape_2_fxo3d3",
   content: [

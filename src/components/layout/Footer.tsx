@@ -28,7 +28,7 @@ const CompanyInfo = () => (
           +92 337 1114448
         </h3>
         <h3 className="text-xl sm:text-2xl md:text-2xl text-[rgb(140,46,71)]">
-          +92 333 0777776
+          +92 333 0777775
         </h3>
       </div>
     </div>

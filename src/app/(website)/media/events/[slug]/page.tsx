@@ -29,7 +29,6 @@ import {
 import { client } from "@/lib/sanityService";
 import { Hero } from "@/components/common/Hero";
 
-
 interface EventDetailPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -90,7 +89,9 @@ function EventGallery({ gallery }: { gallery: Event["gallery"] }) {
 
   return (
     <section className="mb-12">
-      <h4 className="text-2xl font-bold text-[rgb(140,46,71] mb-6">Event Gallery</h4>
+      <h4 className="text-2xl font-bold text-[rgb(140,46,71] mb-6">
+        Event Gallery
+      </h4>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {gallery.map((image, index) => (
           <div key={index} className="group cursor-pointer">
@@ -160,93 +161,6 @@ function RelatedEvents({ events }: { events: Event[] }) {
   );
 }
 
-function ShareButtons({ event }: { event: Event }) {
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-  const shareText = `Check out this event: ${event.title}`;
-
-  const shareLinks = [
-    {
-      name: "Facebook",
-      icon: FaFacebookF,
-      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
-      color: "bg-blue-600 hover:bg-blue-700",
-    },
-    {
-      name: "Twitter",
-      icon: FaTwitter,
-      url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
-      color: "bg-blue-400 hover:bg-blue-500",
-    },
-    {
-      name: "LinkedIn",
-      icon: FaLinkedinIn,
-      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-      color: "bg-blue-800 hover:bg-blue-900",
-    },
-    {
-      name: "WhatsApp",
-      icon: FaWhatsapp,
-      url: `https://wa.me/?text=${encodeURIComponent(`${shareText} ${shareUrl}`)}`,
-      color: "bg-green-500 hover:bg-green-600",
-    },
-  ];
-
-  return (
-    <div>
-      <h4 className="font-medium text-gray-900 mb-3 flex items-center">
-        <FiShare2 className="w-4 h-4 mr-2" />
-        Share this event
-      </h4>
-      <div className="grid grid-cols-2 gap-2">
-        {shareLinks.map((link) => (
-          <a
-            key={link.name}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${link.color} text-white py-2 px-3 rounded text-sm font-medium transition-colors flex items-center justify-center`}
-          >
-            <link.icon className="w-4 h-4 mr-2" />
-            {link.name}
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function EventDetailSkeleton() {
-  return (
-    <div className="animate-pulse">
-      <div className="h-96rounded-lg mb-8"></div>
-      <div className="mx-auto px-4 sm:px-6 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2">
-            <div className="h-8 bg-gray-300 rounded mb-4"></div>
-            <div className="h-4 bg-gray-300 rounded mb-2"></div>
-            <div className="h-4 bg-gray-300 rounded mb-8 w-3/4"></div>
-            <div className="space-y-2">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-4 bg-gray-300 rounded"></div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <div className="h-6 bg-gray-300 rounded mb-4"></div>
-              <div className="space-y-4">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-16 bg-gray-300 rounded"></div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 async function EventDetail({ slug }: { slug: string }) {
   let event: Event | null = null;
   let relatedEvents: Event[] = [];
@@ -287,11 +201,15 @@ async function EventDetail({ slug }: { slug: string }) {
   return (
     <>
       {/* Event Content */}
-      <Hero 
-      backgroundSrc="Booking1_rg1bhs_1_krrcq5"
-      backgroundType="image"
-      overlay="medium"
-
+      <Hero
+        backgroundSrc="Booking1_rg1bhs_1_krrcq5"
+        backgroundType="image"
+        overlay="medium"
+       breadcrumbs={[
+          { label: "Media", href: "/media" },
+          { label: "Events", href: "/media/events" },
+          { label: event.title, href: `/media/events/${event.slug.current}` },
+        ]}
       />
       <div className="mx-auto px-4 sm:px-6 lg:px-16 py-8 sm:py-12 md:py-16 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-24">
@@ -301,11 +219,8 @@ async function EventDetail({ slug }: { slug: string }) {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[rgb(140,46,71)] mb-4">
                 {event.title}
               </h2>
-              <p className="leading-relaxed">
-                {event.description}
-              </p>
+              <p className="leading-relaxed">{event.description}</p>
             </div>
-
           </div>
 
           {/* Sidebar */}
@@ -320,7 +235,9 @@ async function EventDetail({ slug }: { slug: string }) {
                 <div className="flex items-start">
                   <FiCalendar className="w-5 h-5 text-[rgb(140,46,71)] mr-3 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-[rgb(140,46,71)]">Date & Time</p>
+                    <p className="font-medium text-[rgb(140,46,71)]">
+                      Date & Time
+                    </p>
                     <p className="">
                       {eventDate.toLocaleDateString("en-US", {
                         weekday: "long",
@@ -342,7 +259,9 @@ async function EventDetail({ slug }: { slug: string }) {
                 <div className="flex items-start">
                   <FiMapPin className="w-5 h-5 text-[rgb(140,46,71)] mr-3 mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-[rgb(140,46,71)]">Location</p>
+                    <p className="font-medium text-[rgb(140,46,71)]">
+                      Location
+                    </p>
                     <p>{event.location}</p>
                   </div>
                 </div>
@@ -355,8 +274,8 @@ async function EventDetail({ slug }: { slug: string }) {
                     <span
                       className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
                         isUpcoming
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-800"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
                       }`}
                     >
                       {isUpcoming ? "Upcoming" : "Past Event"}
@@ -376,16 +295,11 @@ async function EventDetail({ slug }: { slug: string }) {
                     </p>
                   </div>
                 )}
-
-                {/* Share Section */}
-                <div className="pt-4 border-t">
-                  <ShareButtons event={event} />
-                </div>
               </div>
             </div>
           </div>
         </div>
-                <EventGallery gallery={event.gallery} />
+        <EventGallery gallery={event.gallery} />
       </div>
 
       <RelatedEvents events={relatedEvents} />
@@ -400,12 +314,8 @@ export default async function EventDetailPage({
 
   return (
     <div className="min-h-screen relative">
-      <Suspense fallback={<EventDetailSkeleton />}>
         <EventDetail slug={slug} />
-      </Suspense>
-
-      {/* Back to Events */}
-      <div className="bg-white border-t">
+      <div className="border-t">
         <div className="mx-auto px-4 sm:px-6 lg:px-16 py-6">
           <Link
             href="/media/events"
