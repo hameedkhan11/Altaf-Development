@@ -288,7 +288,7 @@ async function EventDetail({ slug }: { slug: string }) {
     <>
       {/* Event Content */}
       <Hero 
-      backgroundSrc="Booking1_rg1bhs"
+      backgroundSrc="Booking1_rg1bhs_1_krrcq5"
       backgroundType="image"
       overlay="medium"
 

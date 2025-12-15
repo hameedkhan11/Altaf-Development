@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Apartment | Your Site Name`,
+    title: `${decodedType.charAt(0).toUpperCase() + decodedType.slice(1)} Apartment | Altaf Developments`,
     description: `Explore our ${decodedType} apartment details, floor plans, and amenities.`,
   };
 }
