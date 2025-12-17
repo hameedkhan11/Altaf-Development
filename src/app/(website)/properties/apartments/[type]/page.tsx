@@ -11,7 +11,7 @@ import StructuredData from "@/components/seo/StructuredData";
 import { notFound } from "next/navigation";
 
 // Define valid apartment types
-const validTypes: ApartmentType[] = ["studio", "1 bed", "2 bed"];
+const validTypes: ApartmentType[] = ["studio", "1-bed", "2-bed"];
 
 interface PageProps {
   params: Promise<{

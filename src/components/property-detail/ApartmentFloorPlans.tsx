@@ -51,7 +51,7 @@ const floorPlanData: FloorPlanDataMap = {
 
     ],
   },
-  "1 bed": {
+  "1-bed": {
     floorPlanImage: "1_Bed_Apt_Floor_Plan_1_lspaci",
     title: "1 Bedroom Floor Plan",
     rooms: [
@@ -82,7 +82,7 @@ const floorPlanData: FloorPlanDataMap = {
       },
     ],
   },
-  "2 bed": {
+  "2-bed": {
     floorPlanImage: "2_Bed_Apt_Floor_Plan_1_krate4",
     title: "2 Bedroom Floor Plan",
     rooms: [

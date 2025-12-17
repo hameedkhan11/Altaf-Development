@@ -2,16 +2,8 @@
 User-agent: *
 Allow: /
 
-# *
-User-agent: *
-Disallow: /admin
-Disallow: /api
-Disallow: /studio
-Disallow: /private
-
 # Host
 Host: https://www.altafdevelopments.com
 
 # Sitemaps
 Sitemap: https://www.altafdevelopments.com/sitemap.xml
-Sitemap: https://altafdevelopments.com/sitemap.xml

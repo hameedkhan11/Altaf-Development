@@ -10,7 +10,7 @@ interface ApartmentData {
   mainImage: string;
   secondaryImage: string;
   ctaLink: string;
-  type: "studio" | "1 bed" | "2 bed";
+  type: "studio" | "1-bed" | "2-bed";
 }
 
 const ApartmentShowcase: React.FC = () => {
@@ -32,8 +32,8 @@ const ApartmentShowcase: React.FC = () => {
         "A thoughtfully designed home that offers space, comfort, and privacy. Featuring a generous lounge that flows effortlessly into a huge balcony. Open views, fresh air, and natural light create a relaxed living experience. Perfect for those who value everyday comfort with a touch of openness.",
       mainImage: "interior/interior (5).jpeg",
       secondaryImage: "interior/interior (7).jpeg",
-      ctaLink: "/properties/apartments/1 bed",
-      type: "1 bed",
+      ctaLink: "/properties/apartments/1-bed",
+      type: "1-bed",
     },
     {
       title: "TWO BED APARTMENTS",
@@ -42,8 +42,8 @@ const ApartmentShowcase: React.FC = () => {
         "A true living space designed for a perfectly sized family. Balanced layouts that offer comfort, privacy, and room to grow together. A home where everyday moments turn into lasting memories. Thoughtfully planned to be enjoyed today and for many years to come.",
       mainImage: "interior/interior (8).jpeg",
       secondaryImage: "interior/interior (2).jpeg",
-      ctaLink: "/properties/apartments/2 bed",
-      type: "2 bed",
+      ctaLink: "/properties/apartments/2-bed",
+      type: "2-bed",
     },
   ];
 

@@ -21,7 +21,7 @@ interface ApartmentDetails {
   thumbnails: string[];
 }
 
-export type ApartmentType = "studio" | "1 bed" | "2 bed";
+export type ApartmentType = "studio" | "1-bed" | "2-bed";
 
 type ApartmentDataMap = Record<ApartmentType, ApartmentDetails>;
 
@@ -47,7 +47,7 @@ const apartmentData: ApartmentDataMap = {
       "interior/interior (8).jpeg",
     ],
   },
-  "1 bed": {
+  "1-bed": {
     title: "1 Bed Apartment Detail",
     subtitle: "Luxury One Bedroom Suite",
     area: "945 sqft",
@@ -67,7 +67,7 @@ const apartmentData: ApartmentDataMap = {
       "interior/interior (7).jpeg",
     ],
   },
-  "2 bed": {
+  "2-bed": {
     title: "2 Bed Apartment Detail",
     subtitle: "Premium Two Bedroom Residence",
     area: "1,641 sqft",
