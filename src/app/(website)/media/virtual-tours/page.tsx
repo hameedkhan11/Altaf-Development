@@ -5,7 +5,7 @@ const page = () => {
     <>
       <Hero
         backgroundType="image"
-        backgroundSrc="Booking1_rg1bhs"
+        backgroundSrc="About_us_hero_oe5ctv_yozzcj"
         fallbackImage="luxury-apartments/hero-contact-fallback"
         height="three-quarter"
         breadcrumbs={[

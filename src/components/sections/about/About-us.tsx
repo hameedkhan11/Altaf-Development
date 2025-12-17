@@ -13,7 +13,7 @@ export default function AboutPage() {
       <Hero
         title=""
         backgroundType="image"
-        backgroundSrc="About_us_hero_oe5ctv"
+        backgroundSrc="About_us_hero_oe5ctv_yozzcj"
         breadcrumbs={breadcrumbs}
         height="three-quarter"
         overlay="gradient"
