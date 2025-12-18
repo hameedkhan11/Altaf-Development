@@ -1,5 +1,5 @@
-import { PropertySection } from '@/lib/types';
-import { CldImage } from 'next-cloudinary';
+import { PropertySection } from "@/lib/types";
+import { Image } from "@imagekit/next";
 import { motion } from "framer-motion";
 
 interface PropertyCardProps {
@@ -16,20 +16,19 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
       transition={{
         duration: 0.8,
         ease: "easeOut",
-        delay: index * 0.1
+        delay: index * 0.1,
       }}
       viewport={{ once: true, margin: "-50px" }}
     >
       <div className="h-full relative flex items-center justify-center">
-        <CldImage
+        <Image
+          urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
           src={section.image}
           alt={section.alt}
-          width={1700}
-          height={1400}
+          fill
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={index === 0}
-          aria-label='Property image'
+          aria-label="Property image"
         />
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
         <motion.div
@@ -39,7 +38,7 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
           transition={{
             duration: 0.6,
             ease: "easeOut",
-            delay: 0.5 + (index * 0.1)
+            delay: 0.5 + index * 0.1,
           }}
           viewport={{ once: true }}
         >
