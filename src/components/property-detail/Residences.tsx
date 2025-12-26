@@ -18,7 +18,7 @@ const AtAGlance: React.FC<AtAGlanceProps> = ({
   details = [
     {
       label: "Location",
-      value: "Main civic Center plot#11 block A faisal hills",
+      value: "Main Civic Center Plot#11 Block A Faisal Hills",
     },
     { label: "Project Type", value: "Residential" },
     {

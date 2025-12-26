@@ -7,7 +7,7 @@ import { Image } from "@imagekit/next";
 
 const VideoShowcase = ({
   thumbnailId = "/interior/interior (5).jpeg",
-  videoId = "output_compressed_mxrt56",
+  videoId = "output_compressed_hjozbv",
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
