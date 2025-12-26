@@ -16,18 +16,18 @@ const VideoShowcase = ({
   };
 
   return (
-    <div className="relative w-full h-[70vh] md:h-[80vh] lg:h-screen bg-black flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-[60vh] md:h-[80vh] lg:h-screen bg-black flex items-center justify-center overflow-hidden">
       {!isPlaying ? (
         <>
           {/* Background Image/Video Thumbnail */}
-          <div className="absolute inset-0 aspect-video">
+          <div className="absolute inset-0">
             <Image
               urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
               src={thumbnailId}
               alt="Video Thumbnail"
               fill
               className="object-cover opacity-70"
-              sizes="100vw"
+              sizes="100vw h-full"
             />
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
