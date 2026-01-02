@@ -42,7 +42,6 @@ function checkRateLimit(identifier: string): boolean {
 }
 
 async function addToMailerLite(email: string, name: string, phone: string, countryCode: string) {
-  console.log('Adding to MailerLite...', { email, name, phone, countryCode });
   if (!MAILERLITE_API_KEY || !MAILERLITE_GROUP_ID) {
     throw new Error('MailerLite configuration missing');
   }
@@ -174,7 +173,6 @@ This email was sent from the Altaf Developments contact form.
   }
 
   const result = await response.json();
-  console.log('Notification email sent successfully via Resend');
   return result;
 }
 
@@ -224,7 +222,6 @@ export async function POST(request: NextRequest) {
           formData.phone,
           formData.countryCode
         );
-        console.log('Successfully added to MailerLite:', mailerliteResult);
       } catch (error) {
         console.error('MailerLite subscription error:', error);
         // Continue with the process even if MailerLite fails
@@ -235,7 +232,6 @@ export async function POST(request: NextRequest) {
     try {
       await sendNotificationEmail(formData);
       emailSent = true;
-      console.log('Admin notification email sent successfully via Resend');
     } catch (error) {
       console.error('Failed to send notification email:', error);
       // Continue with the process but log the error

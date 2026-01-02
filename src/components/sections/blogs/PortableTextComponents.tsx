@@ -81,12 +81,11 @@ export const portableTextComponents: PortableTextComponents = {
     image: ({ value }: { value: SanityImage }) => (
       <figure className="my-10 rounded-sm overflow-hidden shadow-lg">
         <Image
-          src={urlFor(value).width(1920).height(1080).url()}
+          src={urlFor(value).width(1920).height(1080).url() || ""} 
           alt={value.alt || "Blog image"}
           width={1920}
           height={1080}
           className="w-full h-auto"
-          sizes="(max-width: 768px) 100vw, 800px"
         />
         {value.caption && (
           <figcaption className="px-6 py-4 text-center text-sm italic">
@@ -189,7 +188,7 @@ export const portableTextComponents: PortableTextComponents = {
       return (
         <h2
           id={id}
-          className="text-2xl font-medium mt-4 mb-4 scroll-mt-32"
+          className="text-2xl mt-4 mb-4 scroll-mt-32"
         >
           {children}
         </h2>
@@ -200,7 +199,7 @@ export const portableTextComponents: PortableTextComponents = {
       const id = generateId(text);
 
       return (
-        <h3 id={id} className="text-xl font-medium scroll-mt-32">
+        <h3 id={id} className="text-xl scroll-mt-32">
           {children}
         </h3>
       );
@@ -210,7 +209,7 @@ export const portableTextComponents: PortableTextComponents = {
       const id = generateId(text);
 
       return (
-        <h4 id={id} className="text-xl mt-4mb-4 scroll-mt-32">
+        <h4 id={id} className="text-xl mt-4 mb-4 scroll-mt-32">
           {children}
         </h4>
       );

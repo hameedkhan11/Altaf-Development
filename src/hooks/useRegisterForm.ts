@@ -30,9 +30,6 @@ export function useRegisterForm() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Here you would typically send data to your API
-      console.log('Form submitted:', data);
-      
       toast.success('Thank you for your interest! We will contact you soon.');
       form.reset({
         fullName: '',

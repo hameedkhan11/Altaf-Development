@@ -312,10 +312,8 @@ class SanityService {
   // Get property images by property type
   async getPropertyImagesByType(propertyType: "1bed" | "2bed") {
     try {
-      console.log("Fetching images for propertyType:", propertyType);
 
       if (!propertyType) {
-        console.log("No propertyType provided, returning empty array");
         return [];
       }
 
@@ -325,13 +323,11 @@ class SanityService {
           "allImages": images[].cloudinaryUrl
         }
       `);
-      console.log("Simple query result:", simpleResult);
 
       // Original query with parameter
       const result = await client.fetch(PROPERTY_FEATURED_IMAGE_QUERY, {
         propertyType,
       });
-      console.log("Original query result:", result);
 
       // Return images from the first property found
       if (simpleResult && simpleResult.length > 0) {
@@ -366,12 +362,10 @@ class SanityService {
   async debugProperties() {
     try {
       const allProperties = await client.fetch(`*[_type == "property"]`);
-      console.log("All properties:", allProperties);
 
       const activeProperties = await client.fetch(
         `*[_type == "property" && isActive == true]`
       );
-      console.log("Active properties:", activeProperties);
 
       return { allProperties, activeProperties };
     } catch (error) {
@@ -597,7 +591,6 @@ class SanityService {
           .join("/")
           .replace(/\.[^/.]+$/, "")
           .split("/")[1];
-        console.log(`Extracted Cloudinary public ID: ${publicId}`);
         return publicId;
       }
 

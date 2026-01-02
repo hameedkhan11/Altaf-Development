@@ -28,7 +28,7 @@ export function BlogHero({
   if (searchParams?.category) {
     breadcrumbs.push({
       label: `Category: ${searchParams.category}`,
-      href: `/blogs?category=${searchParams.category}`
+      href: `/media/blogs?category=${searchParams.category}`
     });
   }
 

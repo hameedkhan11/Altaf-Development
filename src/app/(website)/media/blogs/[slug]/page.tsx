@@ -21,7 +21,6 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const post = await sanityService.getPostBySlug(params.slug);
-  console.log(post);
 
   if (!post) {
     return {
@@ -32,11 +31,11 @@ export async function generateMetadata(props: {
 
   // Safe image URL generation with proper null checks
   const imageUrl = post?.featuredImage?.asset
-    ? urlFor(post.featuredImage)?.width(1200)?.height(630)?.url()
+    ? urlFor(post.featuredImage)?.width(1200)?.height(800)?.url()
     : null;
 
   const ogImageUrl = post?.ogImage?.asset
-    ? urlFor(post.ogImage)?.width(1200)?.height(630)?.url()
+    ? urlFor(post.ogImage)?.width(1200)?.height(800)?.url()
     : imageUrl;
 
   return {
