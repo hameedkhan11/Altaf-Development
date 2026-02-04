@@ -1,4 +1,3 @@
-// components/property/PropertyImageGallery.tsx
 "use client";
 
 import React, { useState, useRef } from "react";

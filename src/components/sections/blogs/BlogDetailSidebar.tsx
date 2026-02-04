@@ -1,5 +1,3 @@
-
-// components/blog/BlogSidebar.tsx
 import Link from 'next/link'
 import type { Category, Location, Author, PropertyType } from '@/lib/sanity/sanity'
 

@@ -1,4 +1,3 @@
-// components/MissionVisionCard.tsx
 import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MissionVision } from "@/lib/about-us/types";

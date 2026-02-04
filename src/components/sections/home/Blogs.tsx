@@ -107,12 +107,12 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
           </div>
           
           {/* Navigation dots for mobile */}
-          <div className="flex justify-center mt-4 space-x-2">
-            {posts.map((_, index) => (
+          <div className="flex justify-center mt-4 gap-3">
+            {posts.map((post, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  index === currentIndex ? 'bg-[rgb(140,46,71)]' : 'bg-gray-300'
+                className={`w-3 h-3 rounded-full transition-colors duration-300 flex items-center justify-center p-2 focus:outline-none focus:ring-2 focus:ring-[rgb(140,46,71)] focus:ring-offset-2 ${
+                  index === currentIndex ? 'bg-[rgb(140,46,71)]' : 'bg-gray-300 hover:bg-gray-400'
                 }`}
                 onClick={() => {
                   setIsAutoScrolling(false);
@@ -127,7 +127,8 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
                   }
                   setTimeout(() => setIsAutoScrolling(true), 8000);
                 }}
-                aria-label="Go to slide"
+                aria-label={`Go to blog post: ${post.title}`}
+                aria-current={index === currentIndex ? "true" : "false"}
               />
             ))}
           </div>

@@ -1,4 +1,3 @@
-// components/sections/blogs/blogs/BlogPostHeader.tsx
 import { PopulatedPost } from "@/lib/sanity/sanity";
 import { Calendar, Clock } from "lucide-react";
 

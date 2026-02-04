@@ -1,4 +1,3 @@
-// components/blog/BlogHero.tsx
 "use client";
 import { BreadcrumbItem } from '@/lib/types';
 import { HeroImage } from '@/lib/hero/types';

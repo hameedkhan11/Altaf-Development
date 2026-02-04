@@ -1,9 +1,4 @@
-// import WhyChoose from "@/components/sections/home/WhyChooseUs";
-// import ProjectsSection from "@/components/sections/home/Projects";
 import Testimonials from "@/components/sections/home/Testimonials";
-// import PropertyShowcase from "@/components/sections/home/PropertySlider";
-// import CEOMessage from "@/components/sections/home/Vision";
-// import Amenities from "@/components/sections/home/Amenities";
 import { Hero } from "@/components/common/Hero";
 import { RegisterHero } from "@/components/register-form/hero-section";
 import LuxuryRealEstateFAQ from "@/components/sections/home/FAQs";
@@ -41,9 +36,6 @@ const HomePage = async () => {
           description="ALTAF Developments stands at the forefront of Islamabad's luxury real estate landscape, creating architectural landmarks that redefine modern living. With a commitment to transparency, ethical practices, and investor-focused planning, we transform premium locations into trust-driven communities where vision accelerates, connections elevate, and leadership soars."
         />
         <ApartmentGallery />
-        {/* <CEOMessage /> */}
-        {/* <PropertyShowcase /> */}
-        {/* <ProjectsSection /> */}
         <div className="flex flex-col items-center py-20 sm:py-24 md:py-32">
           <h2 className="max-w-2xl font-light text-2xl sm:text-3xl lg:text-4xl text-center mb-4 sm:mb-6 md:mb-8">
             DISCOVER OUR RESIDENTIAL BUILDING IN FAISAL HILLS

@@ -1,4 +1,3 @@
-// components/register-form/phone-input.tsx
 'use client';
 
 import { Input } from '@/components/ui/input';
@@ -21,12 +20,10 @@ export function PhoneInput({
 }: PhoneInputProps) {
   const selectedCountry = COUNTRIES.find(country => country.code === countryCode);
   
-  // Auto-populate dial code when country changes
   const handleCountryChange = (value: string) => {
     const country = COUNTRIES.find(c => c.code === value);
     if (country) {
       onCountryChange(value);
-      // Only set dial code if phone number is empty or already contains a dial code
       if (!phoneNumber || phoneNumber.startsWith('+')) {
         onPhoneChange(country.dialCode + ' ');
       }
@@ -36,8 +33,9 @@ export function PhoneInput({
   return (
     <div className="relative">
       <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 py-5">
+        <label htmlFor="country-select" className="sr-only">Country</label>
         <Select value={countryCode} onValueChange={handleCountryChange}>
-          <SelectTrigger className="border-0 bg-transparent p-0 h-auto w-auto focus:ring-0 [&>svg]:hidden ">
+          <SelectTrigger id="country-select" className="border-0 bg-transparent p-0 h-auto w-auto focus:ring-0 [&>svg]:hidden " aria-label="Select country code">
             <div className="flex items-center gap-1 ">
               <span className=" text-white">{selectedCountry?.flag}</span>
               <ChevronDown className="h-3 w-3 opacity-50 text-white" />
@@ -64,11 +62,14 @@ export function PhoneInput({
         </Select>
       </div>
       
+      <label htmlFor="phone-number" className="sr-only">Phone number</label>
       <Input
+        id="phone-number"
         type="tel"
         placeholder="Enter phone number"
         value={phoneNumber}
         onChange={(e) => onPhoneChange(e.target.value)}
+        aria-label="Phone number"
         className="bg-black/30 border-white/20 text-white placeholder:text-gray-400 focus:border-white/40 pl-12"
       />
     </div>

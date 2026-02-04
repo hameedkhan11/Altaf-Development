@@ -1,4 +1,3 @@
-// components/hero/AltafHeroSection.tsx
 "use client";
 
 import React from "react";

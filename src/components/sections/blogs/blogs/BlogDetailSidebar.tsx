@@ -1,24 +1,18 @@
 /*
 @eslint-disable @typescript-eslint/no-explicit-any
 */
-// components/blog/Sidebar.tsx
 "use client";
 
 import Link from "next/link";
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { 
-  HiOutlineMenu, 
-  HiOutlineShare, 
-  HiOutlineMail 
-} from "react-icons/hi";
-import { 
-  FaFacebookF, 
-  FaTwitter, 
-  FaLinkedinIn, 
-  FaWhatsapp 
+import { HiOutlineMenu, HiOutlineShare, HiOutlineMail } from "react-icons/hi";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaWhatsapp,
 } from "react-icons/fa";
 
-// Define proper types for the content structure
 interface PortableTextChild {
   _type: string;
   text?: string;
@@ -33,31 +27,27 @@ interface ContentBlock {
   _key: string;
 }
 
-// Table of Contents Component with Active Heading Detection
 export function TableOfContents({ content }: { content: ContentBlock[] }) {
   const [activeHeading, setActiveHeading] = useState<string>("");
   const [isScrolling, setIsScrolling] = useState(false);
 
-  // Move all hooks to the top, before any conditional logic
-  // Handle smooth scrolling to heading
   const scrollToHeading = useCallback((id: string, event: React.MouseEvent) => {
     event.preventDefault();
-    
+
     const element = document.getElementById(id);
     if (element) {
       setIsScrolling(true);
-      
-      const offset = 120; // Adjust for fixed header + some padding
+
+      const offset = 120;
       const elementPosition = element.offsetTop - offset;
-      
+
       window.scrollTo({
         top: elementPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
-      
-      // Update active heading immediately
+
       setActiveHeading(id);
-      
+
       // Reset scrolling flag after animation completes
       setTimeout(() => {
         setIsScrolling(false);
@@ -67,26 +57,33 @@ export function TableOfContents({ content }: { content: ContentBlock[] }) {
     }
   }, []);
 
-  // Function to extract text from portable text children - EXACT same logic as main component
-  const extractText = useCallback((children: PortableTextChild[] | PortableTextChild | string | undefined): string => {
-    if (!children) return "";
-    
-    if (typeof children === "string") return children;
-    
-    if (Array.isArray(children)) {
-      return children.map(child => {
-        if (typeof child === "string") return child;
-        if (child && typeof child === "object" && child.text) return child.text;
-        return "";
-      }).join("");
-    }
-    
-    if (typeof children === "object" && children.text) {
-      return children.text;
-    }
-    
-    return "";
-  }, []);
+  const extractText = useCallback(
+    (
+      children: PortableTextChild[] | PortableTextChild | string | undefined,
+    ): string => {
+      if (!children) return "";
+
+      if (typeof children === "string") return children;
+
+      if (Array.isArray(children)) {
+        return children
+          .map((child) => {
+            if (typeof child === "string") return child;
+            if (child && typeof child === "object" && child.text)
+              return child.text;
+            return "";
+          })
+          .join("");
+      }
+
+      if (typeof children === "object" && children.text) {
+        return children.text;
+      }
+
+      return "";
+    },
+    [],
+  );
 
   // Generate ID from text - EXACT same logic as in your main component
   const generateId = useCallback((text: string): string => {
@@ -96,42 +93,41 @@ export function TableOfContents({ content }: { content: ContentBlock[] }) {
       .replace(/(^-|-$)/g, "");
   }, []);
 
-  // Get headings from content using useMemo to prevent re-calculation on every render
   const headings = useMemo(() => {
-    return content ? content.filter(
-      (block) =>
-        block._type === "block" && ["h2", "h3", "h4"].includes(block.style || "")
-    ) : [];
+    return content
+      ? content.filter(
+          (block) =>
+            block._type === "block" &&
+            ["h2", "h3", "h4"].includes(block.style || ""),
+        )
+      : [];
   }, [content]);
 
-  // Improved scroll listener to detect active heading
   useEffect(() => {
-    // Only set up scroll listener if we have headings
     if (headings.length === 0) return;
 
     const handleScroll = () => {
-      // Don't update during programmatic scrolling
       if (isScrolling) return;
 
       // Get all heading elements that should exist based on content
-      const headingIds = headings.map(heading => {
+      const headingIds = headings.map((heading) => {
         const text = extractText(heading.children);
         return generateId(text);
       });
 
       if (headingIds.length === 0) return;
 
-      // Find which heading is currently active
       let currentActiveHeading = "";
-      
-      // Check each heading to see which one is currently visible
+
       for (let i = 0; i < headingIds.length; i++) {
         const element = document.getElementById(headingIds[i]);
         if (element) {
           const rect = element.getBoundingClientRect();
-          const nextElement = i < headingIds.length - 1 ? 
-            document.getElementById(headingIds[i + 1]) : null;
-          
+          const nextElement =
+            i < headingIds.length - 1
+              ? document.getElementById(headingIds[i + 1])
+              : null;
+
           // If this heading is above the viewport top + 150px
           // and the next heading is below that point (or doesn't exist)
           if (rect.top <= 150) {
@@ -142,7 +138,6 @@ export function TableOfContents({ content }: { content: ContentBlock[] }) {
                 break;
               }
             } else {
-              // This is the last heading and it's above the threshold
               currentActiveHeading = headingIds[i];
               break;
             }
@@ -193,7 +188,7 @@ export function TableOfContents({ content }: { content: ContentBlock[] }) {
 
     window.addEventListener("scroll", scrollListener, { passive: true });
     window.addEventListener("resize", scrollListener, { passive: true });
-    
+
     return () => {
       clearTimeout(initialTimer);
       window.removeEventListener("scroll", scrollListener);
@@ -223,9 +218,11 @@ export function TableOfContents({ content }: { content: ContentBlock[] }) {
             <button
               key={`${id}-${index}`}
               onClick={(e) => scrollToHeading(id, e)}
+              aria-label={`Jump to section: ${text}`}
+              aria-current={isActive ? "location" : "false"}
               className={`block w-full text-left text-sm cursor-pointer transition-all duration-300 p-1 rounded-md border-l-2 ${
-                isActive 
-                  ? "bg-[rgb(140,46,71)] text-white border-l-[rgb(140,46,71)]" 
+                isActive
+                  ? "bg-[rgb(140,46,71)] text-white border-l-[rgb(140,46,71)]"
                   : "hover:bg-[rgb(140,46,71)] hover:text-white border-l-transparent hover:border-l-[rgb(140,46,71)]"
               } ${
                 level === "h2"
@@ -235,7 +232,6 @@ export function TableOfContents({ content }: { content: ContentBlock[] }) {
                     : "pl-8 font-normal"
               }`}
               title={text}
-              aria-label="Table of Contents"
             >
               <span className="block truncate">{text}</span>
             </button>
@@ -257,9 +253,7 @@ export function SocialSharing({
   excerpt?: string;
 }) {
   const encodedTitle = encodeURIComponent(title);
-  const encodedUrl = encodeURIComponent(
-    `${url}`
-  );
+  const encodedUrl = encodeURIComponent(`${url}`);
   const encodedExcerpt = encodeURIComponent(excerpt || title);
 
   const socialLinks = [

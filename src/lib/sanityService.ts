@@ -358,22 +358,6 @@ class SanityService {
     }
   }
 
-  // Debug method to check if properties exist
-  async debugProperties() {
-    try {
-      const allProperties = await client.fetch(`*[_type == "property"]`);
-
-      const activeProperties = await client.fetch(
-        `*[_type == "property" && isActive == true]`
-      );
-
-      return { allProperties, activeProperties };
-    } catch (error) {
-      console.error("Error debugging properties:", error);
-      return { allProperties: [], activeProperties: [] };
-    }
-  }
-
   // Get all categories
   async getCategories(): Promise<Category[]> {
     const query = `*[_type == "category"] | order(title asc) {
@@ -601,8 +585,6 @@ class SanityService {
       return cloudinaryUrl; // Return original URL as fallback
     }
   }
-
-  // Helper function to get overlay CSS class based on settings
 
   // Helper function to get text position classes
   getTextPositionClasses(textPosition?: string): string {

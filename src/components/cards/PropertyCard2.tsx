@@ -42,9 +42,9 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
           }}
           viewport={{ once: true }}
         >
-          <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-wide text-center transform transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+          <h2 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-wide text-center transform transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-2">
             {section.title}
-          </h3>
+          </h2>
         </motion.div>
       </div>
     </motion.div>

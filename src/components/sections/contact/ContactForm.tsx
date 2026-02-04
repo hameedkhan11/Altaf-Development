@@ -65,10 +65,11 @@ const ContactForm = () => {
                 {/* First Row - Name and Email */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700">
                       Name
                     </label>
                     <input
+                      id="contact-name"
                       type="text"
                       name="name"
                       value={formData.name}
@@ -79,10 +80,11 @@ const ContactForm = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700">
                       Email <span className="text-red-500">*</span>
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
                       name="email"
                       value={formData.email}
@@ -96,14 +98,17 @@ const ContactForm = () => {
 
                 {/* Second Row - Phone */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                     Phone
                   </label>
                   <div className="flex gap-2">
+                    <label htmlFor="country-code" className="sr-only">Country Code</label>
                     <select
+                      id="country-code"
                       name="countryCode"
                       value={formData.countryCode}
                       onChange={handleInputChange}
+                      aria-label="Country code"
                       className="px-3 py-3 border border-gray-300 focus:outline-none  text-sm min-w-0 flex-shrink-0"
                     >
                       {countries.map((country) => (
@@ -117,6 +122,7 @@ const ContactForm = () => {
                       ))}
                     </select>
                     <input
+                      id="phone"
                       type="tel"
                       name="phone"
                       value={formData.phone}
@@ -129,37 +135,41 @@ const ContactForm = () => {
 
                 {/* Third Row - Preferred Mode of Contact */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Preferred Mode of Contact
-                  </label>
-                  <div className="flex gap-4 flex-wrap">
-                    {contactModes.map((mode) => (
-                      <label
-                        key={mode.value}
-                        className="flex items-center gap-2 cursor-pointer"
-                      >
-                        <input
-                          type="radio"
-                          name="preferredContact"
-                          value={mode.value}
-                          checked={formData.preferredContact === mode.value}
-                          onChange={handleInputChange}
-                          className="w-4 h-4 text-blue-600"
-                        />
-                        <span className="text-sm text-gray-700">
-                          {mode.label}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
+                  <fieldset>
+                    <legend className="block text-sm font-medium text-gray-700">
+                      Preferred Mode of Contact
+                    </legend>
+                    <div className="flex gap-4 flex-wrap">
+                      {contactModes.map((mode) => (
+                        <label
+                          key={mode.value}
+                          className="flex items-center gap-2 cursor-pointer"
+                        >
+                          <input
+                            type="radio"
+                            name="preferredContact"
+                            value={mode.value}
+                            checked={formData.preferredContact === mode.value}
+                            onChange={handleInputChange}
+                            aria-label={`Contact via ${mode.label}`}
+                            className="w-4 h-4 text-blue-600"
+                          />
+                          <span className="text-sm text-gray-700">
+                            {mode.label}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
                 </div>
 
                 {/* Fourth Row - Message */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700">
                     Your Message <span className="text-red-500">*</span>
                   </label>
                   <textarea
+                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
@@ -173,8 +183,9 @@ const ContactForm = () => {
 
                 {/* Email Subscription Checkbox */}
                 <div className="space-y-2">
-                  <label className="flex items-start gap-2 cursor-pointer">
+                  <label htmlFor="contact-email-subscription" className="flex items-start gap-2 cursor-pointer">
                     <input
+                      id="contact-email-subscription"
                       type="checkbox"
                       name="emailSubscription"
                       checked={formData.emailSubscription || false}

@@ -1,4 +1,3 @@
-// hooks/use-register-form.ts
 'use client';
 
 import { useState } from 'react';

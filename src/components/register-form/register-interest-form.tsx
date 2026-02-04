@@ -81,33 +81,42 @@ export function ContactForm() {
       <form onSubmit={handleSubmit} className="space-y-2 xs:space-y-3 sm:space-y-4">
         {/* Name and Email side by side */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 xs:gap-3 sm:gap-4">
-          <Input
-            type="text"
-            name="name"
-            placeholder="Your name*"
-            className="rounded-xs bg-white placeholder:text-black"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
-          <Input
-            type="email"
-            name="email"
-            placeholder="E-mail address*"
-            className="rounded-xs bg-white placeholder:text-black"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
+          <div className="flex flex-col">
+            <label htmlFor="name" className="sr-only">Your name</label>
+            <Input
+              type="text"
+              name="name"
+              placeholder="Your name*"
+              className="rounded-xs bg-white placeholder:text-black"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="email" className="sr-only">Email address</label>
+            <Input
+              type="email"
+              name="email"
+              placeholder="E-mail address*"
+              className="rounded-xs bg-white placeholder:text-black"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
         </div>
 
         {/* Phone with Country Code and Preferred Contact Mode side by side */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 xs:gap-3 sm:gap-4">
           <div className="w-full border border-white/20 rounded-sm bg-neutral-600 flex focus-within:border-white/40 transition-all duration-200">
+            <label htmlFor="countryCode" className="sr-only">Country code</label>
             <select
+              id="countryCode"
               name="countryCode"
               value={formData.countryCode}
               onChange={handleInputChange}
+              aria-label="Country code for phone"
               className="rounded-xs bg-white text-black pl-1 xs:pl-2 pr-4 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none appearance-none bg-no-repeat bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%23ffffff%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27m6 8 4 4 4-4%27/%3e%3c/svg%3e')] bg-[length:0.75rem_0.75rem] bg-[right_0.25rem_center]"
             >
               {countries.map((country) => (
@@ -116,55 +125,66 @@ export function ContactForm() {
                 </option>
               ))}
             </select>
+            <label htmlFor="phone" className="sr-only">Phone number</label>
             <input
+              id="phone"
               type="tel"
               name="phone"
               placeholder="Phone*"
               value={formData.phone}
               onChange={handleInputChange}
               required
+              aria-label="Phone number"
               className="flex-1 rounded-xs text-black bg-white placeholder:text-black px-2 xs:px-3 py-2 sm:py-3 text-xs xs:text-sm sm:text-base focus:outline-none"
             />
           </div>
           <div className="rounded-xs bg-white px-2 xs:px-3 py-2 sm:py-3">
-            <p className="text-black text-xs xs:text-sm mb-1 xs:mb-2">Preferred mode of contact</p>
-            <div className="flex xs:flex-row flex-wrap items-start xs:items-center gap-1 xs:gap-x-2">
-              {contactModes.map((mode) => (
-                <label key={mode.value} className="flex items-center space-x-1 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="preferredContact"
-                    value={mode.value}
-                    checked={formData.preferredContact === mode.value}
-                    onChange={handleInputChange}
-                    className="w-3 h-3 xs:w-4 xs:h-4 text-black border border-white/20 focus:ring-white/40 focus:ring-2"
-                  />
-                  <span className="text-black text-xs">{mode.label}</span>
-                </label>
-              ))}
-            </div>
+            <fieldset>
+              <legend className="text-black text-xs xs:text-sm mb-1 xs:mb-2">Preferred mode of contact</legend>
+              <div className="flex xs:flex-row flex-wrap items-start xs:items-center gap-1 xs:gap-x-2">
+                {contactModes.map((mode) => (
+                  <label key={mode.value} className="flex items-center space-x-1 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="preferredContact"
+                      value={mode.value}
+                      checked={formData.preferredContact === mode.value}
+                      onChange={handleInputChange}
+                      aria-label={`Contact via ${mode.label}`}
+                      className="w-3 h-3 xs:w-4 xs:h-4 text-black border border-white/20 focus:ring-white/40 focus:ring-2"
+                    />
+                    <span className="text-black text-xs">{mode.label}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
           </div>
         </div>
 
         {/* Message in separate column */}
-        <Input
-          type="textarea"
-          name="message"
-          placeholder="Message*"
-          className="rounded-xs bg-white placeholder:text-black"
-          value={formData.message}
-          onChange={handleInputChange}
-          required
-          rows={7}
-        />
+        <div className="flex flex-col">
+          <label htmlFor="message" className="sr-only">Message</label>
+          <Input
+            type="textarea"
+            name="message"
+            placeholder="Message*"
+            className="rounded-xs bg-white placeholder:text-black"
+            value={formData.message}
+            onChange={handleInputChange}
+            required
+            rows={7}
+          />
+        </div>
 
         {/* Newsletter checkbox */}
         <div className="flex items-start xs:items-center space-x-2 xs:space-x-3">
           <input
+            id="emailSubscription"
             type="checkbox"
             name="emailSubscription"
             checked={formData.emailSubscription}
             onChange={handleInputChange}
+            aria-label="Subscribe to newsletter for latest offers and blog posts"
             className="w-3 h-3 xs:w-4 xs:h-4 mt-1 xs:mt-0 rounded border border-white/20 text-white focus:ring-white/40 focus:ring-2 flex-shrink-0"
           />
           <label htmlFor="emailSubscription" className="text-xs xs:text-sm sm:text-base text-white cursor-pointer leading-tight">
@@ -175,7 +195,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          aria-label="Send message"
+          aria-label="Send contact form message"
           className="w-full bg-white text-black hover:bg-gray-100 cursor-pointer font-semibold py-2 xs:py-2.5 sm:py-3 rounded-lg transition-all duration-200 disabled:opacity-50 text-xs xs:text-sm sm:text-base inline-flex items-center justify-center"
         >
           {isSubmitting ? (

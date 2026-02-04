@@ -1,8 +1,6 @@
-// components/TeamMemberCard.tsx
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TeamMember } from '@/lib/about-us/types';
-// import Image from 'next/image';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 
@@ -16,7 +14,6 @@ export const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, reversed
     <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm border-0 shadow-xl">
       <CardContent className="p-0">
         <div className={`flex flex-col ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} min-h-[500px]`}>
-          {/* Image Section */}
           <div className="lg:w-1/2 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-[rgba(140,46,71,0.1)] to-[rgba(140,46,71,0.3)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
             <CldImage

@@ -1,4 +1,3 @@
-// components/ContactHero.tsx
 import { Hero } from '@/components/common/Hero';
 
 interface ContactHeroProps {

@@ -1,4 +1,3 @@
-// components/blog/BlogContent.tsx
 import type { PostPreview } from '@/lib/sanity/sanity'
 import { Pagination } from './Pagination'
 import { BlogCard } from '@/components/cards/BlogCard'

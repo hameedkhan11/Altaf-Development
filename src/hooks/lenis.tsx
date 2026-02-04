@@ -1,4 +1,3 @@
-// hooks/lenis.tsx
 'use client';
 
 import { ReactLenis } from 'lenis/react';

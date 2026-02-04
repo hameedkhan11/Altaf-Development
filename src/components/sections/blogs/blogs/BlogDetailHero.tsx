@@ -1,4 +1,3 @@
-// components/blog-detail/BlogDetailHero.tsx
 import React from "react";
 import { Hero } from "@/components/common/Hero";
 import { HeroImage } from "@/lib/hero/types";
@@ -17,7 +16,7 @@ interface BlogDetailHeroProps {
       current: string;
     };
   };
-  heroImage?: HeroImage | null; // New prop for Sanity hero image
+  heroImage?: HeroImage | null;
 }
 
 const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post }) => {

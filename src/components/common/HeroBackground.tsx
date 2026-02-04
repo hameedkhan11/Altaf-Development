@@ -1,4 +1,3 @@
-// common/components/HeroBackground.tsx
 "use client";
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
@@ -139,8 +138,6 @@ const ParallaxContent: React.FC<{
       return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/f_auto,q_${quality},vc_auto/${publicId}.m3u8`;
     }
     
-    // For progressive download (short videos like hero backgrounds)
-    // Let Cloudinary handle all optimizations automatically
     const transformations = [
       `f_auto`,        // Auto format (WebM/MP4/AV1 based on browser)
       `q_${quality}`,  // Auto quality with content-aware compression

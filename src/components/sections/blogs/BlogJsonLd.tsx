@@ -1,4 +1,3 @@
-// components/blog/BlogJsonLd.tsx
 import { urlFor } from '@/lib/sanityService'
 import type { PostPreview, Category, Location, Author } from '@/lib/sanity/sanity'
 import Script from 'next/script'

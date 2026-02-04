@@ -1,4 +1,3 @@
-// components/blog/Pagination.tsx
 import Link from 'next/link'
 
 interface PaginationProps {

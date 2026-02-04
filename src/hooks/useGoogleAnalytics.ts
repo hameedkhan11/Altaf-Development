@@ -1,4 +1,3 @@
-// src/hooks/useGoogleAnalytics.ts
 'use client';
 
 import { useEffect } from 'react';

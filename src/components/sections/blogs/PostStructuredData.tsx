@@ -1,7 +1,6 @@
 import { SanityImage } from "@/lib/sanity/sanity";
 import { urlFor } from "@/lib/sanityService";
 
-// Type definitions for the blog post data
 interface Category {
   title: string;
 }

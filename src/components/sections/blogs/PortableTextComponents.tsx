@@ -1,4 +1,3 @@
-// components/sections/blogs/blogs/PortableTextComponents.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { PortableTextComponents, PortableTextBlockComponent, PortableTextMarkComponent } from "@portabletext/react";

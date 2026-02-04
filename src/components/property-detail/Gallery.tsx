@@ -127,10 +127,12 @@ const InteractiveProjectGallery: React.FC<InteractiveProjectGalleryProps> = ({
             <div className="flex items-center justify-center w-full">
               {/* Progress Lines - Far Right */}
               <div className="flex items-center justify-center">
-                {filteredImages.map((_, index) => (
+                {filteredImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => handleLineClick(index)}
+                    aria-label={`View image ${index + 1} of ${filteredImages.length}: ${image.alt}`}
+                    aria-current={index === currentImageIndex ? "true" : "false"}
                     className="group"
                   >
                     <div
@@ -152,6 +154,7 @@ const InteractiveProjectGallery: React.FC<InteractiveProjectGalleryProps> = ({
           <div className="absolute top-1/2 transform -translate-y-1/2 left-2 sm:left-4 z-10">
             <button
               onClick={handleNext}
+              aria-label="View next image"
               className="text-white text-2xl sm:text-3xl"
             >
               <FaArrowRightLong />
@@ -160,6 +163,7 @@ const InteractiveProjectGallery: React.FC<InteractiveProjectGalleryProps> = ({
           <div className="absolute top-1/2 transform -translate-y-1/2 right-2 sm:right-4 md:right-8 z-10">
             <button
               onClick={handlePrevious}
+              aria-label="View previous image"
               className="text-white text-2xl sm:text-3xl"
             >
               <FaArrowLeftLong />

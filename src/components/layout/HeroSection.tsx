@@ -1,4 +1,3 @@
-// layouts/HeroSection.tsx
 import React from 'react';
 import { AnimatedH1 } from '../ui/text-animations';
 

@@ -14,8 +14,8 @@ interface ExtendedHeroProps extends HeroProps {
   showHeroButtons?: boolean;
   isHomePage?: boolean;
   children?: React.ReactNode;
-  customHeight?: number; // For custom vh values
-  minHeight?: number; // Minimum height in pixels
+  customHeight?: number;
+  minHeight?: number;
 }
 
 export const Hero: React.FC<ExtendedHeroProps> = ({
@@ -53,7 +53,6 @@ export const Hero: React.FC<ExtendedHeroProps> = ({
   const contentY = useTransform(smoothProgress, [0, 1], [0, -50]);
 
   useEffect(() => {
-    // Show content immediately
     setShowContent(true);
   }, []);
 

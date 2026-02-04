@@ -1,5 +1,3 @@
-// common/components/Breadcrumb.tsx
-
 import React from 'react';
 import { BreadcrumbItem } from '@/lib/types';
 

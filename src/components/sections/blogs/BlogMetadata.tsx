@@ -1,4 +1,3 @@
-// components/blog/BlogMetadata.tsx
 import { Metadata } from 'next'
 import { sanityService } from '@/lib/sanityService'
 

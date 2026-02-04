@@ -192,14 +192,14 @@ const Amenities = () => {
               {/* Desktop Slider Arrows */}
               <button
                 onClick={prevSlide}
-                aria-label="Previous amenity image"
+                aria-label="View previous amenity"
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 hover:bg-[rgb(140,46,71)] text-white p-2 rounded-full transition-all duration-300 z-10"
               >
                 <FaArrowLeft size={24} />
               </button>
               <button
                 onClick={nextSlide}
-                aria-label="Next amenity image"
+                aria-label="View next amenity"
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 hover:bg-[rgb(140,46,71)] text-white p-2 rounded-full transition-all duration-300 z-10"
               >
                 <FaArrowRight size={24} />
@@ -207,17 +207,18 @@ const Amenities = () => {
             </div>
 
             {/* Desktop Dots Indicator */}
-            <div className="flex justify-center mt-4 space-x-2">
-              {allAmenities.map((_, index) => (
+            <div className="flex justify-center mt-4 gap-4">
+              {allAmenities.map((amenity, index) => (
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  className={`w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center p-2 focus:outline-none focus:ring-2 focus:ring-[rgb(140,46,71)] focus:ring-offset-2 ${
                     index === currentIndex
                       ? "bg-[rgb(140,46,71)] scale-125"
                       : "bg-gray-300 hover:bg-gray-400"
                   }`}
-                  aria-label="Amenity image indicator"
+                  aria-label={`Go to ${amenity.data.name} amenity`}
+                  aria-current={index === currentIndex ? "true" : "false"}
                 />
               ))}
             </div>
@@ -282,7 +283,7 @@ const Amenities = () => {
           {/* Left Arrow */}
           <button
             onClick={prevSlide}
-            aria-label="Previous amenity image"
+            aria-label="View previous amenity"
             className="hover:bg-[rgb(140,46,71)] text-black hover:text-white rounded-full transition-all duration-300 flex-shrink-0"
           >
             <FaArrowLeft size={20} />
@@ -302,7 +303,7 @@ const Amenities = () => {
           {/* Right Arrow */}
           <button
             onClick={nextSlide}
-            aria-label="Next amenity image"
+            aria-label="View next amenity"
             className="hover:bg-[rgb(140,46,71)] text-black hover:text-white rounded-full transition-all duration-300 flex-shrink-0"
           >
             <FaArrowRight size={20} />

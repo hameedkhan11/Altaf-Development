@@ -1,4 +1,3 @@
-// hooks/useNewsletter.ts
 "use client";
 import { useState } from "react";
 import { trackEvent } from "@/hooks/useGoogleAnalytics";

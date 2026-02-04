@@ -133,15 +133,15 @@ const ResidenceAmenities: React.FC = () => {
           </div>
 
           {/* Pagination Dots */}
-          <div className="flex items-center justify-center gap-2 mt-8">
+          <div className="flex items-center justify-center gap-3 mt-8">
             {Array.from({ length: totalPages }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => handleDotClick(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                className={`w-3 h-3 rounded-full transition-all duration-300 flex items-center justify-center p-2 focus:outline-none focus:ring-2 focus:ring-[rgb(140,46,71)] focus:ring-offset-2 ${
                   currentPage === index
                     ? "bg-[rgb(140,46,71)]"
-                    : "bg-gray-300"
+                    : "bg-gray-300 hover:bg-gray-400"
                 }`}
                 aria-label={`Go to page ${index + 1}`}
               />

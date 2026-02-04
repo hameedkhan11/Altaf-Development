@@ -1,5 +1,3 @@
-// components/sections/blogs/BlogPostContent.tsx 
-
 import { PortableText } from "@portabletext/react";
 import { BlogPostHeader } from "./BlogPostHeader";
 import { portableTextComponents } from "./PortableTextComponents";
