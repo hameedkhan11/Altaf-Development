@@ -1,1 +1,0 @@
-// This file is deprecated and no longer used. All map functionality has been removed from the application.
