@@ -108,7 +108,7 @@ const FooterBottom = () => (
     {/* Bottom Section - Copyright and Social Media */}
     <div className="flex flex-col lg:flex-row justify-between items-center gap-4 sm:gap-6">
       <p className="text-sm sm:text-base font-medium text-[rgb(140,46,71)] text-center lg:text-left">
-        © 2025 Altaf Developments Ltd.
+        © 2026 Altaf Developments Ltd.
       </p>
       <SocialMediaLinks />
     </div>
