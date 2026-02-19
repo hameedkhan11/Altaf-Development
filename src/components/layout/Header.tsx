@@ -12,7 +12,8 @@ import MobileMenu from "./MobileMenu";
 import { Animate } from "../ui/animate";
 import AltafLogoSvg from "./AltafLogo";
 
-const HUBSPOT_MEETING_URL = "https://meetings-na2.hubspot.com/altaf-developments";
+const HUBSPOT_MEETING_URL =
+  "https://meetings-na2.hubspot.com/altaf-developments";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -112,7 +113,7 @@ const Header = () => {
             {/* Right Side - Book a Call + Contact Button */}
             <div className="hidden lg:flex items-center space-x-3 absolute right-0 xl:right-8 top-1/2 transform -translate-y-1/2">
               {/* Book a Call Button — opens HubSpot meeting in new tab */}
-              <a
+              <Link
                 href={HUBSPOT_MEETING_URL}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -130,7 +131,7 @@ const Header = () => {
                     </span>
                   </div>
                 </Button>
-              </a>
+              </Link>
 
               {/* Contact Now Button */}
               <Link href="/contact">

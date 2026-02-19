@@ -3,9 +3,12 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
 import Link from "next/link";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MEDIA_ITEMS } from "@/data/media-center/data";
+
+const HUBSPOT_MEETING_URL =
+  "https://meetings-na2.hubspot.com/altaf-developments";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -20,7 +23,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     setIsMediaCenterOpen(!isMediaCenterOpen);
   };
 
-  // Handle body scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -28,7 +30,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
       document.body.style.overflow = "unset";
     }
 
-    // Cleanup function to restore scroll when component unmounts
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -163,10 +164,38 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                 }}
               >
                 <Link href="/contact" onClick={onClose}>
-                  <Button className="group relative transition-all duration-500 bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 border-[rgb(140,46,71)] cursor-pointer font-bold overflow-hidden py-5 w-full text-sm tracking-wider uppercase rounded-full"
-                  aria-label="Contact Now"
+                  <Button
+                    className="group relative transition-all duration-500 bg-[rgb(140,46,71)] text-white hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 border-[rgb(140,46,71)] cursor-pointer font-bold overflow-hidden py-5 w-full text-sm tracking-wider uppercase rounded-full"
+                    aria-label="Contact Now"
                   >
                     Contact Now
+                  </Button>
+                </Link>
+              </motion.div>
+
+              {/* Book a Call Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: (NAVIGATION_ITEMS.length + 2) * 0.1,
+                  duration: 0.3,
+                }}
+              >
+                <Link
+                  href={HUBSPOT_MEETING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={onClose}
+                >
+                  <Button
+                    className="group relative transition-all duration-500 bg-transparent  text-[rgb(140,46,71)] hover:bg-[rgb(140,46,71)] hover:text-white border-2 border-[rgb(140,46,71)] cursor-pointer font-bold overflow-hidden py-5 w-full text-sm tracking-wider uppercase rounded-full"
+                    aria-label="Book a Call"
+                  >
+                    <div className="flex items-center justify-center space-x-2">
+                      <Phone className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                      <span className="font-medium">Book a Call</span>
+                    </div>
                   </Button>
                 </Link>
               </motion.div>
