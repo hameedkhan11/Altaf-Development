@@ -13,10 +13,10 @@ const PropertyDetailContent: React.FC = () => {
     <StructuredData pageType="properties"/>
       <Hero
         backgroundType="image"
-        backgroundSrc="Featured_Properties_ldygh0"
+        backgroundSrc="altaf_fvt_9_1_1_enuavv"
         fallbackImage="luxury-apartment-hero-gallery"
-        height="three-quarter"
-        overlay="light"
+        height="screen"
+        overlay="medium"
         contentAlignment="center"
         title="Featured Properties"
         breadcrumbs={[
