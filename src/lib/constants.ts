@@ -294,11 +294,7 @@ export const fadeInRight = createAnimation({
   visible: baseStates.visible,
 });
 
-export const slideInFromBottom = createAnimation({
-  initialHidden: baseStates.hiddenDown,
-  visible: baseStates.visible,
-  duration: { fast: 0.2, normal: 0.25, slow: 0.3 },
-});
+
 
 export const microSlide = createAnimation({
   initialHidden: baseStates.microHidden,
@@ -306,15 +302,7 @@ export const microSlide = createAnimation({
   duration: { fast: 0.12, normal: 0.15, slow: 0.18 },
 });
 
-// Hover animations
-export const scaleOnHover = createHoverAnimation(
-  { scale: 1.02 },
-  { scale: 0.98 }
-);
 
-export const cardHover = createHoverAnimation({ y: -4, scale: 1.01 });
-
-export const rotateOnHover = createHoverAnimation({ rotate: 2 });
 
 // Quick fade for critical path
 export const quickFade = {
@@ -350,150 +338,9 @@ export const staggerContainer = (() => {
   };
 })();
 
-// Pulse animation
-export const pulseAnimation = (() => {
-  const animate = shouldAnimate();
-  const mode = getPerformanceMode();
 
-  if (!animate || mode === "slow") {
-    return {
-      initial: { scale: 1 },
-      animate: { scale: 1 },
-      transition: { duration: 0 },
-    };
-  }
 
-  return {
-    initial: { scale: 1 },
-    animate: { scale: [1, 1.01, 1] },
-    transition: {
-      duration: 2.5,
-      repeat: Infinity,
-      ease: "easeInOut",
-      willChange: "transform",
-    },
-  };
-})();
 
-// Batch stagger for lists
-// Fixed batchStagger export
-// Fixed batchStagger export
-export const batchStagger = (() => {
-  const animate = shouldAnimate();
-  const mode = getPerformanceMode();
-  
-  if (!animate) {
-    return {
-      container: {
-        initial: { opacity: 1 },
-        animate: { opacity: 1 },
-        transition: { duration: 0 }
-      },
-      item: {
-        initial: baseStates.visible,
-        animate: baseStates.visible,
-        transition: { duration: 0 }
-      }
-    };
-  }
-
-  const staggerDelay = mode === "fast" ? 0.01 : 0.02;
-  const itemDuration = mode === "fast" ? 0.12 : 0.15;
-
-  return {
-    container: {
-      initial: { opacity: 0 },
-      animate: { 
-        opacity: 1,
-        transition: {
-          staggerChildren: staggerDelay,
-          delayChildren: 0.02,
-        }
-      },
-      transition: {
-        staggerChildren: staggerDelay,
-        delayChildren: 0.02,
-      }
-    },
-    item: {
-      initial: { opacity: 0, y: 10 },
-      animate: {
-        opacity: 1,
-        y: 0,
-        transition: {
-          duration: itemDuration,
-          willChange: "transform, opacity",
-        }
-      },
-      transition: {
-        duration: itemDuration,
-        willChange: "transform, opacity",
-      }
-    }
-  };
-})();
-
-// Alternative: Individual variants for better type safety
-export const batchStaggerContainer = (() => {
-  const animate = shouldAnimate();
-  const mode = getPerformanceMode();
-  
-  if (!animate) {
-    return {
-      initial: { opacity: 1 },
-      animate: { opacity: 1 },
-      transition: { duration: 0 }
-    };
-  }
-
-  const staggerDelay = mode === "fast" ? 0.01 : 0.02;
-
-  return {
-    initial: { opacity: 0 },
-    animate: { 
-      opacity: 1,
-      transition: {
-        staggerChildren: staggerDelay,
-        delayChildren: 0.02,
-      }
-    },
-    transition: {
-      staggerChildren: staggerDelay,
-      delayChildren: 0.02,
-    }
-  };
-})();
-
-export const batchStaggerItem = (() => {
-  const animate = shouldAnimate();
-  const mode = getPerformanceMode();
-  
-  if (!animate) {
-    return {
-      initial: baseStates.visible,
-      animate: baseStates.visible,
-      transition: { duration: 0 }
-    };
-  }
-
-  const itemDuration = mode === "fast" ? 0.12 : 0.15;
-
-  return {
-    initial: { opacity: 0, y: 10 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: itemDuration,
-        willChange: "transform, opacity",
-      }
-    },
-    transition: {
-      duration: itemDuration,
-      willChange: "transform, opacity",
-    }
-  };
-})();
 // Viewport settings
 export const viewportOnce = {
   once: true,
@@ -603,7 +450,6 @@ export const optimizedAnimations = {
   fadeInUp,
   fadeInLeft,
   fadeInRight,
-  slideInFromBottom,
   microSlide,
 };
 
@@ -624,29 +470,6 @@ export type AnimationVariant = Variants;
 export const resetAnimationConfig = () => {
   // No-op in this stable version
 };
-// Simple slideshow fade animation with continuous scale
-export const simpleFadeSlide = {
-  initial: { opacity: 0, scale: 1 },
-  animate: { 
-    opacity: 1, 
-    scale: 1.1,
-    transition: {
-      opacity: { duration: 0.8, ease: "easeInOut" },
-      scale: { duration: 3, ease: "easeInOut" } // Slow scale up during display
-    }
-  },
-  exit: { 
-    opacity: 0, 
-    scale: 1,
-    transition: {
-      opacity: { duration: 0.8, ease: "easeInOut" },
-      scale: { duration: 3, ease: "easeInOut" } // Slow scale down during exit
-    }
-  }
-};
-
-
-
 // constants/countries.ts
 export const COUNTRIES: Country[] = [
   { code: 'AE', name: 'United Arab Emirates', dialCode: '+971', flag: '🇦🇪' },
