@@ -69,23 +69,7 @@ export const companyInfo = {
   copyright: "© 2025 ALTAF DEVELOPMENT. All rights reserved.",
 };
 
-export const latestNews: NewsItem[] = [
-  {
-    title: "New Project Launch",
-    description: "The Oasis Towers breaks ground in Business Bay",
-    date: "Dec 15, 2024",
-  },
-  {
-    title: "Award Recognition",
-    description: "Best Luxury Developer Award 2024",
-    date: "Nov 28, 2024",
-  },
-  {
-    title: "Sustainability Initiative",
-    description: "Green building certification for all new projects",
-    date: "Oct 20, 2024",
-  },
-];
+
 export const socialMediaConfig = [
   {
     icon: FaFacebookF,
@@ -247,26 +231,6 @@ const createAnimation = (config: {
   };
 };
 
-// Performance-aware hover creator
-const createHoverAnimation = (
-  hoverState: Record<string, any>,
-  tapState?: Record<string, any>
-) => {
-  const animate = shouldAnimate();
-  const mode = getPerformanceMode();
-
-  if (!animate || mode === "slow") {
-    return {};
-  }
-
-  const duration = mode === "fast" ? 0.1 : 0.15;
-
-  return {
-    whileHover: hoverState,
-    ...(tapState && { whileTap: tapState }),
-    transition: { duration, ease: "easeOut" },
-  };
-};
 
 // Base animation states
 const baseStates = {
