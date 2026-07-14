@@ -1,8 +1,10 @@
-// components/FacebookPixel.tsx
+// components/seo/FacebookPixel.tsx
 import Script from 'next/script'
 
 const FacebookPixel = () => {
-  const PIXEL_ID = '1493770168730554'
+  const PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
+
+  if (!PIXEL_ID) return null
 
   return (
     <>
@@ -19,16 +21,17 @@ const FacebookPixel = () => {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('set', 'autoConfig', false, '${PIXEL_ID}');
             fbq('init', '${PIXEL_ID}');
             fbq('track', 'PageView');
           `,
         }}
       />
-      
+
       <noscript>
-        <img 
-          height="1" 
-          width="1" 
+        <img
+          height="1"
+          width="1"
           style={{ display: 'none' }}
           src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
           alt=""
