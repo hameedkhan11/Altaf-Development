@@ -4,8 +4,7 @@ import Script from 'next/script'
 const FacebookPixel = () => {
   const PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
-  if (!PIXEL_ID) return null
-
+  if (!PIXEL_ID) return null;
   return (
     <>
       <Script
