@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { trackEvent } from "@/hooks/useGoogleAnalytics";
+import { trackFbEvent } from "@/hooks/useFacebookPixel";
 
 // Types
 interface FormData {
@@ -180,6 +181,13 @@ export const useContactForm = () => {
           email_subscription: formData.emailSubscription ? "true" : "false",
           message_id: data.messageId || "unknown",
           page_url: typeof window !== 'undefined' ? window.location.pathname : ""
+        });
+
+        // Meta standard Lead event - single direct call, no loop
+        trackFbEvent("Lead", {
+          content_name: "contact_form",
+          value: 5000,
+          currency: "PKR",
         });
 
         // Track form submission success

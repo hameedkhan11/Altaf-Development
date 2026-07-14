@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
+import { trackFbEvent } from "@/hooks/useFacebookPixel";
 
 const WhatsAppButton = () => {
   const phoneNumber = "+923330777775";
@@ -7,11 +10,16 @@ const WhatsAppButton = () => {
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
+  const handleClick = () => {
+    trackFbEvent("Contact");
+  };
+
   return (
     <Link
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={handleClick}
       className="fixed right-0.5 top-1/2 -translate-y-1/2 z-50 group"
       aria-label="Chat on WhatsApp"
     >

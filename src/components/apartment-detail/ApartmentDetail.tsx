@@ -1,7 +1,8 @@
 "use client";
 
 import { Image } from "@imagekit/next";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { trackFbEvent } from "@/hooks/useFacebookPixel";
 
 // Type definitions
 interface ApartmentDetails {
@@ -99,6 +100,19 @@ const ApartmentDetailPage: React.FC<ApartmentDetailPageProps> = ({ type }) => {
 
   // Validate the type and get apartment data
   const apartment: ApartmentDetails | undefined = apartmentData[type];
+
+  useEffect(() => {
+    if (!apartment) return;
+    trackFbEvent("ViewContent", {
+      content_name: apartment.title,
+      content_category: "apartment",
+      content_type: type,
+      value: Number(apartment.totalPrice.replace(/,/g, "")) || 0,
+      currency: "PKR",
+    });
+    // Only re-fire if the apartment type actually changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type]);
 
   // If invalid type, show error
   if (!apartment) {

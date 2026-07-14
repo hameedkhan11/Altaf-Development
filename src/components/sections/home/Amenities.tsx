@@ -212,10 +212,10 @@ const Amenities = () => {
                 <button
                   key={index}
                   onClick={() => goToSlide(index)}
-                  className={`w-4 h-4 rounded-full transition-all duration-300 flex items-center justify-center p-2 focus:outline-none focus:ring-2 focus:ring-[rgb(140,46,71)] focus:ring-offset-2 ${
+                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 flex items-center justify-center p-2 ${
                     index === currentIndex
                       ? "bg-[rgb(140,46,71)] scale-125"
-                      : "bg-gray-300 hover:bg-gray-400"
+                      : "border border-[rgb(140,46,71)] hover:bg-gray-300"
                   }`}
                   aria-label={`Go to ${amenity.data.name} amenity`}
                   aria-current={index === currentIndex ? "true" : "false"}

@@ -107,12 +107,12 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
           </div>
           
           {/* Navigation dots for mobile */}
-          <div className="flex justify-center mt-4 gap-3">
+          <div className="flex justify-center mt-2 gap-3">
             {posts.map((post, index) => (
               <button
                 key={index}
-                className={`w-3 h-3 rounded-full transition-colors duration-300 flex items-center justify-center p-2 focus:outline-none focus:ring-2 focus:ring-[rgb(140,46,71)] focus:ring-offset-2 ${
-                  index === currentIndex ? 'bg-[rgb(140,46,71)]' : 'bg-gray-300 hover:bg-gray-400'
+                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors duration-300 flex items-center justify-center p-2 ${
+                  index === currentIndex ? 'bg-[rgb(140,46,71)] scale-110' : 'border border-[rgb(140,46,71)] hover:bg-gray-300'
                 }`}
                 onClick={() => {
                   setIsAutoScrolling(false);
@@ -189,14 +189,14 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
           </div>
         </div>
 
-        <div className="relative flex justify-center mt-6 sm:mt-7 md:mt-28">
+        <div className="relative flex justify-center mt-6 sm:mt-7 md:mt-8">
           <Link href="/media/blogs">
             <Button
               className={`px-4 sm:px-5 bg-[rgb(140,46,71)] hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 hover:border-[rgb(140,46,71)] cursor-pointer rounded-full font-bold overflow-hidden py-4 sm:py-5 md:py-6 text-sm sm:text-base`}
               aria-label="View All Blogs"
             >
               <div className="flex items-center">
-                <span className="transition-all duration-300 ease-in font-bold px-6 sm:px-7 md:px-8">
+                <span className="transition-all duration-300 ease-in font-bold px-6 sm:px-7 md:px-8 py-4 sm:py-6 md:py-8">
                   VIEW ALL ARTICLES
                 </span>
                 <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300" />
