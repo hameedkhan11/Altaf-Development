@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google";
 import { Metadata } from "next";
 import LenisProvider from "@/hooks/lenis";
 import WhatsAppButton from "@/components/whatsapp/Whatsapp";
+import LeadChatbot from "@/components/chatbot/LeadChatbot";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
 import FAQSchema from "@/components/seo/FAQSchema";
 import AnalyticsTracker from "@/components/seo/analytics-provider";
@@ -112,6 +113,7 @@ export default function RootLayout({
         <LenisProvider />
         {children}
         <WhatsAppButton />
+        <LeadChatbot />
       </body>
     </html>
   );

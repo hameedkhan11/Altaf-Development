@@ -101,7 +101,7 @@ export const socialMediaConfig = [
   },
   {
     icon: FaYoutube,
-    href: "https://www.youtube.com/@AltafDevelopments",
+    href: "https://youtube.com/@altafdevelopmentspk?si=5-y3bWmuuTYEdl1E",
     name: "YouTube",
     color: "#FF0000",
     hoverColor: "#E60000",
