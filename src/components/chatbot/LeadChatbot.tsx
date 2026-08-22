@@ -313,7 +313,7 @@ export default function LeadChatbot() {
     step === "inquiry";
 
   return (
-    <div className="fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-3">
+    <div className="fixed bottom-5 right-3 z-[60] flex flex-col items-end gap-3">
       {/* Chat panel */}
       {isOpen && (
         <div

@@ -6,7 +6,7 @@ import { trackFbEvent } from "@/hooks/useFacebookPixel";
 
 const WhatsAppButton = () => {
   const phoneNumber = "+923330777775";
-  const message = "";
+  const message = "Altaf Developments - Website";
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
@@ -20,7 +20,7 @@ const WhatsAppButton = () => {
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      className="fixed right-0.5 top-1/2 -translate-y-1/2 z-50 group"
+      className="fixed right-0.5 top-[85%] -translate-y-1/2 z-50 group"
       aria-label="Chat on WhatsApp"
     >
       <div className="bg-green-400 hover:bg-green-500 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 relative">
