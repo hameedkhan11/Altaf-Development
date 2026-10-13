@@ -156,7 +156,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({
                 target.src = image.src;
               }}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              priority={index < 6}
+              loading="lazy"
             />
             
             {/* Overlay */}

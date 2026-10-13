@@ -17,12 +17,13 @@ interface BlogDetailHeroProps {
     };
   };
   heroImage?: HeroImage | null;
+  section?: "blogs" | "articles";
 }
 
-const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post }) => {
+const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post, section = "blogs" }) => {
   const breadcrumbs = [
     { label: "Media", href: "/" },
-    { label: "Blogs", href: "/media/blogs" },
+    { label: section === "articles" ? "Articles" : "Blogs", href: section === "articles" ? "/media/articles" : "/media/blogs" },
     { label: post.title, href: "#" }
   ];
 
@@ -38,7 +39,7 @@ const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post }) => {
       enableAnimations={true}
       // enableParallax={true}
       // parallaxSpeed={0.3}
-      ariaLabel={`Blog post: ${post.title}`}
+      ariaLabel={`${section === "articles" ? "Article" : "Blog post"}: ${post.title}`}
     />
   );
 };

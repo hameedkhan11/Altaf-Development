@@ -16,9 +16,12 @@ import {
   getEventSlugsQuery,
   getRelatedEventsQuery,
   urlFor,
+  eventImageUrl,
+  eventDateValue,
   type Event,
 } from "@/lib/events/event";
 import { client } from "@/lib/sanityService";
+import { getLocalEvent, localEvents, mergeEvents } from "@/data/events";
 import { Hero } from "@/components/common/Hero";
 
 interface EventDetailPageProps {
@@ -26,73 +29,80 @@ interface EventDetailPageProps {
 }
 
 export async function generateStaticParams() {
+  // These local routes work even when the external CMS cannot be reached during the build.
+  let cmsSlugs: string[] = [];
   try {
-    const slugs = await client.fetch<string[]>(getEventSlugsQuery);
-
-    return slugs.map((slug) => ({
-      slug,
-    }));
+    cmsSlugs = await client.fetch<string[]>(getEventSlugsQuery);
   } catch (error) {
-    console.error("Error generating static params:", error);
-    return [];
+    console.error("Error generating Sanity event routes:", error);
+  }
+  return [...new Set([...localEvents.map((event) => event.slug.current), ...cmsSlugs])]
+    .map((slug) => ({ slug }));
+}
+
+async function loadEvent(slug: string): Promise<Event | null> {
+  const local = getLocalEvent(slug);
+  if (local) return local;
+  try {
+    return await client.fetch<Event | null>(getEventBySlugQuery, { slug });
+  } catch (error) {
+    console.error("Error fetching event:", error);
+    return null;
   }
 }
 
-export async function generateMetadata({
-  params,
-}: EventDetailPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: EventDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-
-  try {
-    const event = await client.fetch<Event>(getEventBySlugQuery, { slug });
-
-    if (!event) {
-      return {
-        title: "Event Not Found",
-      };
-    }
-
-    return {
-      title: event.metaTitle || event.title,
+  const event = await loadEvent(slug);
+  if (!event) return { title: "Event Not Found" };
+  return {
+    title: event.metaTitle || event.title,
+    description: event.metaDescription || event.description,
+    openGraph: {
+      title: event.title,
       description: event.metaDescription || event.description,
-      openGraph: {
-        title: event.title,
-        description: event.description,
-        images: [
-          {
-            url: urlFor(event.image).width(1920).height(1080).url(),
-            width: 1920,
-            height: 1080,
-            alt: event.title,
-          },
-        ],
-      },
-    };
-  } catch (error) {
-    console.error("Error generating metadata:", error);
-    return {
-      title: "Event Not Found",
-    };
-  }
+      images: [{
+        url: eventImageUrl(event, 1920, 1080),
+        width: 1920,
+        height: 1080,
+        alt: event.title,
+      }],
+    },
+  };
 }
 
-function EventGallery({ gallery }: { gallery: Event["gallery"] }) {
-  if (!gallery || gallery.length === 0) return null;
+function EventGallery({ event }: { event: Event }) {
+  const gallery = [
+    ...(event.localGallery ?? []).map((image) => ({
+      url: image.src,
+      alt: image.alt,
+      fit: image.fit ?? "cover",
+    })),
+    ...(event.gallery ?? []).filter((image) => image.asset).map((image, index) => ({
+      url: urlFor(image).width(1920).height(1080).url(),
+      alt: image.alt || `Gallery image ${index + 1}`,
+      fit: "cover" as const,
+    })),
+  ];
+  if (!gallery.length) return null;
 
   return (
     <section className="mb-12">
-      <h4 className="text-2xl font-bold text-[rgb(140,46,71] mb-6">
+      <h4 className="text-2xl font-bold text-[rgb(140,46,71)] mb-6">
         Event Gallery
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {gallery.map((image, index) => (
-          <div key={index} className="group cursor-pointer">
-            <div className="relative aspect-[16/9] overflow-hidden">
+          <div key={`${image.url}-${index}`} className="group">
+            <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
               <Image
-                src={urlFor(image).width(1920).height(1080).url()}
-                alt={image.alt || `Gallery image ${index + 1}`}
+                src={image.url}
+                alt={image.alt}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className={image.fit === "contain"
+                  ? "object-contain"
+                  : "object-cover transition-transform duration-300 group-hover:scale-105"}
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           </div>
@@ -123,7 +133,7 @@ function RelatedEvents({ events }: { events: Event[] }) {
               >
                 <div className="relative aspect-[23/22] w-full overflow-hidden mb-2 xs:mb-3 sm:mb-4 shadow-sm hover:shadow-md transition-shadow duration-300">
                   <Image
-                    src={urlFor(event.image).width(1800).height(1600).url()}
+                    src={eventImageUrl(event, 1800, 1600)}
                     alt={event.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300 overflow-hidden"
@@ -139,7 +149,7 @@ function RelatedEvents({ events }: { events: Event[] }) {
 
                   {/* Date overlay in top-left corner */}
                   <div className="absolute top-2 sm:top-3 md:top-4 left-2 sm:left-3 md:left-4 bg-white text-gray-800 px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium shadow-sm">
-                    {new Date(event.eventDate).toLocaleDateString("en-US", {
+                    {eventDateValue(event).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
@@ -162,41 +172,26 @@ function RelatedEvents({ events }: { events: Event[] }) {
 }
 
 async function EventDetail({ slug }: { slug: string }) {
-  let event: Event | null = null;
-  let relatedEvents: Event[] = [];
+  const event = await loadEvent(slug);
+  if (!event) notFound();
 
+  let relatedCmsEvents: Event[] = [];
+  const eventDate = eventDateValue(event);
+  const isUpcoming = eventDate > new Date();
   try {
-    event = await client.fetch<Event>(getEventBySlugQuery, { slug });
-
-    if (!event) {
-      notFound();
-    }
-
-    // Get related events
-    const eventDate = new Date(event.eventDate);
-    const startDate = new Date(
-      eventDate.getFullYear(),
-      eventDate.getMonth(),
-      1
-    ).toISOString();
-    const endDate = new Date(
-      eventDate.getFullYear(),
-      eventDate.getMonth() + 1,
-      0
-    ).toISOString();
-
-    relatedEvents = await client.fetch<Event[]>(getRelatedEventsQuery, {
-      eventId: event._id,
-      startDate,
-      endDate,
+    const startDate = new Date(eventDate.getFullYear(), eventDate.getMonth(), 1).toISOString();
+    const endDate = new Date(eventDate.getFullYear(), eventDate.getMonth() + 1, 0).toISOString();
+    relatedCmsEvents = await client.fetch<Event[]>(getRelatedEventsQuery, {
+      eventId: event._id, startDate, endDate,
     });
   } catch (error) {
-    console.error("Error fetching event:", error);
-    notFound();
+    console.error("Error fetching related events:", error);
   }
-
-  const eventDate = new Date(event.eventDate);
-  const isUpcoming = eventDate > new Date();
+  const relatedEvents = mergeEvents(relatedCmsEvents)
+    .filter((other) => other._id !== event._id &&
+      eventDateValue(other).getFullYear() === eventDate.getFullYear() &&
+      eventDateValue(other).getMonth() === eventDate.getMonth())
+    .slice(0, 3);
 
   return (
     <>
@@ -219,24 +214,31 @@ async function EventDetail({ slug }: { slug: string }) {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[rgb(140,46,71)] mb-4">
                 {event.title}
               </h2>
-              <p className="leading-relaxed">{event.description}</p>
+              {event.description
+                .split(/\n\s*\n/)
+                .filter((para) => para.trim())
+                .map((para, i) => (
+                  <p key={i} className="leading-relaxed">
+                    {para}
+                  </p>
+                ))}
             </div>
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg p-6 shadow-sm border sticky top-8">
-              <h4 className="text-xl font-bold text-[rgb(140,46,71] mb-6">
+              <h4 className="text-xl font-bold text-[rgb(140,46,71)] mb-6">
                 Event Details
               </h4>
 
               <div className="space-y-6">
-                {/* Date & Time */}
+                {/* Date is shown without an invented start time for locally supplied events. */}
                 <div className="flex items-start">
                   <FiCalendar className="w-5 h-5 text-[rgb(140,46,71)] mr-3 mt-1 flex-shrink-0" />
                   <div>
                     <p className="font-medium text-[rgb(140,46,71)]">
-                      Date & Time
+                      {event.eventDate.includes("T") ? "Date & Time" : "Event Date"}
                     </p>
                     <p className="">
                       {eventDate.toLocaleDateString("en-US", {
@@ -246,12 +248,14 @@ async function EventDetail({ slug }: { slug: string }) {
                         day: "numeric",
                       })}
                     </p>
-                    <p className="">
-                      {eventDate.toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
+                    {event.eventDate.includes("T") && (
+                      <p className="">
+                        {eventDate.toLocaleTimeString("en-US", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -286,12 +290,12 @@ async function EventDetail({ slug }: { slug: string }) {
                 {/* Registration Button */}
                 {isUpcoming && (
                   <div className="pt-4 border-t">
-                    <button className="w-full bg-[rgb(140,46,71)] text-white py-3 px-6 rounded-lg font-semibold hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] transition-colors flex items-center justify-center">
+                    <Link href="/contact" className="w-full bg-[rgb(140,46,71)] text-white py-3 px-6 rounded-lg font-semibold hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] transition-colors flex items-center justify-center">
                       <FiUsers className="w-5 h-5 mr-2" />
                       Register for Event
-                    </button>
+                    </Link>
                     <p className="text-xs mt-2 text-center">
-                      Click to register or get more information
+                      Contact our team for event information
                     </p>
                   </div>
                 )}
@@ -299,7 +303,7 @@ async function EventDetail({ slug }: { slug: string }) {
             </div>
           </div>
         </div>
-        <EventGallery gallery={event.gallery} />
+        <EventGallery event={event} />
       </div>
 
       <RelatedEvents events={relatedEvents} />

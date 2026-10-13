@@ -3,7 +3,8 @@ import { Hero } from "@/components/common/Hero";
 import { RegisterHero } from "@/components/register-form/hero-section";
 import LuxuryRealEstateFAQ from "@/components/sections/home/FAQs";
 import { ApartmentGallery } from "@/components/sections/home/ApartmentGallery";
-import sanityService from "@/lib/sanityService";
+import { getAllBlogs } from "@/lib/blogPosts";
+import { articles } from "@/data/articles";
 import { FeaturedPostsSection } from "@/components/sections/home/Blogs";
 import Amenities from "@/components/sections/home/Amenities";
 import StructuredData from "@/components/seo/StructuredData";
@@ -14,7 +15,7 @@ import AtAGlance from "@/components/property-detail/Residences";
 import Link from "next/link";
 
 const HomePage = async () => {
-  const featuredPosts = await sanityService.getFeaturedPosts(3);
+  const featuredBlogs = (await getAllBlogs()).slice(0, 3);
 
   return (
     <>
@@ -50,7 +51,8 @@ const HomePage = async () => {
         <Amenities />
         {/* <WhyChoose /> */}
         <Testimonials />
-        <FeaturedPostsSection posts={featuredPosts} />
+        <FeaturedPostsSection posts={articles} section="articles" />
+        <FeaturedPostsSection posts={featuredBlogs} section="blogs" />
         <LuxuryRealEstateFAQ />
         <RegisterHero />
       </div>

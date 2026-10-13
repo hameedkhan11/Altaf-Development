@@ -1,152 +1,50 @@
-// app/blogs/[slug]/page.tsx
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { sanityService, urlFor } from "@/lib/sanityService";
+import type { Metadata } from "next";
+import { notFound, permanentRedirect } from "next/navigation";
 import BlogDetailHero from "@/components/sections/blogs/blogs/BlogDetailHero";
-import { generateBlogStructuredData, generateBreadcrumbStructuredData } from "@/components/sections/blogs/PostStructuredData";
+import StructuredData from "@/components/seo/StructuredData";
+import { getArticleBySlug } from "@/data/articles";
 import { BlogPostContent } from "@/components/sections/blogs/BlogPostContent";
 import { RelatedPostsSection } from "@/components/sections/blogs/RelatedPostsSection";
-import StructuredData from "@/components/seo/StructuredData";
-import Script from "next/script";
 
-// Generate static params for all blog posts
-export async function generateStaticParams() {
-  const slugs = await sanityService.getAllPostSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+export const revalidate = 300;
 
-// Generate metadata for SEO
-export async function generateMetadata(props: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const params = await props.params;
-  const post = await sanityService.getPostBySlug(params.slug);
-
-  if (!post) {
-    return {
-      title: "Post Not Found",
-      description: "The requested blog post could not be found.",
-    };
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  if (getArticleBySlug(slug)) {
+    return { title: "Article moved", robots: { index: false } };
   }
-
-  // Safe image URL generation with proper null checks
-  const imageUrl = post?.featuredImage?.asset
-    ? urlFor(post.featuredImage)?.width(1200)?.height(800)?.url()
-    : null;
-
-  const ogImageUrl = post?.ogImage?.asset
-    ? urlFor(post.ogImage)?.width(1200)?.height(800)?.url()
-    : imageUrl;
-
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || !process.env.NEXT_PUBLIC_SANITY_DATASET) {
+    return { title: "Blog not found", robots: { index: false } };
+  }
+  const { sanityService, urlFor } = await import("@/lib/sanityService");
+  const post = await sanityService.getPostBySlug(slug).catch(() => null);
+  if (!post) return { title: "Blog not found", robots: { index: false } };
+  let image: string | undefined;
+  try { if (post.featuredImage?.asset) image = urlFor(post.featuredImage).width(1200).url(); } catch { /* no image */ }
   return {
-    title: post?.seoTitle || post?.title,
-    description: post?.excerpt,
-    keywords: post?.targetKeywords?.join(", "),
-    authors: [{ name: "Altaf Developments" }],
-    openGraph: {
-      title: post?.seoTitle || post?.title,
-      description: post?.excerpt,
-      type: "article",
-      publishedTime: post?.publishedAt,
-      modifiedTime: post?.updatedAt,
-      authors: ["Altaf Developments"],
-      url: `/media/blogs/${post?.slug?.current}`,
-      images: ogImageUrl
-        ? [
-            {
-              url: ogImageUrl,
-              width: 1200,
-              height: 630,
-              alt: post?.featuredImage?.alt || post?.title || "Blog post image",
-            },
-          ]
-        : undefined,
-      siteName: "Altaf Developments",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post?.seoTitle || post?.title,
-      description: post?.excerpt,
-      images: ogImageUrl ? [ogImageUrl] : undefined,
-      creator: "@AltafDevelopments",
-    },
-    alternates: {
-      canonical: post?.canonicalUrl || `/media/blogs/${post?.slug?.current}`,
-    },
-    robots: {
-      index: !post?.noIndex,
-      follow: !post?.noIndex,
-      googleBot: {
-        index: !post?.noIndex,
-        follow: !post?.noIndex,
-      },
-    },
-    other: {
-      "article:author": "Altaf Developments",
-      "article:section": post?.categories?.[0]?.title || "Real Estate",
-      "article:tag": post?.targetKeywords?.join(", ") || "",
-    },
+    title: post.seoTitle || post.title, description: post.excerpt,
+    alternates: { canonical: `/media/blogs/${slug}` },
+    openGraph: { title: post.title, description: post.excerpt, type: "article", ...(image ? { images: [{ url: image }] } : {}) },
   };
 }
 
-// Main blog post page component
-export default async function BlogPostPage(props: {
-  params: Promise<{ slug: string }>;
-}) {
-  const params = await props.params;
-  
-  // Fetch data in parallel with error handling
-  const [post, heroImages] = await Promise.all([
-    sanityService.getPostBySlug(params.slug).catch(() => null),
-    sanityService.getHeroImagesByPage('blog-detail').catch(() => []),
-  ]);
-
-  if (!post) {
-    notFound();
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  if (getArticleBySlug(slug)) {
+    permanentRedirect(`/media/articles/${slug}`);
   }
-
-  // Fetch related posts with error handling
-  const relatedPosts = post?._id ? await sanityService.getRelatedPosts(post._id, 3).catch(() => []) : [];
-  
-  // Generate structured data for SEO with safe access
-  const structuredData = post ? generateBlogStructuredData(post) : null;
-  const breadcrumbStructuredData = post ? generateBreadcrumbStructuredData(post) : null;
-
-  const heroImage = heroImages && heroImages.length > 0 ? heroImages[0] : null;
-
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || !process.env.NEXT_PUBLIC_SANITY_DATASET) notFound();
+  const { sanityService } = await import("@/lib/sanityService");
+  const post = await sanityService.getPostBySlug(slug).catch(() => null);
+  if (!post) notFound();
+  const relatedPosts = post._id ? await sanityService.getRelatedPosts(post._id, 3).catch(() => []) : [];
   return (
     <>
-      {/* Base structured data (organization, website, breadcrumbs) */}
       <StructuredData pageType="blog-post" />
-
-      {/* Blog-specific structured data with proper IDs */}
-      {structuredData && (
-        <Script
-          id={`blog-structured-data-${params.slug}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
-      )}
-      {breadcrumbStructuredData && (
-        <Script
-          id={`blog-breadcrumb-data-${params.slug}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(breadcrumbStructuredData),
-          }}
-        />
-      )}
-      
-      <BlogDetailHero 
-        post={post} 
-        heroImage={heroImage}
-      />
-      
+      <BlogDetailHero post={post} />
       <article className="min-h-screen mt-8">
         <BlogPostContent post={post} />
-        <RelatedPostsSection relatedPosts={relatedPosts || []} />
+        <RelatedPostsSection relatedPosts={relatedPosts} />
       </article>
     </>
   );

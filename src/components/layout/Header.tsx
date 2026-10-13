@@ -1,7 +1,7 @@
 // components/Header.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import { X, ArrowRight, Phone } from "lucide-react";
@@ -19,7 +19,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const checkInitialScroll = () => {
@@ -33,23 +33,21 @@ const Header = () => {
       const scrollPosition = window.scrollY;
       setScrolled(scrollPosition > 100);
 
-      if (scrollPosition > lastScrollY && scrollPosition > 100) {
+      if (scrollPosition > lastScrollYRef.current && scrollPosition > 100) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
       }
 
-      setLastScrollY(scrollPosition);
+      lastScrollYRef.current = scrollPosition;
     };
 
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", () => {});
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", () => {});
     };
-  }, [lastScrollY]);
+  }, []);
 
   return (
     <>

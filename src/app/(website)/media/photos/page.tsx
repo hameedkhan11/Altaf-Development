@@ -17,7 +17,7 @@ const PropertyGalleryPage: React.FC = () => {
         height="screen"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "/Media/photos", href: "/photos" },
+          { label: "Photos", href: "/media/photos" },
         ]}
         overlay="dark"
         contentAlignment="center"

@@ -6,7 +6,6 @@ import LenisProvider from "@/hooks/lenis";
 import WhatsAppButton from "@/components/whatsapp/Whatsapp";
 import LeadChatbot from "@/components/chatbot/LeadChatbot";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
-import FAQSchema from "@/components/seo/FAQSchema";
 import AnalyticsTracker from "@/components/seo/analytics-provider";
 import FacebookPixel from "@/components/seo/FacebookPixel";
 
@@ -40,8 +39,8 @@ export const metadata: Metadata = {
     "Pakistan property",
   ],
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
   },
   openGraph: {
     type: "website",
@@ -106,7 +105,6 @@ export default function RootLayout({
       <head>
         <GoogleAnalytics />
         <FacebookPixel />
-        <FAQSchema />
       </head>
       <body className={`${poppins.variable} antialiased font-light`}>
         <AnalyticsTracker />

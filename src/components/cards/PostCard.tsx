@@ -3,33 +3,32 @@
 // components/sections/blogs/PostCard.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "@/lib/sanityService";
-import type { PostPreview } from "@/lib/sanity/sanity";
+import type { Article } from "@/data/articles";
 import { HiOutlinePhotograph } from "react-icons/hi";
 
 interface PostCardProps {
-  post: PostPreview;
+  post: Article;
   showBadge?: boolean;
   badgeText?: string;
+  basePath?: "/media/blogs" | "/media/articles";
 }
 
 export function PostCard({
   post,
   showBadge = false,
-  badgeText = "Featured"
+  badgeText = "Featured",
+  basePath = "/media/blogs"
 }: PostCardProps) {
-  const imageUrl = post.featuredImage
-    ? urlFor(post.featuredImage).width(1800).height(1600).crop("focalpoint").url()
-    : null;
+  const imageUrl = post.coverImage;
 
   return (
     <article className="group cursor-pointer h-full flex flex-col w-full">
-      <Link href={`/media/blogs/${post.slug?.current}`} className="block w-full max-w-[480px] mx-auto">
+      <Link href={`${basePath}/${post.slug}`} className="block w-full max-w-[480px] mx-auto">
         <div className="relative aspect-[23/22] w-full overflow-hidden mb-2 xs:mb-3 sm:mb-4 shadow-sm hover:shadow-md transition-shadow duration-300">
           {imageUrl ? (
             <Image
               src={imageUrl}
-              alt={post.featuredImage?.alt || post.title}
+              alt={post.coverAlt || post.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300 overflow-hidden"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
@@ -46,17 +45,6 @@ export function PostCard({
               {badgeText}
             </div>
           )}
-
-          {/* Date overlay in top-left corner */}
-          {post.publishedAt && (
-            <div className="absolute top-2 sm:top-3 md:top-4 left-2 sm:left-3 md:left-4 bg-white text-gray-800 px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium shadow-sm">
-              {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </div>
-          )}
         </div>
 
         <div className="px-1 flex-grow flex flex-col justify-start">
@@ -70,14 +58,15 @@ export function PostCard({
 }
 
 // Convenience components for specific use cases
-export function RelatedPostCard({ post }: { post: PostPreview }) {
+export function RelatedPostCard({ post }: { post: Article }) {
   return <PostCard post={post} />;
 }
 
-export function FeaturedPostCard({ post }: { post: PostPreview }) {
+export function FeaturedPostCard({ post, basePath = "/media/blogs" }: { post: Article; basePath?: "/media/blogs" | "/media/articles" }) {
   return (
     <PostCard 
       post={post} 
+      basePath={basePath}
       showBadge={true}
       badgeText="Featured"
     />

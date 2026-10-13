@@ -2,28 +2,38 @@
 import { FeaturedPostCard } from "@/components/cards/PostCard";
 import { Button } from "@/components/ui/button";
 import { AnimatedH2, AnimatedP } from "@/components/ui/text-animations";
-import type { PostPreview } from "@/lib/sanity/sanity";
+import type { Article } from "@/data/articles";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 
 interface FeaturedPostsSectionProps {
-  posts: PostPreview[];
+  posts: Article[];
+  section?: "blogs" | "articles";
 }
 
-export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
+export function FeaturedPostsSection({ posts, section = "blogs" }: FeaturedPostsSectionProps) {
+  const isArticle = section === "articles";
+  const basePath = isArticle ? "/media/articles" : "/media/blogs";
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-scroll functionality for mobile
   useEffect(() => {
-    if (!isAutoScrolling || !posts || posts.length <= 1) return;
+    // Do not run a hidden carousel on desktop or for reduced-motion users.
+    if (!isAutoScrolling || posts.length <= 1) return;
+    const mobile = window.matchMedia("(max-width: 639px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!mobile.matches || reducedMotion.matches) return;
 
     const interval = setInterval(() => {
       const container = scrollContainerRef.current;
       if (!container) return;
 
+      if (document.hidden || !mobile.matches || reducedMotion.matches) return;
       const nextIndex = (currentIndex + 1) % posts.length;
       const cardWidth = container.clientWidth;
       
@@ -52,20 +62,21 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
     }
   };
 
-  // Handle touch interactions
-  const handleTouchStart = () => {
+  // Pause and resume cleanly so carousel timers do not accumulate.
+  const pauseAutoplay = () => {
     setIsAutoScrolling(false);
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
   };
-
-  const handleTouchEnd = () => {
-    // Resume auto-scroll after 8 seconds of inactivity
-    setTimeout(() => setIsAutoScrolling(true), 8000);
+  const resumeAutoplay = () => {
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => setIsAutoScrolling(true), 8000);
   };
+  useEffect(() => () => {
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+  }, []);
+  const handleTouchStart = pauseAutoplay;
+  const handleTouchEnd = resumeAutoplay;
 
-  // Early return after all hooks have been called
-  if (!posts || posts.length === 0) {
-    return null;
-  }
 
   return (
     <section className="py-16 sm:py-20 md:py-22 lg:py-24">
@@ -76,13 +87,15 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
             duration={0.6}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-4"
           >
-            Featured Posts
+            {isArticle ? "Featured Article" : "Featured Blogs"}
           </AnimatedH2>
           <AnimatedP className="max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto text-xs sm:text-sm md:text-base lg:text-lg">
-            Discover our most popular and insightful articles
+            {isArticle ? "Explore our latest editorial feature" : "Explore stories and insights from our previous blogs"}
           </AnimatedP>
         </div>
 
+        {posts.length > 0 ? (
+        <>
         {/* Mobile Horizontal Slider */}
         <div className="block sm:hidden mb-6">
           <div
@@ -98,9 +111,9 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
             }}
           >
             {posts.map((post) => (
-              <div key={post._id} className="flex-shrink-0 w-full snap-start px-2">
+              <div key={post.slug} className="flex-shrink-0 w-full snap-start px-2">
                 <div className="w-full">
-                  <FeaturedPostCard post={post} />
+                  <FeaturedPostCard post={post} basePath={basePath} />
                 </div>
               </div>
             ))}
@@ -115,7 +128,7 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
                   index === currentIndex ? 'bg-[rgb(140,46,71)] scale-110' : 'border border-[rgb(140,46,71)] hover:bg-gray-300'
                 }`}
                 onClick={() => {
-                  setIsAutoScrolling(false);
+                  pauseAutoplay();
                   const container = scrollContainerRef.current;
                   if (container) {
                     const cardWidth = container.clientWidth;
@@ -125,79 +138,42 @@ export function FeaturedPostsSection({ posts }: FeaturedPostsSectionProps) {
                     });
                     setCurrentIndex(index);
                   }
-                  setTimeout(() => setIsAutoScrolling(true), 8000);
+                  resumeAutoplay();
                 }}
-                aria-label={`Go to blog post: ${post.title}`}
+                aria-label={`Go to ${isArticle ? "article" : "blog"}: ${post.title}`}
                 aria-current={index === currentIndex ? "true" : "false"}
               />
             ))}
           </div>
         </div>
 
-        {/* Small Tablet Horizontal Slider */}
-        <div className="hidden sm:block md:hidden mb-6">
-          <div className="grid grid-cols-2 gap-4 auto-rows-fr max-w-5xl mx-auto">
-            {posts.map((post) => (
-              <div key={post._id} className="h-full">
-                <FeaturedPostCard post={post} />
-              </div>
-            ))}
-          </div>
+        {/* One responsive grid for tablets and desktops. Previously five copies of
+            every card were mounted and hidden with CSS at different breakpoints. */}
+        <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 2xl:gap-8 auto-rows-fr max-w-7xl mx-auto">
+          {posts.map((post) => (
+            <div
+              key={post.slug}
+              className={posts.length === 1 ? "h-full col-span-full max-w-md w-full mx-auto" : "h-full"}
+            >
+              <FeaturedPostCard post={post} basePath={basePath} />
+            </div>
+          ))}
         </div>
 
-        {/* Medium Tablet - 2 Column Grid with larger cards */}
-        <div className="hidden md:block lg:hidden mb-6">
-          <div className="grid grid-cols-2 gap-4 auto-rows-fr max-w-5xl mx-auto">
-            {posts.map((post) => (
-              <div key={post._id} className="h-full">
-                <FeaturedPostCard post={post} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Large Desktop - 3 Column Grid */}
-        <div className="hidden lg:block xl:hidden">
-          <div className="grid grid-cols-3 gap-2 auto-rows-fr">
-            {posts.map((post) => (
-              <div key={post._id} className="h-full">
-                <FeaturedPostCard post={post} />
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Extra Large Desktop - 3 Column Grid with more space */}
-        <div className="hidden xl:block 2xl:hidden">
-          <div className="grid grid-cols-3 gap-6 auto-rows-fr">
-            {posts.map((post) => (
-              <div key={post._id} className="h-full">
-                <FeaturedPostCard post={post} />
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* 2XL screens and above - 3 Column Grid with maximum space */}
-        <div className="hidden 2xl:block">
-          <div className="grid grid-cols-3 gap-8 auto-rows-fr">
-            {posts.map((post) => (
-              <div key={post._id} className="h-full">
-                <FeaturedPostCard post={post} />
-              </div>
-            ))}
-          </div>
-        </div>
+        </>
+        ) : (
+          <p className="text-center text-gray-600 py-8 text-sm sm:text-base">Explore our earlier stories in the Blogs section.</p>
+        )}
 
         <div className="relative flex justify-center mt-6 sm:mt-7 md:mt-8">
-          <Link href="/media/blogs">
+          <Link href={basePath}>
             <Button
               className={`px-4 sm:px-5 bg-[rgb(140,46,71)] hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 hover:border-[rgb(140,46,71)] cursor-pointer rounded-full font-bold overflow-hidden py-4 sm:py-5 md:py-6 text-sm sm:text-base`}
-              aria-label="View All Blogs"
+              aria-label={isArticle ? "View Article" : "View Blog"}
             >
               <div className="flex items-center">
                 <span className="transition-all duration-300 ease-in font-bold px-6 sm:px-7 md:px-8 py-4 sm:py-6 md:py-8">
-                  VIEW ALL ARTICLES
+                  {isArticle ? "VIEW ARTICLE" : "VIEW BLOG"}
                 </span>
                 <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300" />
               </div>

@@ -110,7 +110,7 @@ const NotFoundPage = () => {
             Go Back
           </button>
 
-          <Link href="/property-detail">
+          <Link href="/properties">
             <motion.button
               className="flex items-center gap-2 bg-white hover:bg-gray-50 text-[rgb(140,46,71)] px-6 py-3 rounded-lg font-medium transition-all duration-300 border-2 border-[rgb(140,46,71)] w-full sm:w-auto"
               whileHover={{ scale: 1.05 }}
