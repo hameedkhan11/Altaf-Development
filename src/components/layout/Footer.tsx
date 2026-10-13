@@ -8,6 +8,7 @@ const quickLinks = [
   { name: "About", href: "/about" },
   { name: "Properties", href: "/properties" },
   { name: "Blogs", href: "/media/blogs" },
+  { name: "Articles", href: "/media/articles" },
   { name: "Events", href: "/media/events" },
   { name: "Career", href: "/careers" },
   { name: "Contact", href: "/contact" },
@@ -60,10 +61,10 @@ const QuickLinks = () => (
 );
 
 const NewsletterSection = () => (
-  <button className="flex items-center gap-2 w-full sm:w-[220px] md:w-[250px] bg-[rgb(140,46,71)] text-white px-8 sm:px-10 md:px-12 justify-center py-2 sm:py-2.5 rounded-full hover:bg-transparent border border-[rgb(140,46,71)] hover:text-[rgb(140,46,71)] transition-colors cursor-pointer duration-300">
+  <Link href="/contact" aria-label="Contact us to request a press kit" className="flex items-center gap-2 w-full sm:w-[220px] md:w-[250px] bg-[rgb(140,46,71)] text-white px-8 sm:px-10 md:px-12 justify-center py-2 sm:py-2.5 rounded-full hover:bg-transparent border border-[rgb(140,46,71)] hover:text-[rgb(140,46,71)] transition-colors cursor-pointer duration-300">
     <span className="font-medium text-base sm:text-lg">Press Kit</span>
     <HiArrowDown className="w-4 h-4 sm:w-5 sm:h-5" />
-  </button>
+  </Link>
 );
 
 const SocialMediaLinks = () => (

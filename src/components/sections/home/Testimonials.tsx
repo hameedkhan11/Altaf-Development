@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CldImage } from "next-cloudinary";
 import { testimonials } from "@/data/testimonials";
 import Image from "next/image";
 
@@ -12,7 +11,9 @@ const Testimonials = () => {
 
   // Auto-play functionality
   useEffect(() => {
+    if (testimonials.length < 2) return;
     const interval = setInterval(() => {
+      if (document.hidden) return;
       setCurrentIndex((prevIndex) =>
         prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
       );
@@ -30,7 +31,7 @@ const Testimonials = () => {
   };
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
+    if (touchStart === null || touchEnd === null) return;
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
@@ -40,6 +41,8 @@ const Testimonials = () => {
     } else if (isRightSwipe) {
       goToPrevious();
     }
+    setTouchStart(null);
+    setTouchEnd(null);
   };
 
   const goToPrevious = () => {
@@ -130,16 +133,15 @@ const Testimonials = () => {
       >
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
-          <CldImage
-            src="imgi_4442_b10d4f101476497.5f1fdce5873f0_czr5uk"
-            alt="Modern living room interior"
+          <Image
+            src="/customer-review-bg.jpg"
+            alt="Altaf Developments building exterior"
             fill
-            className="object-cover"
-            quality="auto"
-            format="auto"
+            className="object-cover object-center"
+            quality={80}
             sizes="100vw"
-            priority
-            aria-label="Modern living room interior"
+            loading="lazy"
+            aria-label="Altaf Developments building exterior"
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/50" />
@@ -203,7 +205,7 @@ const Testimonials = () => {
                   <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6">
                     <div className="w-8 h-8 xs:w-14 xs:h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 rounded-full overflow-hidden border-2 border-white/20 shadow-lg flex-shrink-0">
                       <Image
-                        src={currentTestimonial?.image || "default-avatar"}
+                        src={currentTestimonial?.image || "/logos/altaf_logo.svg"}
                         alt={currentTestimonial?.name}
                         width={40}
                         height={40}

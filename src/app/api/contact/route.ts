@@ -27,6 +27,12 @@ const RATE_LIMIT_MAX_REQUESTS = 5;
 
 function checkRateLimit(identifier: string): boolean {
   const now = Date.now();
+  // Periodically expire old identifiers to avoid growing the in-memory map forever.
+  if (rateLimitStore.size > 1000) {
+    for (const [key, requests] of rateLimitStore) {
+      if (!requests.some((time: number) => now - time < RATE_LIMIT_WINDOW)) rateLimitStore.delete(key);
+    }
+  }
   const userRequests = rateLimitStore.get(identifier) || [];
   
   // Clean old requests
@@ -75,10 +81,26 @@ async function addToMailerLite(email: string, name: string, phone: string, count
   return await response.json();
 }
 
+// Contact form fields are untrusted. Escape before including them in the HTML email.
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char] || char);
+}
+
 async function sendNotificationEmail(formData: ContactFormData) {
   if (!RESEND_API_KEY || !FROM_EMAIL || !ADMIN_EMAIL) {
     throw new Error('Resend configuration missing. Please check RESEND_API_KEY, FROM_EMAIL, and ADMIN_EMAIL environment variables.');
   }
+
+  const safe = {
+    name: escapeHtml(formData.name),
+    email: escapeHtml(formData.email),
+    phone: escapeHtml(formData.phone),
+    countryCode: escapeHtml(formData.countryCode),
+    preferredContact: escapeHtml(formData.preferredContact),
+    message: escapeHtml(formData.message),
+  };
 
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -91,18 +113,18 @@ async function sendNotificationEmail(formData: ContactFormData) {
         <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
           <h3 style="margin-top: 0; color: #8c2e47; border-bottom: 2px solid #8c2e47; padding-bottom: 10px;">Contact Details</h3>
           <div style="display: grid; gap: 12px;">
-            <p style="margin: 0;"><strong style="color: #8c2e47;">Name:</strong> ${formData.name}</p>
-            <p style="margin: 0;"><strong style="color: #8c2e47;">Email:</strong> <a href="mailto:${formData.email}" style="color: #333; text-decoration: none;">${formData.email}</a></p>
-            <p style="margin: 0;"><strong style="color: #8c2e47;">Phone:</strong> <a href="tel:${formData.countryCode}${formData.phone}" style="color: #333; text-decoration: none;">${formData.countryCode} ${formData.phone}</a></p>
-            <p style="margin: 0;"><strong style="color: #8c2e47;">Preferred Contact:</strong> ${formData.preferredContact.charAt(0).toUpperCase() + formData.preferredContact.slice(1)}</p>
-            <p style="margin: 0;"><strong style="color: #8c2e47;">Email Subscription:</strong> <span style="color: ${formData.emailSubscription ? '#28a745' : '#dc3545'}; font-weight: bold;">${formData.emailSubscription ? 'Yes ✓' : 'No ✗'}</span></p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Name:</strong> ${safe.name}</p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Email:</strong> <a href="mailto:${safe.email}" style="color: #333; text-decoration: none;">${safe.email}</a></p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Phone:</strong> <a href="tel:${safe.countryCode}${safe.phone}" style="color: #333; text-decoration: none;">${safe.countryCode} ${safe.phone}</a></p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Preferred Contact:</strong> ${safe.preferredContact.charAt(0).toUpperCase() + safe.preferredContact.slice(1)}</p>
+            <p style="margin: 0;"><strong style="color: #8c2e47;">Email Subscription:</strong> <span style="color: ${safe.emailSubscription ? '#28a745' : '#dc3545'}; font-weight: bold;">${safe.emailSubscription ? 'Yes ✓' : 'No ✗'}</span></p>
           </div>
         </div>
         
         <div style="background: white; padding: 20px; border-left: 4px solid #8c2e47; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
           <h3 style="margin-top: 0; color: #8c2e47;">Message</h3>
           <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #e9ecef;">
-            <p style="line-height: 1.6; margin: 0; white-space: pre-wrap;">${formData.message}</p>
+            <p style="line-height: 1.6; margin: 0; white-space: pre-wrap;">${safe.message}</p>
           </div>
         </div>
         
@@ -179,9 +201,8 @@ This email was sent from the Altaf Developments contact form.
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
-    const clientIP = request.headers.get('x-forwarded-for') || 
-                    request.headers.get('x-real-ip') || 
-                    'unknown';
+    const clientIP = (request.headers.get('x-forwarded-for') ||
+      request.headers.get('x-real-ip') || 'unknown').split(',')[0].trim();
 
     // Check rate limit
     if (!checkRateLimit(clientIP)) {
@@ -194,7 +215,14 @@ export async function POST(request: NextRequest) {
     const formData: ContactFormData = await request.json();
 
     // Validation
-    if (!formData.name?.trim() || !formData.email?.trim() || !formData.phone?.trim() || !formData.message?.trim()) {
+    if (
+      !formData || typeof formData.name !== 'string' || typeof formData.email !== 'string' ||
+      typeof formData.phone !== 'string' || typeof formData.message !== 'string' ||
+      typeof formData.countryCode !== 'string' || typeof formData.preferredContact !== 'string' ||
+      !formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.message.trim() ||
+      formData.name.length > 120 || formData.email.length > 254 || formData.phone.length > 32 ||
+      formData.countryCode.length > 8 || formData.preferredContact.length > 50 || formData.message.length > 5000
+    ) {
       return NextResponse.json(
         { success: false, error: 'All required fields must be filled.', code: 'VALIDATION_ERROR' },
         { status: 400 }
@@ -235,6 +263,15 @@ export async function POST(request: NextRequest) {
     } catch (error) {
       console.error('Failed to send notification email:', error);
       // Continue with the process but log the error
+    }
+
+    // Never acknowledge a lead as received if the notification actually failed.
+    // This also catches missing or misconfigured Resend credentials.
+    if (!emailSent) {
+      return NextResponse.json(
+        { success: false, error: 'We could not deliver your message. Please try again or contact us directly.', code: 'DELIVERY_ERROR' },
+        { status: 502 }
+      );
     }
 
     // Success response

@@ -1,5 +1,4 @@
 // app/events/page.tsx
-import { Suspense } from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,10 +8,12 @@ import {
   getUpcomingEventsQuery,
   getPastEventsQuery,
   type Event,
-  urlFor,
+  eventImageUrl,
+  eventDateValue,
 } from "@/lib/events/event";
 import { Hero } from "@/components/common/Hero";
 import { client } from "@/lib/sanity";
+import { mergeEvents } from "@/data/events";
 
 export const metadata: Metadata = {
   title: "Events | Altaf Developments",
@@ -25,17 +26,17 @@ interface EventsPageProps {
 }
 
 function EventCard({ event }: { event: Event }) {
-  const eventDate = new Date(event.eventDate);
-  // const isUpcoming = eventDate > new Date()
+  const eventDate = eventDateValue(event);
 
   return (
     <Link href={`/media/events/${event.slug.current}`} className="group block">
       <div className="overflow-hidden transition-transform duration-300">
         <div className="relative aspect-[5/4] w-full">
           <Image
-            src={urlFor(event.image).width(800).height(800).url()}
+            src={eventImageUrl(event, 800, 800)}
             alt={event.title}
             fill
+            sizes="(max-width: 767px) 100vw, 50vw"
             className="object-cover"
           />
           <div className="absolute top-4 left-4 bg-gray-100 text-[rgb(140,46,71)] px-3 py-1 rounded-full text-sm font-semibold">
@@ -70,8 +71,6 @@ function EventCard({ event }: { event: Event }) {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
               })}
             </div>
 
@@ -105,29 +104,38 @@ function EventCard({ event }: { event: Event }) {
 }
 
 async function EventsList({ filter }: { filter?: string }) {
-  let events: Event[];
+  let cmsEvents: Event[] = [];
 
   try {
     switch (filter) {
       case "featured":
-        events = await client.fetch(getFeaturedEventsQuery);
+        cmsEvents = await client.fetch(getFeaturedEventsQuery);
         break;
       case "upcoming":
-        events = await client.fetch(getUpcomingEventsQuery);
+        cmsEvents = await client.fetch(getUpcomingEventsQuery);
         break;
       case "past":
-        events = await client.fetch(getPastEventsQuery);
+        cmsEvents = await client.fetch(getPastEventsQuery);
         break;
       default:
-        events = await client.fetch(getAllEventsQuery);
+        cmsEvents = await client.fetch(getAllEventsQuery);
         break;
     }
   } catch (error) {
     console.error("Error fetching events:", error);
-    events = [];
+    cmsEvents = [];
   }
 
-  if (!events || events.length === 0) {
+  const allEvents = mergeEvents(cmsEvents);
+  const today = new Date();
+  const events = allEvents.filter((event) => {
+    if (filter === "featured") return Boolean(event.featured);
+    if (filter === "upcoming") return eventDateValue(event) > today;
+    if (filter === "past") return eventDateValue(event) <= today;
+    return true;
+  });
+
+  if (events.length === 0) {
     return (
       <div className="text-center py-12">
         <svg

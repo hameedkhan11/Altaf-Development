@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 declare global {
@@ -74,8 +74,14 @@ export const trackEvent = (
 // Hook to track route changes - safe for SSR and static generation
 export const useGoogleAnalytics = (): void => {
   const pathname = usePathname();
-  
+  const firstRender = useRef(true);
+
   useEffect(() => {
+    // Base GA script already tracks initial page view.
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
     if (pathname) {
       // Get search params safely on client side only
       const searchParams = typeof window !== 'undefined' ? window.location.search : '';

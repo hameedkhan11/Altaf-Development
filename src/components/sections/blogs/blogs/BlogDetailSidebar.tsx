@@ -293,7 +293,7 @@ export function SocialSharing({
     <div className="rounded-lg border border-gray-200 shadow-sm">
       <h3 className="text-lg font-semibold mb-4 flex items-center">
         <HiOutlineShare className="w-5 h-5 mr-2" />
-        Share Article
+        Share Blog
       </h3>
       <div className="grid grid-cols-2 gap-3">
         {socialLinks.map((social) => (

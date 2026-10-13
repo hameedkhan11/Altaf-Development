@@ -1,4 +1,5 @@
 import { Hero } from "@/components/common/Hero";
+import { PanoramaTour } from "@/components/media/PanoramaTour";
 
 const page = () => {
   return (
@@ -17,9 +18,12 @@ const page = () => {
         contentAlignment="center"
         ariaLabel="Virtual Tours Hero Section"
       />
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mt-24">
-        Virtual Tours - Under Construction
-      </h1>
+      <section className="mt-16 mb-16" aria-label="Apartment 707 virtual tour">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mb-10">
+          Virtual Tours
+        </h1>
+        <PanoramaTour />
+      </section>
     </>
   );
 };

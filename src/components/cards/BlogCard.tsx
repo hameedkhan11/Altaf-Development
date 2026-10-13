@@ -1,23 +1,21 @@
 //  components/cards/BlogCard.tsx
 import Link from "next/link";
 import Image from "next/image";
-import { urlFor } from "@/lib/sanityService";
-import type { PostPreview } from "@/lib/sanity/sanity";
-import { AnimatedH1, AnimatedP, AnimatedSpan } from "../ui/text-animations";
+import type { Article } from "@/data/articles";
+import { AnimatedH1, AnimatedP } from "../ui/text-animations";
 
 interface BlogCardProps {
-  post: PostPreview;
+  post: Article;
   index: number;
+  basePath?: "/media/blogs" | "/media/articles";
 }
 
-export function BlogCard({ post, index }: BlogCardProps) {
-  if (!post || !post.slug?.current) {
+export function BlogCard({ post, index, basePath = "/media/blogs" }: BlogCardProps) {
+  if (!post || !post.slug) {
     return null;
   }
 
-  const imageUrl = post?.featuredImage
-    ? urlFor(post.featuredImage).width(1200).height(800).url()
-    : null;
+  const imageUrl = post.coverImage;
   const isEven = index % 2 === 0;
 
   return (
@@ -33,7 +31,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
             <Image
               fill
               src={imageUrl}
-              alt={post?.featuredImage?.alt || post?.title || "Blog post image"}
+              alt={post.coverAlt || post.title}
               className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
             />
@@ -67,7 +65,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
           </AnimatedP>
 
           <div className="flex items-center justify-between">
-            <Link href={`/media/blogs/${post?.slug?.current}`}>
+            <Link href={`${basePath}/${post.slug}`}>
               <button
                 className="bg-[rgb(140,46,71)] text-white px-4 py-2 rounded-full sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base font-medium hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] cursor-pointer ease-in duration-300 transition-colors"
                 aria-label="Read more"
@@ -75,21 +73,6 @@ export function BlogCard({ post, index }: BlogCardProps) {
                 READ MORE
               </button>
             </Link>
-
-            {/* SEO-friendly hidden metadata */}
-            <div className="sr-only">
-              <span>Author: {post?.author?.name || "Unknown"}</span>
-              <AnimatedSpan>
-                Published:{" "}
-                {post?.publishedAt
-                  ? new Date(post.publishedAt).toLocaleDateString()
-                  : ""}
-              </AnimatedSpan>
-              <AnimatedSpan>
-                Categories:{" "}
-                {post?.categories?.map((cat) => cat?.title).join(", ") || ""}
-              </AnimatedSpan>
-            </div>
           </div>
         </div>
       </div>

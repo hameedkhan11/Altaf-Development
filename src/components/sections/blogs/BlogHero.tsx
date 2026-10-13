@@ -20,7 +20,7 @@ export function BlogHero({
   // Create breadcrumb items for blog
   const breadcrumbs: BreadcrumbItem[] = [
     { label: "Media", href: "/" },
-    { label: "Blog", href: "/blogs" }
+    { label: "Blogs", href: "/media/blogs" }
   ];
 
   // Add dynamic breadcrumb based on search params

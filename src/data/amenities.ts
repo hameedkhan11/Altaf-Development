@@ -31,8 +31,7 @@ export const amenitiesData: AmenitiesData = {
       "The society is also emerging as an educational hub, with Roots International's largest campus and a designated university plot already in place. For hospitality, a luxury hotel is planned to enhance tourism and economic activity.",
       "Faisal Hills is not just a housing society it's a master-planned lifestyle community rising with vision and purpose.",
     ],
-    image:
-      "Faisal Hills/ALTAF DEVELOPMENTS WEBSITE IMAGES FAISAL HILLS  (1).jpg",
+    image: "/faisal-hills/location.jpg",
     features: [
       "High-end retail stores",
       "Gourmet dining options",
@@ -47,31 +46,28 @@ export const additionalAmenities = [
     key: "shopping-mall",
     data: {
       name: "International Standard Mall",
-      image:
-        "Faisal Hills/ALTAF DEVELOPMENTS WEBSITE IMAGES FAISAL HILLS  (3).jpg",
+      image: "/faisal-hills/mall.jpg",
     },
   },
   {
     key: "mosque",
     data: {
       name: "Mosque",
-      image:
-        "Faisal Hills/ALTAF DEVELOPMENTS WEBSITE IMAGES FAISAL HILLS  (12).jpg",
+      image: "/faisal-hills/mosque.jpg",
     },
   },
   {
     key: "schools-colleges-university",
     data: {
       name: "Schools Colleges University",
-      image:
-        "Faisal Hills/ALTAF DEVELOPMENTS WEBSITE IMAGES FAISAL HILLS  (2).jpg",
+      image: "/faisal-hills/schools.jpg",
     },
   },
   {
     key: "arch-monument",
     data: {
       name: "Arch Monument",
-      image: "Faisal Hills/Arch Monument.jpg",
+      image: "/faisal-hills/arch-monument.jpg",
     },
   },
 ];

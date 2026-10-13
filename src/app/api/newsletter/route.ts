@@ -41,6 +41,11 @@ interface MailerLiteResponse {
 // Rate limiting function
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+  if (rateLimitMap.size > 1000) {
+    for (const [key, requests] of rateLimitMap) {
+      if (!requests.some((timestamp: number) => now - timestamp < RATE_LIMIT_WINDOW)) rateLimitMap.delete(key);
+    }
+  }
   const userRequests = rateLimitMap.get(ip) || [];
   
   // Filter out requests older than the window
@@ -193,7 +198,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate email format
-    if (!isValidEmail(email.trim())) {
+    if (email.length > 254 || !isValidEmail(email.trim())) {
       return NextResponse.json(
         {
           success: false,

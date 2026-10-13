@@ -514,3 +514,88 @@ video {
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
 }
+
+
+/* ------------------------------------------------------------------ */
+/* Page intro: logo reveal + curtain lift, 1.5s total                  */
+/* ------------------------------------------------------------------ */
+.page-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: #ffffff;
+  will-change: transform;
+  animation: page-intro-curtain 1.5s linear both;
+}
+
+.page-intro__logo {
+  width: min(70vw, 340px);
+  height: auto;
+  color: #8c2e47; /* website wine theme */
+  will-change: clip-path, transform, opacity;
+  animation: page-intro-logo 1.5s linear both;
+}
+
+/* Overlay holds until 1.0s, then lifts away with a curved lower edge. */
+@keyframes page-intro-curtain {
+  0%,
+  66.6% {
+    transform: translateY(0);
+    border-radius: 0;
+    animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  99.9% {
+    transform: translateY(-100%);
+    border-radius: 0 0 50% 50% / 0 0 14vh 14vh;
+    visibility: visible;
+  }
+  100% {
+    transform: translateY(-100%);
+    border-radius: 0 0 50% 50% / 0 0 14vh 14vh;
+    visibility: hidden;
+  }
+}
+
+/* Logo is wiped in left-to-right between 0.12s and 0.75s. */
+@keyframes page-intro-logo {
+  0%,
+  8% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: scale(0.96);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  50%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-intro {
+    animation: page-intro-fade 1.2s ease both;
+  }
+  .page-intro__logo {
+    animation: none;
+  }
+  @keyframes page-intro-fade {
+    0%,
+    60% {
+      opacity: 1;
+      visibility: visible;
+    }
+    99.9% {
+      opacity: 0;
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}

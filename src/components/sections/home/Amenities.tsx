@@ -17,7 +17,7 @@ import { AmenityData } from "@/lib/types";
 import { AnimatedH2, AnimatedP } from "@/components/ui/text-animations";
 
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
-import { Image } from "@imagekit/next";
+import Image from "next/image";
 
 const Amenities = () => {
   const [, setActiveAmenity] = useState<string>("location");
@@ -145,13 +145,12 @@ const Amenities = () => {
                   }}
                 >
                   <Image
-                    urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     src={allAmenities[prevIndex].data.image}
                     alt={allAmenities[prevIndex].data.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
+                    loading="lazy"
                     aria-label="Previous amenity image"
                   />
                 </motion.div>
@@ -167,13 +166,12 @@ const Amenities = () => {
                   }}
                 >
                   <Image
-                    urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                     src={currentAmenity.data.image}
                     alt={currentAmenity.data.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
+                    loading="lazy"
                     aria-label="Current amenity image"
                   />
                 </motion.div>
@@ -243,13 +241,12 @@ const Amenities = () => {
               }}
             >
               <Image
-                urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                 src={allAmenities[prevIndex].data.image}
                 alt={allAmenities[prevIndex].data.name}
                 fill
                 sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) calc(100vw - 4rem), 100vw"
                 className="object-cover"
-                priority
+                loading="lazy"
                 aria-label="Amenity Images"
               />
             </motion.div>
@@ -265,13 +262,12 @@ const Amenities = () => {
               }}
             >
               <Image
-                urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
                 src={currentAmenity.data.image}
                 alt={currentAmenity.data.name}
                 fill
                 sizes="(max-width: 640px) calc(100vw - 2rem), (max-width: 768px) calc(100vw - 3rem), (max-width: 1024px) calc(100vw - 4rem), 100vw"
                 className="object-cover"
-                priority
+                loading="lazy"
                 aria-label="Amenity Images"
               />
             </motion.div>

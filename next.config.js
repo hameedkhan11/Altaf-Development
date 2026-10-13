@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  swcMinify: true,
+  // Panorama textures are loaded directly by Three.js (not by next/image).
+  // Cache them between visits; keep a one-day lifetime so updates propagate.
+  async headers() {
+    return [{
+      source: '/virtual-tour/:path*',
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+    }];
+  },
   images: {
     remotePatterns: [
       {

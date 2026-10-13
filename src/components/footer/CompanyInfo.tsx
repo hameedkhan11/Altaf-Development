@@ -1,7 +1,7 @@
 // components/footer/CompanyInfo.tsx
 import Link from "next/link";
 import { companyInfo } from "@/lib/constants";
-import AltafLogo from "../../../public/logos/ALTAF-LOGO2.svg"
+import AltafLogo from "@/components/layout/AltafLogo"
 
 export const CompanyInfo = () => (
   <div className="w-full">

@@ -27,7 +27,8 @@ export const PropertyCard2 = ({ section, index }: PropertyCardProps) => {
           alt={section.alt}
           fill
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          priority={index === 0}
+          loading="lazy"
+          sizes="(max-width: 767px) 100vw, 33vw"
           aria-label="Property image"
         />
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />

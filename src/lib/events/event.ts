@@ -15,7 +15,7 @@ export interface Event {
     current: string
   }
   description: string
-  image: {
+  image?: {
     asset: {
       _ref: string
       url: string
@@ -44,6 +44,9 @@ export interface Event {
   eventDate: string
   location: string
   featured: boolean
+  // Images for entries stored in the site itself instead of Sanity.
+  localImage?: string
+  localGallery?: Array<{ src: string; alt: string; fit?: "cover" | "contain" }>
   metaTitle?: string
   metaDescription?: string
 }
@@ -188,4 +191,15 @@ export const getRelatedEventsQuery = groq`
 
 export function urlFor(source: SanityImageSource) {
   return builder.image(source)
+}
+/** Use local public images for newly added events; keep Sanity image handling unchanged. */
+export function eventImageUrl(event: Event, width = 800, height = 800): string {
+  if (event.localImage) return event.localImage
+  if (event.image?.asset) return urlFor(event.image).width(width).height(height).url()
+  return "/globe.svg"
+}
+
+/** Date-only events have no advertised start time. Keep their day stable across server timezones. */
+export function eventDateValue(event: Event): Date {
+  return new Date(event.eventDate.includes("T") ? event.eventDate : `${event.eventDate}T12:00:00`)
 }
