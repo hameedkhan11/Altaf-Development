@@ -93,6 +93,7 @@ async function sendNotificationEmail(formData: ContactFormData) {
     throw new Error('Resend configuration missing. Please check RESEND_API_KEY, FROM_EMAIL, and ADMIN_EMAIL environment variables.');
   }
 
+
   const safe = {
     name: escapeHtml(formData.name),
     email: escapeHtml(formData.email),
@@ -100,7 +101,9 @@ async function sendNotificationEmail(formData: ContactFormData) {
     countryCode: escapeHtml(formData.countryCode),
     preferredContact: escapeHtml(formData.preferredContact),
     message: escapeHtml(formData.message),
+    emailSubscription: formData.emailSubscription,
   };
+
 
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
