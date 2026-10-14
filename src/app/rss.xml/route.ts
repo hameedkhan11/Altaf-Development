@@ -23,7 +23,7 @@ async function getBlogPosts(): Promise<BlogPost[]> {
       guid: `https://www.altafdevelopments.com/media/blogs/${blog.slug}`,
     })),
     ...articles.map((article) => {
-    const link = `https://www.altafdevelopments.com/media/articles/${article.slug}`;
+    const link = `https://www.altafdevelopments.com/media/blogs/${article.slug}`;
     return {
       title: article.title,
       description: article.excerpt,
@@ -43,7 +43,7 @@ export async function GET() {
     const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Altaf Developments Blogs and Articles</title>
+    <title>Altaf Developments Blogs</title>
     <link>https://altafdevelopments.com</link>
     <description>Latest news, insights, and updates from Altaf Developments - Your premier luxury real estate partner in Pakistan</description>
     <language>en-us</language>

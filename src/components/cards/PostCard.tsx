@@ -32,6 +32,7 @@ export function PostCard({
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300 overflow-hidden"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+              quality={90}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center rounded-lg">

@@ -19,6 +19,7 @@ export const portableTextComponents: PortableTextComponents = {
             width={800}
             height={600}
             className="rounded-lg w-full h-auto"
+            quality={90}
           />
           {value.caption && (
             <AnimatedP className="text-sm text-gray-600 mt-2 text-center italic">

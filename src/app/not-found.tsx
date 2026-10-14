@@ -129,10 +129,10 @@ const NotFoundPage = () => {
         >
           Need help? Contact us at{" "}
           <Link
-            href="info@altafdevelopment.com"
+            href="mailto:info@altafdevelopments.com"
             className="text-[rgb(140,46,71)] hover:underline font-medium"
           >
-            info@altafdevelopment.com
+            info@altafdevelopments.com
           </Link>
         </motion.p>
       </motion.div>

@@ -35,10 +35,6 @@ export const quickLinks = [
     href: '/media/blogs'
   },
   {
-    name: "Articles",
-    href: '/media/articles'
-  },
-  {
     name: "Media Center",
     href: '/media/blogs'
   },

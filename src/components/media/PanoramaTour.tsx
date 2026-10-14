@@ -14,22 +14,35 @@ import {
 } from "lucide-react";
 import * as THREE from "three";
 
-const corridor = "/virtual-tour/corridor.webp";
-const livingRoom = "/virtual-tour/living-room.webp";
-const executiveRoom = "/virtual-tour/executive-room.webp";
-const masterBedroom = "/virtual-tour/master-bedroom.webp";
+// Serve pixel-identical lossless WebP panorama files directly, avoiding
+// Next/Image recompression or resizing of the 360-degree textures.
+const corridor = "/virtual-tour/corridor-lossless.webp";
+const livingRoom = "/virtual-tour/living-room-lossless.webp";
+const executiveRoom = "/virtual-tour/executive-room-lossless.webp";
+const masterBedroom = "/virtual-tour/master-bedroom-lossless.webp";
+// No new washroom panorama was supplied, so retain the existing original.
 const masterWashroom = "/virtual-tour/master-bedroom-washroom.webp";
-const balcony = "/virtual-tour/balcony.webp";
+const balcony = "/virtual-tour/balcony-lossless.webp";
 
-const thumb = (url: string) => url.replace(".webp", "-thumb.webp");
+// Dimensions are in feet. Keep them separate from the image files so no text
+// is baked into 360-degree imagery or obscured while users rotate the scene.
+const roomDetails = [
+  { name: "Executive Bedroom", size: "12 × 15" },
+  { name: "Master Bedroom", size: "13 × 16" },
+  { name: "Washroom", size: "6 × 9" },
+  { name: "Kitchen", size: "10 × 12" },
+  { name: "Living Area", size: "12 × 22" },
+  { name: "Balcony", size: "5 × 17" },
+  { name: "Laundry Room", size: "8 × 6" },
+] as const;
 
 const scenes = [
-  { name: "Corridor", subtitle: "Private arrival", image: corridor },
-  { name: "Living Room", subtitle: "Contemporary living", image: livingRoom },
-  { name: "Executive Room", subtitle: "Refined comfort", image: executiveRoom },
-  { name: "Master Bedroom", subtitle: "Restful retreat", image: masterBedroom },
-  { name: "Master Washroom", subtitle: "Premium finishes", image: masterWashroom },
-  { name: "Balcony", subtitle: "Open-air views", image: balcony },
+  { name: "Corridor", subtitle: "Private arrival", image: corridor, thumb: "/virtual-tour/corridor-updated-thumb.webp", size: null },
+  { name: "Living Room", subtitle: "Contemporary living", image: livingRoom, thumb: "/virtual-tour/living-room-updated-thumb.webp", size: "12 × 22 ft" },
+  { name: "Executive Bedroom", subtitle: "Refined comfort", image: executiveRoom, thumb: "/virtual-tour/executive-room-updated-thumb.webp", size: "12 × 15 ft" },
+  { name: "Master Bedroom", subtitle: "Restful retreat", image: masterBedroom, thumb: "/virtual-tour/master-bedroom-updated-thumb.webp", size: "13 × 16 ft" },
+  { name: "Master Washroom", subtitle: "Premium finishes", image: masterWashroom, thumb: "/virtual-tour/master-bedroom-washroom-thumb.webp", size: "6 × 9 ft" },
+  { name: "Balcony", subtitle: "Open-air views", image: balcony, thumb: "/virtual-tour/balcony-updated-thumb.webp", size: "5 × 17 ft" },
 ] as const;
 
 const clamp = (value: number, min: number, max: number) =>
@@ -54,15 +67,19 @@ export function PanoramaTour() {
     if (!host) return;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(72, 1, 0.1, 1100);
-    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const camera = new THREE.PerspectiveCamera(68, 1, 0.1, 1100);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: false });
+    // Retain retina sharpness while respecting mobile GPU limits.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 2 : 2.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // Preserve the panorama photograph exactly: no scene exposure or tonemapping.
+    renderer.toneMapping = THREE.NoToneMapping;
     host.appendChild(renderer.domElement);
 
-    const geometry = new THREE.SphereGeometry(500, 64, 48);
+    const geometry = new THREE.SphereGeometry(500, 128, 96);
     geometry.scale(-1, 1, 1);
-    const material = new THREE.MeshBasicMaterial();
+    // Unlit material means virtual lighting cannot dim the uploaded photograph.
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false });
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
 
@@ -77,36 +94,64 @@ export function PanoramaTour() {
     const textureLoader = new THREE.TextureLoader();
 
     let requestId = 0;
+    let disposed = false;
     const applyTexture = (url: string) => {
       const myRequest = ++requestId;
       textureLoader.load(url, (texture) => {
         // A newer scene was requested while this one was loading: drop it.
-        if (myRequest !== requestId) {
+        if (disposed || myRequest !== requestId) {
           texture.dispose();
           return;
         }
-        texture.colorSpace = THREE.SRGBColorSpace;
-        texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 4);
-        texture.minFilter = THREE.LinearMipmapLinearFilter;
-        texture.magFilter = THREE.LinearFilter;
-        texture.generateMipmaps = true;
-        // Upload to the GPU now so the swap doesn't stall a rendered frame.
-        renderer.initTexture(texture);
+        // Some older phones only support 4096px textures. Downsample only
+        // on those devices, so the 7K washroom remains full resolution on
+        // capable GPUs and never turns into a black/failed scene on others.
+        let usableTexture: THREE.Texture = texture;
+        const image = texture.image as HTMLImageElement;
+        const maxSize = renderer.capabilities.maxTextureSize;
+        if (image.width > maxSize || image.height > maxSize) {
+          const ratio = Math.min(maxSize / image.width, maxSize / image.height);
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.floor(image.width * ratio);
+          canvas.height = Math.floor(image.height * ratio);
+          const context = canvas.getContext("2d");
+          if (context) {
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = "high";
+            context.drawImage(image, 0, 0, canvas.width, canvas.height);
+            usableTexture = new THREE.CanvasTexture(canvas);
+            texture.dispose();
+          }
+        }
+        usableTexture.colorSpace = THREE.SRGBColorSpace;
+        usableTexture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 16);
+        usableTexture.minFilter = THREE.LinearMipmapLinearFilter;
+        usableTexture.magFilter = THREE.LinearFilter;
+        usableTexture.generateMipmaps = true;
+        // Upload before swapping so the current room stays visible during loading.
+        renderer.initTexture(usableTexture);
         const previous = material.map;
-        material.map = texture;
+        material.map = usableTexture;
         material.needsUpdate = true;
         previous?.dispose();
         host.classList.remove("is-loading");
+      }, undefined, (error) => {
+        if (disposed || myRequest !== requestId) return;
+        console.error("Unable to load panorama texture:", url, error);
+        host.classList.remove("is-loading");
+        host.classList.add("tour-load-error");
       });
     };
 
     changeSceneRef.current = (url) => {
+      host.classList.remove("tour-load-error");
       host.classList.add("is-loading");
       applyTexture(url);
       lat = 0;
       lon = 0;
     };
 
+    // Fixed camera field of view: drag/rotate only, with no wheel or pinch zoom.
     const resize = () => {
       const width = host.clientWidth;
       const height = host.clientHeight;
@@ -169,6 +214,8 @@ export function PanoramaTour() {
     animate();
 
     return () => {
+      disposed = true;
+      requestId += 1;
       cancelAnimationFrame(frame);
       observer.disconnect();
       io.disconnect();
@@ -200,9 +247,9 @@ export function PanoramaTour() {
   const currentScene = scenes[sceneIndex] ?? scenes[0];
 
   return (
+    <>
     <div ref={viewerRef} className="tour-shell">
       <div ref={hostRef} className="tour-canvas is-loading" aria-label={`360 degree view of ${currentScene.name}`} />
-      <div className="tour-shade" aria-hidden="true" />
 
       <header className="tour-header">
         <a className="brand-lockup" href="https://www.altafdevelopments.com/" target="_blank" rel="noreferrer">
@@ -219,6 +266,12 @@ export function PanoramaTour() {
         <p>THE RESIDENCES · MODEL APARTMENT</p>
         <h2 className="scene-title">{currentScene.name}</h2>
         <span>{currentScene.subtitle}</span>
+        {currentScene.size && (
+          <div className="scene-dimensions" aria-label={`Room dimensions ${currentScene.size}`}>
+            <span>ROOM SIZE</span>
+            <strong>{currentScene.size}</strong>
+          </div>
+        )}
       </section>
 
       {hintVisible && (
@@ -242,8 +295,11 @@ export function PanoramaTour() {
             className={sceneIndex === index ? "scene-tab is-active" : "scene-tab"}
             onClick={() => selectScene(index)}
           >
-            <img src={thumb(item.image)} alt="" loading="lazy" decoding="async" width={115} height={72} />
-            <span>{item.name}</span>
+            <img src={item.thumb} alt="" loading="lazy" decoding="async" width={115} height={72} />
+            <span className="scene-tab-caption">
+              <span className="scene-tab-name">{item.name}</span>
+              {item.size && <span className="scene-tab-size">{item.size}</span>}
+            </span>
           </button>
         ))}
       </div>
@@ -261,10 +317,35 @@ export function PanoramaTour() {
             <p>ALTAF DEVELOPMENTS</p>
             <h2 id="tour-info-title">The Residences</h2>
             <p className="info-copy">A considered expression of contemporary living in Faisal Hills, Islamabad. Explore the crafted finishes, flowing spaces and architectural details of apartment 707.</p>
+            <h3 className="info-dimensions-title">MODEL APARTMENT DIMENSIONS</h3>
+            <dl className="info-dimensions-list">
+              {roomDetails.map((room) => (
+                <div key={room.name}>
+                  <dt>{room.name}</dt>
+                  <dd>{room.size} ft</dd>
+                </div>
+              ))}
+            </dl>
             <a href="/properties">VIEW PROPERTY DETAILS <ChevronRight /></a>
           </section>
         </div>
       )}
     </div>
+    <section className="apartment-specs" aria-labelledby="apartment-specs-title">
+      <div className="apartment-specs-heading">
+        <p>THE RESIDENCES · APARTMENT 707</p>
+        <h2 id="apartment-specs-title">Model Apartment Details</h2>
+        <p>Explore the dimensions of every space in the model apartment.</p>
+      </div>
+      <div className="apartment-specs-grid">
+        {roomDetails.map((room) => (
+          <div className="apartment-spec" key={room.name}>
+            <span className="apartment-spec-name">{room.name}</span>
+            <strong>{room.size} <small>ft</small></strong>
+          </div>
+        ))}
+      </div>
+    </section>
+    </>
   );
 }

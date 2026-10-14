@@ -34,6 +34,7 @@ export function BlogCard({ post, index, basePath = "/media/blogs" }: BlogCardPro
               alt={post.coverAlt || post.title}
               className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+              quality={90}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
@@ -65,13 +66,12 @@ export function BlogCard({ post, index, basePath = "/media/blogs" }: BlogCardPro
           </AnimatedP>
 
           <div className="flex items-center justify-between">
-            <Link href={`${basePath}/${post.slug}`}>
-              <button
-                className="bg-[rgb(140,46,71)] text-white px-4 py-2 rounded-full sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base font-medium hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] cursor-pointer ease-in duration-300 transition-colors"
-                aria-label="Read more"
-              >
-                READ MORE
-              </button>
+            <Link
+              href={`${basePath}/${post.slug}`}
+              className="inline-flex items-center justify-center bg-[rgb(140,46,71)] text-white px-4 py-2 rounded-full sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base font-medium hover:bg-transparent hover:text-[rgb(140,46,71)] border border-[rgb(140,46,71)] cursor-pointer ease-in duration-300 transition-colors"
+              aria-label={`Read ${post.title}`}
+            >
+              READ MORE
             </Link>
           </div>
         </div>

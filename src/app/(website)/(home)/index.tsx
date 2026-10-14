@@ -51,7 +51,7 @@ const HomePage = async () => {
         <Amenities />
         {/* <WhyChoose /> */}
         <Testimonials />
-        <FeaturedPostsSection posts={articles} section="articles" />
+        <FeaturedPostsSection posts={articles.slice(0, 1)} section="featured" />
         <FeaturedPostsSection posts={featuredBlogs} section="blogs" />
         <LuxuryRealEstateFAQ />
         <RegisterHero />

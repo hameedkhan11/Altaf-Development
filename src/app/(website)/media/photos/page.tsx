@@ -13,7 +13,7 @@ const PropertyGalleryPage: React.FC = () => {
       <Hero
         title="Photo Gallery"
         backgroundType="image"
-        backgroundSrc="Booking1_rg1bhs_1_krrcq5"
+        backgroundSrc="/hero/photos-gallery-hero-head-office.png"
         height="screen"
         breadcrumbs={[
           { label: "Home", href: "/" },

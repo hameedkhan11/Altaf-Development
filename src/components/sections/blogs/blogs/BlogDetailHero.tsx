@@ -17,13 +17,12 @@ interface BlogDetailHeroProps {
     };
   };
   heroImage?: HeroImage | null;
-  section?: "blogs" | "articles";
 }
 
-const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post, section = "blogs" }) => {
+const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post }) => {
   const breadcrumbs = [
     { label: "Media", href: "/" },
-    { label: section === "articles" ? "Articles" : "Blogs", href: section === "articles" ? "/media/articles" : "/media/blogs" },
+    { label: "Blogs", href: "/media/blogs" },
     { label: post.title, href: "#" }
   ];
 
@@ -32,14 +31,14 @@ const BlogDetailHero: React.FC<BlogDetailHeroProps> = ({ post, section = "blogs"
       // title={post.title}
       // subtitle={post.excerpt}
       backgroundType="image"
-      backgroundSrc="Blogs_lbursu_hm8of8"
+      backgroundSrc="/hero/blogs-hero-residences-elevation.png"
       breadcrumbs={breadcrumbs}
       height="three-quarter"
       contentAlignment="left"
       enableAnimations={true}
       // enableParallax={true}
       // parallaxSpeed={0.3}
-      ariaLabel={`${section === "articles" ? "Article" : "Blog post"}: ${post.title}`}
+      ariaLabel={`Blog post: ${post.title}`}
     />
   );
 };

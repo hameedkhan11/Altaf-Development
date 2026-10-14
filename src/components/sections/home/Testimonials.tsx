@@ -210,6 +210,7 @@ const Testimonials = () => {
                         width={40}
                         height={40}
                         className="object-cover w-full h-full"
+                        quality={90}
                       />
                     </div>
                     <div className="text-left mt-8">

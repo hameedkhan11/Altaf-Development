@@ -152,6 +152,7 @@ const Amenities = () => {
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     loading="lazy"
                     aria-label="Previous amenity image"
+                    quality={90}
                   />
                 </motion.div>
 
@@ -173,6 +174,7 @@ const Amenities = () => {
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     loading="lazy"
                     aria-label="Current amenity image"
+                    quality={90}
                   />
                 </motion.div>
               </div>
@@ -248,6 +250,7 @@ const Amenities = () => {
                 className="object-cover"
                 loading="lazy"
                 aria-label="Amenity Images"
+                quality={90}
               />
             </motion.div>
 
@@ -269,6 +272,7 @@ const Amenities = () => {
                 className="object-cover"
                 loading="lazy"
                 aria-label="Amenity Images"
+                quality={90}
               />
             </motion.div>
           </div>

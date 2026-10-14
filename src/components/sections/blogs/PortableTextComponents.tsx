@@ -85,6 +85,7 @@ export const portableTextComponents: PortableTextComponents = {
           width={1920}
           height={1080}
           className="w-full h-auto"
+          quality={90}
         />
         {value.caption && (
           <figcaption className="px-6 py-4 text-center text-sm italic">
@@ -134,6 +135,7 @@ export const portableTextComponents: PortableTextComponents = {
                 fill
                 className="object-cover"
                 sizes="300px"
+                quality={90}
               />
             </div>
           )}

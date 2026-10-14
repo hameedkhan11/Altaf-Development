@@ -9,12 +9,13 @@ import { useRef, useState, useEffect } from "react";
 
 interface FeaturedPostsSectionProps {
   posts: Article[];
-  section?: "blogs" | "articles";
+  section?: "blogs" | "featured";
 }
 
 export function FeaturedPostsSection({ posts, section = "blogs" }: FeaturedPostsSectionProps) {
-  const isArticle = section === "articles";
-  const basePath = isArticle ? "/media/articles" : "/media/blogs";
+  const isFeatured = section === "featured";
+  const basePath = "/media/blogs";
+  const listingPath = isFeatured ? "/media/blogs" : "/media/blogs/all";
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
@@ -87,10 +88,10 @@ export function FeaturedPostsSection({ posts, section = "blogs" }: FeaturedPosts
             duration={0.6}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-4"
           >
-            {isArticle ? "Featured Article" : "Featured Blogs"}
+            {isFeatured ? "Featured Blog" : "Other Blogs"}
           </AnimatedH2>
           <AnimatedP className="max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto text-xs sm:text-sm md:text-base lg:text-lg">
-            {isArticle ? "Explore our latest editorial feature" : "Explore stories and insights from our previous blogs"}
+            {isFeatured ? "Explore our featured story" : "Explore stories and insights from our previous blogs"}
           </AnimatedP>
         </div>
 
@@ -140,7 +141,7 @@ export function FeaturedPostsSection({ posts, section = "blogs" }: FeaturedPosts
                   }
                   resumeAutoplay();
                 }}
-                aria-label={`Go to ${isArticle ? "article" : "blog"}: ${post.title}`}
+                aria-label={`Go to ${isFeatured ? "featured blog" : "blog"}: ${post.title}`}
                 aria-current={index === currentIndex ? "true" : "false"}
               />
             ))}
@@ -166,14 +167,14 @@ export function FeaturedPostsSection({ posts, section = "blogs" }: FeaturedPosts
         )}
 
         <div className="relative flex justify-center mt-6 sm:mt-7 md:mt-8">
-          <Link href={basePath}>
+          <Link href={listingPath}>
             <Button
               className={`px-4 sm:px-5 bg-[rgb(140,46,71)] hover:bg-transparent hover:text-[rgb(140,46,71)] border-2 hover:border-[rgb(140,46,71)] cursor-pointer rounded-full font-bold overflow-hidden py-4 sm:py-5 md:py-6 text-sm sm:text-base`}
-              aria-label={isArticle ? "View Article" : "View Blog"}
+              aria-label={isFeatured ? "View Featured Blog" : "View Other Blogs"}
             >
               <div className="flex items-center">
                 <span className="transition-all duration-300 ease-in font-bold px-6 sm:px-7 md:px-8 py-4 sm:py-6 md:py-8">
-                  {isArticle ? "VIEW ARTICLE" : "VIEW BLOG"}
+                  {isFeatured ? "VIEW FEATURED BLOG" : "VIEW OTHER BLOGS"}
                 </span>
                 <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300" />
               </div>

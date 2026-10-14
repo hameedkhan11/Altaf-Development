@@ -67,7 +67,21 @@ export const additionalAmenities = [
     key: "arch-monument",
     data: {
       name: "Arch Monument",
-      image: "/faisal-hills/arch-monument.jpg",
+      image: "/faisal-hills/arch-monument.webp",
+    },
+  },
+  {
+    key: "executive-block-arch-side",
+    data: {
+      name: "Executive Block",
+      image: "/faisal-hills/executive-block-arch-side.webp",
+    },
+  },
+  {
+    key: "cricket-ground",
+    data: {
+      name: "Cricket Ground",
+      image: "/faisal-hills/cricket-ground.webp",
     },
   },
 ];

@@ -21,6 +21,7 @@ const AtAGlance: React.FC<AtAGlanceProps> = ({
       value: "Main Civic Center Plot#11 Block A Faisal Hills",
     },
     { label: "Project Type", value: "Residential" },
+    { label: "Plot Size", value: "12.5 Kanal" },
     {
       label: "Floor Stories",
       value: "24",

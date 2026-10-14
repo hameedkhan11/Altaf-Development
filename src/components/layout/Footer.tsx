@@ -8,7 +8,6 @@ const quickLinks = [
   { name: "About", href: "/about" },
   { name: "Properties", href: "/properties" },
   { name: "Blogs", href: "/media/blogs" },
-  { name: "Articles", href: "/media/articles" },
   { name: "Events", href: "/media/events" },
   { name: "Career", href: "/careers" },
   { name: "Contact", href: "/contact" },
@@ -22,6 +21,7 @@ const CompanyInfo = () => (
         alt="Altaf Developments Logo"
         width={200}
         height={200}
+        quality={90}
       />
     </Link>
     <div>

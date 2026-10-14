@@ -21,7 +21,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Information & Support',
-    primary: 'info@altafdevelopment.com',
+    primary: 'info@altafdevelopments.com',
     secondary: 'General inquiries and support',
   },
   {

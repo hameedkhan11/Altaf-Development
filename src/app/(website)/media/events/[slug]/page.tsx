@@ -94,7 +94,7 @@ function EventGallery({ event }: { event: Event }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {gallery.map((image, index) => (
           <div key={`${image.url}-${index}`} className="group">
-            <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
+            <div className={`relative overflow-hidden bg-gray-100 ${image.url.endsWith("/peshawar-open-house-serena-hotel-2026/gallery-3.png") ? "aspect-[1555/1049]" : "aspect-[16/9]"}`}>
               <Image
                 src={image.url}
                 alt={image.alt}
@@ -103,6 +103,7 @@ function EventGallery({ event }: { event: Event }) {
                   ? "object-contain"
                   : "object-cover transition-transform duration-300 group-hover:scale-105"}
                 sizes="(max-width: 768px) 100vw, 50vw"
+                quality={90}
               />
             </div>
           </div>
@@ -138,6 +139,7 @@ function RelatedEvents({ events }: { events: Event[] }) {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300 overflow-hidden"
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                    quality={90}
                   />
 
                   {/* Featured Badge */}
@@ -197,7 +199,7 @@ async function EventDetail({ slug }: { slug: string }) {
     <>
       {/* Event Content */}
       <Hero
-        backgroundSrc="Booking1_rg1bhs_1_krrcq5"
+        backgroundSrc="/hero/events-hero-head-office.png"
         backgroundType="image"
         overlay="medium"
        breadcrumbs={[

@@ -2,6 +2,7 @@
 import { RelatedPostCard } from "@/components/cards/PostCard";
 import type { PostPreview } from "@/lib/sanity/sanity";
 import { urlFor } from "@/lib/sanityService";
+import { getBlogCoverOverride } from "@/lib/blogCoverOverrides";
 
 interface RelatedPostsSectionProps {
   relatedPosts: PostPreview[] | null;
@@ -19,9 +20,11 @@ export function RelatedPostsSection({ relatedPosts }: RelatedPostsSectionProps) 
     let coverImage = "";
     try { if (post.featuredImage?.asset) coverImage = urlFor(post.featuredImage).width(1000).url(); }
     catch { /* optional image */ }
+    const imageOverride = getBlogCoverOverride(post.title || "");
+    if (imageOverride) coverImage = imageOverride.src;
     return [{
       slug, title: post.title, excerpt: post.excerpt || "",
-      coverImage, coverAlt: post.featuredImage?.alt || post.title,
+      coverImage, coverAlt: imageOverride?.alt || post.featuredImage?.alt || post.title,
       author: post.author?.name || "Altaf Developments", body: [],
     }];
   });

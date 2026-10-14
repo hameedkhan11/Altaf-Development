@@ -4,11 +4,6 @@ import {  ChevronRight } from "lucide-react";
 
 export const MEDIA_ITEMS: MediaItem[] = [
   {
-    name: "Articles",
-    href: "/media/articles",
-    icon: ChevronRight,
-  },
-  {
     name: "Blogs",
     href: "/media/blogs",
     icon: ChevronRight,

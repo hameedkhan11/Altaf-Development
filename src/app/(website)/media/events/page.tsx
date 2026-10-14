@@ -38,6 +38,7 @@ function EventCard({ event }: { event: Event }) {
             fill
             sizes="(max-width: 767px) 100vw, 50vw"
             className="object-cover"
+            quality={90}
           />
           <div className="absolute top-4 left-4 bg-gray-100 text-[rgb(140,46,71)] px-3 py-1 rounded-full text-sm font-semibold">
             Event
@@ -174,7 +175,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   return (
     <div className="min-h-screen">
       <Hero
-        backgroundSrc="Booking1_rg1bhs_1_krrcq5"
+        backgroundSrc="/hero/events-hero-head-office.png"
         backgroundType="image"
         overlay="medium"
         ariaLabel="Events Hero section"

@@ -522,6 +522,9 @@ video {
 .page-intro {
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
   z-index: 2147483000;
   display: grid;
   place-items: center;
@@ -532,8 +535,15 @@ video {
 }
 
 .page-intro__logo {
-  width: min(70vw, 340px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(78vw, 340px);
+  max-width: calc(100% - 2rem);
   height: auto;
+  display: block;
+  margin: 0;
+  translate: -50% -50%;
   color: #8c2e47; /* website wine theme */
   will-change: clip-path, transform, opacity;
   animation: page-intro-logo 1.5s linear both;

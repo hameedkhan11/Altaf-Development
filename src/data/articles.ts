@@ -26,25 +26,33 @@ export const articles: Article[] = [
     "body": [
       {
         "type": "heading",
-        "text": "A Vision Beyond Construction",
-        "id": "a-vision-beyond-construction"
+        "text": "The Vision of Altaf Khan",
+        "id": "the-vision-of-altaf-khan"
       },
       {
         "type": "paragraph",
-        "text": "Real estate is often measured by what is built. For Altaf Developments, the ambition goes further, toward how people live, connect and experience their homes."
+        "text": "Behind Altaf Developments is CEO Altaf Khan, whose approach to development is centered on a belief that real estate should contribute to something larger than the structure itself."
       },
       {
         "type": "paragraph",
-        "text": "Founded with a vision of creating thoughtfully planned, high-quality developments, Altaf Developments is emerging as a distinctive name in Pakistan's evolving real-estate landscape. The company's philosophy brings together architectural design, functionality, quality and long-term value to create spaces designed for modern lifestyles."
+        "text": "His vision focuses on creating developments that combine purpose, quality and lasting value while keeping the needs of families, homeowners and investors at the center of the process."
       },
       {
         "type": "paragraph",
-        "text": "Its approach is rooted in a simple principle, development should create more than structures; it should create better experiences."
+        "text": "For Altaf Khan, development is not simply a construction exercise. It is an opportunity to influence the way people experience their everyday lives, from the spaces they call home to the communities they become part of."
+      },
+      {
+        "type": "paragraph",
+        "text": "This vision is reflected in the company's guiding philosophy:"
+      },
+      {
+        "type": "paragraph",
+        "text": "Designing the Future of Living."
       },
       {
         "type": "image",
-        "src": "/articles/project-exterior.webp",
-        "alt": "The Residences architectural exterior rendering"
+        "src": "/articles/altaf-khan.webp",
+        "alt": "Altaf Khan at the Altaf Developments office"
       },
       {
         "type": "heading",
@@ -74,33 +82,25 @@ export const articles: Article[] = [
       },
       {
         "type": "heading",
-        "text": "The Vision of Altaf Khan",
-        "id": "the-vision-of-altaf-khan"
+        "text": "A Vision Beyond Construction",
+        "id": "a-vision-beyond-construction"
       },
       {
         "type": "paragraph",
-        "text": "Behind Altaf Developments is CEO Altaf Khan, whose approach to development is centered on a belief that real estate should contribute to something larger than the structure itself."
+        "text": "Real estate is often measured by what is built. For Altaf Developments, the ambition goes further, toward how people live, connect and experience their homes."
       },
       {
         "type": "paragraph",
-        "text": "His vision focuses on creating developments that combine purpose, quality and lasting value while keeping the needs of families, homeowners and investors at the center of the process."
+        "text": "Founded with a vision of creating thoughtfully planned, high-quality developments, Altaf Developments is emerging as a distinctive name in Pakistan's evolving real-estate landscape. The company's philosophy brings together architectural design, functionality, quality and long-term value to create spaces designed for modern lifestyles."
       },
       {
         "type": "paragraph",
-        "text": "For Altaf Khan, development is not simply a construction exercise. It is an opportunity to influence the way people experience their everyday lives, from the spaces they call home to the communities they become part of."
-      },
-      {
-        "type": "paragraph",
-        "text": "This vision is reflected in the company's guiding philosophy:"
-      },
-      {
-        "type": "paragraph",
-        "text": "Designing the Future of Living."
+        "text": "Its approach is rooted in a simple principle, development should create more than structures; it should create better experiences."
       },
       {
         "type": "image",
-        "src": "/articles/altaf-khan.webp",
-        "alt": "Altaf Khan at the Altaf Developments office"
+        "src": "/articles/project-exterior.webp",
+        "alt": "The Residences architectural exterior rendering"
       },
       {
         "type": "heading",

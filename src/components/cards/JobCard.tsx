@@ -5,6 +5,10 @@ import { departmentLabels, employmentTypeLabels, experienceLevelLabels, JobCardP
 import { motion } from 'framer-motion';
 
 export default function JobCard({ job }: JobCardProps) {
+  const isWebsiteOpening = job._id === 'website-sales-executive' || job._id === 'website-influencer';
+  const applicationMessage = `Hello Altaf Developments, I would like to apply for the ${job.title} position. Please let me know where I can send my CV${job._id === 'website-influencer' ? ' and portfolio/social media profile' : ''}. Thank you.`;
+  const whatsappApplicationUrl = `https://wa.me/923330777775?text=${encodeURIComponent(applicationMessage)}`;
+
   const handleApplyClick = () => {
     window.open(job.applicationFormUrl, '_blank', 'noopener,noreferrer');
   };
@@ -106,7 +110,13 @@ export default function JobCard({ job }: JobCardProps) {
               </span>
             )}
           </div>
-          <button
+          {isWebsiteOpening ? (
+            <div className="flex flex-wrap gap-2">
+              <a href={whatsappApplicationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-5 py-3 bg-[rgb(140,46,71)] text-white font-medium rounded-full hover:bg-[rgb(110,30,57)] transition-colors" aria-label={`Apply for ${job.title} by WhatsApp`}>
+                Apply via WhatsApp
+              </a>
+            </div>
+          ) : <button
             onClick={handleApplyClick}
             className="inline-flex items-center px-6 py-3 bg-[rgb(140,46,71)] hover:bg-transparent hover:border-2 hover:border-[rgb(140,46,71)] hover:text-[rgb(140,46,71)] text-white font-medium rounded-full transition-all duration-200 transform  hover:shadow-lg focus:outline-none cursor-pointer"
           >
@@ -114,7 +124,7 @@ export default function JobCard({ job }: JobCardProps) {
             <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
-          </button>
+          </button>}
         </div>
       </div>
     </motion.div>

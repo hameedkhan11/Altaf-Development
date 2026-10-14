@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { CldImage } from "next-cloudinary";
+import Image from "next/image";
 
 interface HeroBackgroundProps {
   type?: "video" | "image";
@@ -181,6 +182,17 @@ const ParallaxContent: React.FC<{
         </div>
       ) : (
         <div className="absolute inset-0 w-full h-full overflow-hidden">
+          {publicId.startsWith("/") ? (
+            <Image
+              src={publicId}
+              alt={altText}
+              fill
+              sizes="100vw"
+              quality={95}
+              priority
+              className="w-full h-full object-cover"
+            />
+          ) : (
           <CldImage
             src={publicId}
             alt={altText}
@@ -190,9 +202,10 @@ const ParallaxContent: React.FC<{
             crop="fill"
             gravity="center"
             format="auto"
-            quality="auto:good"
+            quality="auto:best"
             className="w-full h-full object-cover"
           />
+          )}
         </div>
       )}
     </>

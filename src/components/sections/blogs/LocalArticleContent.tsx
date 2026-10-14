@@ -36,13 +36,15 @@ export function LocalArticleContent({ article }: { article: Article }) {
                 return (
                   <figure key={index} className="my-9 overflow-hidden">
                     <Image src={block.src} alt={block.alt} width={1920} height={1080}
-                      sizes="(max-width: 1024px) 100vw, 75vw" className="w-full h-auto object-cover" />
+                      sizes="(max-width: 1024px) 100vw, 75vw" className="w-full h-auto object-cover"
+                        quality={90}
+                      />
                   </figure>
                 );
               })}
             </div>
-            <Link href="/media/articles" className="inline-flex mt-12 items-center gap-2 text-[rgb(140,46,71)] hover:underline">
-              <ArrowLeft className="w-4 h-4" /> Back to Articles
+            <Link href="/media/blogs" className="inline-flex mt-12 items-center gap-2 text-[rgb(140,46,71)] hover:underline">
+              <ArrowLeft className="w-4 h-4" /> Back to Blogs
             </Link>
           </div>
           <aside className="lg:col-span-1 min-w-0">
@@ -60,7 +62,7 @@ export function LocalArticleContent({ article }: { article: Article }) {
                 </ul>
               </nav>
               <SocialSharing title={article.title}
-                url={`https://www.altafdevelopments.com/media/articles/${article.slug}`}
+                url={`https://www.altafdevelopments.com/media/blogs/${article.slug}`}
                 excerpt={article.excerpt} />
             </div>
           </aside>

@@ -8,7 +8,8 @@ const MAILERLITE_GROUP_ID = process.env.MAILERLITE_BLOGS_GROUP_ID;
 // Email Service Configuration (Resend)
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = process.env.FROM_EMAIL;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+// Send submissions to the confirmed public business inbox, independent of stale deployment settings.
+const ADMIN_EMAIL = 'info@altafdevelopments.com';
 
 interface ContactFormData {
   name: string;
@@ -89,8 +90,8 @@ function escapeHtml(value: string): string {
 }
 
 async function sendNotificationEmail(formData: ContactFormData) {
-  if (!RESEND_API_KEY || !FROM_EMAIL || !ADMIN_EMAIL) {
-    throw new Error('Resend configuration missing. Please check RESEND_API_KEY, FROM_EMAIL, and ADMIN_EMAIL environment variables.');
+  if (!RESEND_API_KEY || !FROM_EMAIL) {
+    throw new Error('Resend configuration missing. Please check RESEND_API_KEY and FROM_EMAIL environment variables.');
   }
 
 

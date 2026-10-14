@@ -8,17 +8,18 @@ import JobList from '@/components/sections/jobs/JobList';
 import { Job } from '@/lib/job';
 import { getAllJobs } from '@/lib/job/jobSanity';
 import { useState, useEffect } from 'react';
+import { careerOpenings } from '@/lib/job/careerOpenings';
 
 
 export default function CareersPage() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<Job[]>(careerOpenings);
   const [selectedDepartment, setSelectedDepartment] = useState('all');
 
   useEffect(() => {
     async function fetchJobs() {
       try {
         const jobsData = await getAllJobs();
-        setJobs(jobsData);
+        setJobs([...careerOpenings, ...jobsData.filter(job => !careerOpenings.some(opening => opening.slug.current === job.slug?.current))]);
       } catch (error) {
         console.error('Failed to fetch jobs:', error);
       }
