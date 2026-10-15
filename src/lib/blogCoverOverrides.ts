@@ -34,8 +34,8 @@ export function getBlogCoverOverride(title: string): BlogCoverOverride | null {
 
   if (/high rise (?:vs|versus) plot/.test(normalized)) {
     return {
-      src: "/blogs/high-rise-vs-plot-new-photo.webp",
-      alt: "High-resolution property photograph by Altaf Developments",
+      src: "/blogs/modern-real-estate-residences.jpg",
+      alt: "The Residences by Altaf Developments architectural elevation",
     };
   }
 
@@ -44,8 +44,8 @@ export function getBlogCoverOverride(title: string): BlogCoverOverride | null {
     normalized.includes("choose altaf developments")
   ) {
     return {
-      src: "/blogs/modern-real-estate-residences.jpg",
-      alt: "The Residences by Altaf Developments architectural elevation",
+      src: "/blogs/high-rise-vs-plot-new-photo.webp",
+      alt: "Altaf Developments open-house gathering",
     };
   }
 

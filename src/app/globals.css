@@ -535,15 +535,17 @@ video {
 }
 
 .page-intro__logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  /* Grid centers the SVG's actual box across mobile Safari and desktop.
+     Avoid combining top/left/translate with animated transforms on iOS. */
+  position: relative;
   width: min(78vw, 340px);
   max-width: calc(100% - 2rem);
   height: auto;
   display: block;
   margin: 0;
-  translate: -50% -50%;
+  transform-origin: center center;
+  justify-self: center;
+  align-self: center;
   color: #8c2e47; /* website wine theme */
   will-change: clip-path, transform, opacity;
   animation: page-intro-logo 1.5s linear both;
