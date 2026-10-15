@@ -1,3 +1,4 @@
+import { eventDisplayName } from "@/lib/events/displayName";
 // app/events/[slug]/page.tsx
 import { Metadata } from "next";
 import Image from "next/image";
@@ -161,7 +162,7 @@ function RelatedEvents({ events }: { events: Event[] }) {
 
                 <div className="px-1 flex-grow flex flex-col justify-start">
                   <h3 className="text-sm sm:text-base md:text-lg lg:text-xl mt-2 sm:mt-3 md:mt-4 text-black leading-tight group-hover:text-[rgb(140,46,71)] transition-colors duration-200 line-clamp-2">
-                    {event.title}
+                    {eventDisplayName(event)}
                   </h3>
                 </div>
               </Link>
@@ -205,7 +206,7 @@ async function EventDetail({ slug }: { slug: string }) {
        breadcrumbs={[
           { label: "Media", href: "/media" },
           { label: "Events", href: "/media/events" },
-          { label: event.title, href: `/media/events/${event.slug.current}` },
+          { label: eventDisplayName(event), href: `/media/events/${event.slug.current}` },
         ]}
       />
       <div className="mx-auto px-4 sm:px-6 lg:px-16 py-8 sm:py-12 md:py-16 lg:py-20">
@@ -214,7 +215,7 @@ async function EventDetail({ slug }: { slug: string }) {
           <div className="lg:col-span-2">
             <div className="prose prose-lg max-w-none">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[rgb(140,46,71)] mb-4">
-                {event.title}
+                {eventDisplayName(event)}
               </h2>
               {event.description
                 .split(/\n\s*\n/)

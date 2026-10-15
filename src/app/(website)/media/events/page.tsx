@@ -1,3 +1,4 @@
+import { eventDisplayName } from "@/lib/events/displayName";
 // app/events/page.tsx
 import { Metadata } from "next";
 import Image from "next/image";
@@ -41,13 +42,13 @@ function EventCard({ event }: { event: Event }) {
             quality={90}
           />
           <div className="absolute top-4 left-4 right-4 sm:right-auto sm:max-w-[calc(100%-2rem)] bg-gray-100/95 text-[rgb(140,46,71)] px-3 py-2 rounded-xl text-xs sm:text-sm leading-snug font-semibold whitespace-normal break-words">
-            {event.title}
+            {eventDisplayName(event)}
           </div>
         </div>
 
         <div className="p-6">
           <h3 className="text-2xl font-normal text-[rgb(140,46,71)] mb-2 transition-colors">
-            {event.title}
+            {eventDisplayName(event)}
           </h3>
 
           <p className="mb-4 line-clamp-2">{event.description}</p>

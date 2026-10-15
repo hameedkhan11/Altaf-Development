@@ -20,9 +20,8 @@ const corridor = "/virtual-tour/corridor-lossless.webp";
 const livingRoom = "/virtual-tour/living-room-lossless.webp";
 const executiveRoom = "/virtual-tour/executive-room-lossless.webp";
 const masterBedroom = "/virtual-tour/master-bedroom-lossless.webp";
-// No new washroom panorama was supplied, so retain the existing original.
-const masterWashroom = "/virtual-tour/master-bedroom-washroom.webp";
-const balcony = "/virtual-tour/balcony-lossless.webp";
+const masterWashroom = "/virtual-tour/bathroom-new.png";
+const balcony = "/virtual-tour/balcony-new.png";
 
 // Dimensions are in feet. Keep them separate from the image files so no text
 // is baked into 360-degree imagery or obscured while users rotate the scene.
@@ -37,12 +36,12 @@ const roomDetails = [
 ] as const;
 
 const scenes = [
-  { name: "Corridor", subtitle: "Private arrival", image: corridor, thumb: "/virtual-tour/corridor-updated-thumb.webp", size: null },
+  { name: "Corridor", subtitle: "Private arrival", image: corridor, thumb: "/virtual-tour/corridor-updated-thumb.webp", size: "10 × 8 ft" },
   { name: "Living Room", subtitle: "Contemporary living", image: livingRoom, thumb: "/virtual-tour/living-room-updated-thumb.webp", size: "12 × 22 ft" },
   { name: "Executive Bedroom", subtitle: "Refined comfort", image: executiveRoom, thumb: "/virtual-tour/executive-room-updated-thumb.webp", size: "12 × 15 ft" },
   { name: "Master Bedroom", subtitle: "Restful retreat", image: masterBedroom, thumb: "/virtual-tour/master-bedroom-updated-thumb.webp", size: "13 × 16 ft" },
-  { name: "Master Washroom", subtitle: "Premium finishes", image: masterWashroom, thumb: "/virtual-tour/master-bedroom-washroom-thumb.webp", size: "6 × 9 ft" },
-  { name: "Balcony", subtitle: "Open-air views", image: balcony, thumb: "/virtual-tour/balcony-updated-thumb.webp", size: "5 × 17 ft" },
+  { name: "Master Washroom", subtitle: "Premium finishes", image: masterWashroom, thumb: "/virtual-tour/bathroom-new-thumb.webp", size: "6 × 9 ft" },
+  { name: "Balcony", subtitle: "Open-air views", image: balcony, thumb: "/virtual-tour/balcony-new-thumb.webp", size: "5 × 17 ft" },
 ] as const;
 
 const clamp = (value: number, min: number, max: number) =>
@@ -331,21 +330,7 @@ export function PanoramaTour() {
         </div>
       )}
     </div>
-    <section className="apartment-specs" aria-labelledby="apartment-specs-title">
-      <div className="apartment-specs-heading">
-        <p>THE RESIDENCES · APARTMENT 707</p>
-        <h2 id="apartment-specs-title">Model Apartment Details</h2>
-        <p>Explore the dimensions of every space in the model apartment.</p>
-      </div>
-      <div className="apartment-specs-grid">
-        {roomDetails.map((room) => (
-          <div className="apartment-spec" key={room.name}>
-            <span className="apartment-spec-name">{room.name}</span>
-            <strong>{room.size} <small>ft</small></strong>
-          </div>
-        ))}
-      </div>
-    </section>
+
     </>
   );
 }
