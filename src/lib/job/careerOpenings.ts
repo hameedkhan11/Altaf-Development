@@ -71,9 +71,9 @@ export const careerOpenings: Job[] = [
     location: 'Islamabad / On-location shoots',
     shortDescription: 'Capture the detail, atmosphere and ambition behind Altaf Developments. Create cinematic property walkthroughs, engaging reels and polished campaign videos that bring our projects to life.',
     requirements: [
-      'Experience filming and editing high-quality videos for digital platforms',
+      'Experience in filming and editing high-quality videos for digital platforms',
       'Strong understanding of lighting, composition, sound and visual storytelling',
-      'Share a showreel or portfolio; real estate or architectural work is a plus',
+      'Showreel or portfolio showcasing real estate or architectural work',
     ],
     applicationFormUrl: 'https://wa.me/923330777775',
   },
