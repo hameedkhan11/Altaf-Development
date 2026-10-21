@@ -15,7 +15,7 @@ const contactInfo = [
   {
     icon: Phone,
     title: 'Sales & Inquiries', 
-    primary: '+92 333 0777775',
+    primary: '+92 330 2007522',
     secondary: 'Direct sales line',
   },
   {

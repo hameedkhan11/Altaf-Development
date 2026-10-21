@@ -58,7 +58,7 @@ const organizationSchema = {
   },
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+923330777775",
+    telephone: "+923302007522",
     email: "info@altafdevelopments.com",
     contactType: "customer service",
     areaServed: "PK",

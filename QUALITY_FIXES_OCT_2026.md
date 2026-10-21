@@ -16,7 +16,7 @@
 
 ## Careers
 - Removed 'Apply via Email' from the two website-managed openings.
-- Kept WhatsApp applications pointed to `+92 333 0777775` with job-specific messages.
+- Kept WhatsApp applications pointed to `+92 330 2007522` with job-specific messages.
 - Existing Sanity-managed jobs retain their own Apply Now destination.
 
 ## Images, event galleries, and site stability

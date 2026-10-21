@@ -61,7 +61,7 @@ for (const size of ['12 × 15','13 × 16','6 × 9','10 × 12','12 × 22','5 × 1
 if (!read('src/components/property-detail/Residences.tsx').includes('12.5 Kanal')) fail('Plot size missing');
 if (!read('src/lib/job/careerOpenings.ts').includes('Influencer / Content Creator')) fail('Influencer position missing');
 if (!read('src/lib/job/careerOpenings.ts').includes('Sales Executive')) fail('Sales position missing');
-if (!read('src/components/cards/JobCard.tsx').includes('https://wa.me/923330777775')) fail('Incorrect Careers WhatsApp');
+if (!read('src/components/cards/JobCard.tsx').includes('https://wa.me/923302007522')) fail('Incorrect Careers WhatsApp');
 if (!read('src/app/api/contact/route.ts').includes("const ADMIN_EMAIL = 'info@altafdevelopments.com'")) fail('Contact recipient is not set to confirmed business inbox');
 if (sourceFiles.some(file => readFileSync(file,'utf8').includes('info@altafdevelopment.com'))) fail('Old incorrect business email still in site');
 if (!existsSync(join(src,'app/(website)/media/blogs/all/page.tsx'))) fail('Other Blogs page missing');

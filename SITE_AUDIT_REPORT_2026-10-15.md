@@ -21,7 +21,7 @@ This project is based on `Altaf-Developments-Two-Blog-Photos-Updated.zip` and re
 - The Faisal Hills carousel contains the additional images.
 - Virtual-tour dimensions cover seven rooms and the dimension labels have no background.
 - The virtual-tour section contains five updated panoramas and the retained washroom panorama.
-- Careers includes Sales Executive and Influencer / Content Creator; website-managed applications lead to WhatsApp **+92 333 0777775**, not an application email button.
+- Careers includes Sales Executive and Influencer / Content Creator; website-managed applications lead to WhatsApp **+92 330 2007522**, not an application email button.
 - Website contact email references use **info@altafdevelopments.com**.
 - The page-intro logo component re-mounts on client-side pathname changes and uses viewport-relative centering.
 

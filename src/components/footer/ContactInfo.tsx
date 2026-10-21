@@ -18,7 +18,7 @@ export const ContactInfo = () => (
       <li className="flex items-center w-full">
         <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-[#8c2e47] mr-2 sm:mr-3 flex-shrink-0" />
         <span className="text-black dark:text-white text-xs sm:text-sm lg:text-xs xl:text-sm 2xl:text-base font-optima flex-1">
-          03330777775
+          03302007522
         </span>
       </li>
       <li className="flex items-center w-full">
