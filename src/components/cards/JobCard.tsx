@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 export default function JobCard({ job }: JobCardProps) {
   const isWebsiteOpening = job._id.startsWith('website-');
   const applicationMessage = `Hello Altaf Developments, I would like to apply for the ${job.title} position. Please let me know where I can send my CV${['website-influencer', 'website-freelance-creative', 'website-videographer'].includes(job._id) ? ' and portfolio or showreel' : ''}. Thank you.`;
-  const whatsappApplicationUrl = `https://wa.me/923330777775?text=${encodeURIComponent(applicationMessage)}`;
+  const whatsappApplicationUrl = `https://wa.me/923302007522?text=${encodeURIComponent(applicationMessage)}`;
 
   const handleApplyClick = () => {
     window.open(job.applicationFormUrl, '_blank', 'noopener,noreferrer');
