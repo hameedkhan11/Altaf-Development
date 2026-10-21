@@ -5,7 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { trackFbEvent } from "@/hooks/useFacebookPixel";
 
 const WhatsAppButton = () => {
-  const phoneNumber = "+923330777775";
+  const phoneNumber = "+923302007522";
   const message = "Altaf Developments - Website";
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
