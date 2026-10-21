@@ -29,7 +29,7 @@ export const careerOpenings: Job[] = [
       'Passion for real estate, client service and meeting targets',
       'Sales experience is an advantage; motivated applicants are welcome',
     ],
-    applicationFormUrl: 'https://wa.me/923330777775',
+    applicationFormUrl: 'https://wa.me/923302007522',
   },
   {
     ...common,
@@ -43,7 +43,7 @@ export const careerOpenings: Job[] = [
       'Strong on-camera presence or creative storytelling skills',
       'Share your social profile or portfolio along with your CV',
     ],
-    applicationFormUrl: 'https://wa.me/923330777775',
+    applicationFormUrl: 'https://wa.me/923302007522',
   },
   {
     ...common,
@@ -59,7 +59,7 @@ export const careerOpenings: Job[] = [
       'Confidence in generating leads, arranging property viewings and following up with prospective buyers',
       'Real estate sales experience or an existing buyer network is an advantage; share your background when applying',
     ],
-    applicationFormUrl: 'https://wa.me/923330777775',
+    applicationFormUrl: 'https://wa.me/923302007522',
   },
   {
     ...common,
@@ -75,6 +75,6 @@ export const careerOpenings: Job[] = [
       'Strong understanding of lighting, composition, sound and visual storytelling',
       'Showreel or portfolio showcasing real estate or architectural work',
     ],
-    applicationFormUrl: 'https://wa.me/923330777775',
+    applicationFormUrl: 'https://wa.me/923302007522',
   },
 ];
